@@ -6,11 +6,18 @@ matrix:
       python: 2.7
       env: dist="14.04 LTS trusty"
     - dist: trusty
-      python: 3.7
+      python: 3.6
       env: dist="14.04 LTS trusty"
+    # Python 3.7 not currently supported on trusty
+    # - dist: trusty
+      # python: 3.7
+      # env: dist="14.04 LTS trusty"
 
     - dist: xenial
       python: 2.7
+      env: dist="16.04 LTS xenial"
+    - dist: xenial
+      python: 3.6
       env: dist="16.04 LTS xenial"
     - dist: xenial
       python: 3.7
@@ -21,6 +28,9 @@ matrix:
       env: dist="18.04 LTS bionic"
     - dist: bionic
       python: 3.7
+      env: dist="18.04 LTS bionic"
+    - dist: bionic
+      python: 3.6
       env: dist="18.04 LTS bionic"
 
 install:
