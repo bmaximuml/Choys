@@ -1,33 +1,110 @@
 {% extends 'default.html' %}
-
-{% block header %}
-    <h1>{% block title %}Compare Locations{% endblock %}</h1>
-{% endblock %}
+{% set title = "HouseScrape - main" %}
 
 {% block content %}
-    <table id='compare_table'>
-        <tr>
-            <th><button id='name_btn' class='sort_btn' onclick="sortTable(0)">Location</button></th>
-            <th><button id='total_properties_btn' class='sort_btn' onclick="sortTable(1)">Number of Properties</button></th>
-            <th><button id='average_rent_btn' class='sort_btn' onclick="sortTable(2)">Average Rent (&#163; / pcm)</button></th>
-            <th><button id='rent_under_250_btn' class='sort_btn' onclick="sortTable(3)">Number of properties under &#163;250 pcm</button></th>
-            <th><button id='rent_250_to_500_btn' class='sort_btn' onclick="sortTable(4)">Number of properties between &#163;250 and &#163;500 pcm</button></th>
-            <th><button id='distance_to_london' class='sort_btn' onclick="sortTable(5)">Distance to London</button></th>
-            <th><button id='duration_to_london' class='sort_btn' onclick="sortTable(6)">Duration to London</button></th>
-            <th><button id='score' class='sort_btn' onclick="sortTable(7)">Score</button></th>
-        </tr>
-        {% for row in location_array|sort(attribute='score', reverse=True) %}
-            {% if row.total_properties > 0 %}
-                <tr>
-                    {% for cell in row %}
-                        {% if cell is string or cell is number %}
-                            <td>{{ cell }}</td>
-                        {% else %}
-                            <td data-value="{{ cell[0] }}">{{ cell[1] }}</td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-            {% endif %}
-        {% endfor %}
+    <table id='compare_table' class="box table is-fullwidth">
+        <thead>
+            <tr>
+                <th>
+                    <button id='name_btn' class='sort_btn button' data-sort='0' {# onclick="sortTable(0)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                        <span>
+                            Location
+                        </span>
+                    </button>
+                </th>
+                <th>
+                    <button id='total_properties_btn' class='sort_btn button' data-sort='1' {# onclick="sortTable(1)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                        <span>
+                            Number of Properties
+                        </span>
+                    </button>
+                </th>
+                <th>
+                    <button id='average_rent_btn' class='sort_btn button' data-sort='2' {# onclick="sortTable(2)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                        <span>
+                            Average Rent (&#163; / pcm)
+                        </span>
+                    </button>
+                </th>
+                <th>
+                    <button id='rent_under_250_btn' class='sort_btn button' data-sort='3' {# onclick="sortTable(3)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                        <span>
+                            Number of properties under &#163;250 pcm
+                        </span>
+                    </button>
+                </th>
+                <th>
+                    <button id='rent_250_to_500_btn' class='sort_btn button' data-sort='4' {# onclick="sortTable(4)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                        <span>
+                            Number of properties between &#163;250 and &#163;500 pcm
+                        </span>
+                    </button>
+                </th>
+                <th>
+                    <button id='distance_to_london' class='sort_btn button' data-sort='5' {# onclick="sortTable(5)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                        <span>
+                            Distance to London
+                        </span>
+                    </button>
+                </th>
+                <th>
+                    <button id='duration_to_london' class='sort_btn button' data-sort='6' {# onclick="sortTable(6)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                        <span>
+                            Duration to London
+                        </span>
+                    </button>
+                </th>
+                <th>
+                    <button id='score' class='sort_btn button is-selected is-primary' data-sort='7' {# onclick="sortTable(7)" #}>
+                        <span class="icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                        <span>
+                            Score
+                        </span>
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in location_array|sort(attribute='score', reverse=True) %}
+                {% if row.total_properties > 0 %}
+                    <tr>
+                        {% for cell in row %}
+                            {% if cell is string or cell is number %}
+                                {% if cell == row.name %}
+                                    <td><strong>{{ cell }}</strong></td>
+                                {% else %}
+                                    <td>{{ cell }}</td>
+                                {% endif %}
+                            {% else %}
+                                <td data-value="{{ cell[0] }}">{{ cell[1] }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

@@ -1,5 +1,6 @@
-let last_sort_by = -1;
+let last_sort_by = 7;
 let last_sort_dir = 'asc';
+let mouse_down_sort_by = 7;
 
 function bubbleSortTable(sort_by) {
     let table, rows, switching, i, x, y, x_comp, y_comp, shouldSwitch, dir, switchcount = 0;
@@ -219,15 +220,6 @@ function heapSortTable(sort_by) {
     }
 }
 
-function sortTable(sort_by) {
-    // console.log('last_sort_dir: ' + last_sort_dir);
-    // console.log('last_sort_by: ' + last_sort_by);
-    // bubbleSortTable(sort_by);
-    heapSortTable(sort_by);
-    last_sort_dir = (last_sort_by === sort_by && last_sort_dir === 'asc' ? 'desc' : 'asc');
-    last_sort_by = sort_by;
-}
-
 function w3cBubbleSortTable(sort_by) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
   table = document.getElementById("compare_table");
@@ -275,4 +267,62 @@ function w3cBubbleSortTable(sort_by) {
       }
     }
   }
+}
+
+    let target = getTarget(e);
+
+    if (target.classList.contains('sort_btn')) {
+        mouse_down_sort_by = parseInt(target.getAttribute('data-sort'));
+        last_sort_dir = (last_sort_by === mouse_down_sort_by && last_sort_dir === 'asc' ? 'desc' : 'asc');
+        last_sort_by = mouse_down_sort_by;
+
+        let sort_btns = document.getElementsByClassName('sort_btn');
+        for (const btn of sort_btns) {
+            btn.classList.remove('is-selected');
+            btn.classList.remove('is-primary');
+            btn.classList.remove('is-danger');
+
+            btn.children[0].children[0].classList.remove('fa-chevron-up');
+            btn.children[0].children[0].classList.remove('fa-chevron-down');
+            btn.children[0].children[0].classList.remove('fa-chevron-right');
+            btn.children[0].children[0].classList.add('fa-chevron-right');
+        }
+        target.children[0].children[0].classList.remove('fa-chevron-right');
+        if (last_sort_dir === 'asc') {
+            target.classList.add('is-primary');
+            target.children[0].children[0].classList.add('fa-chevron-down');
+        } else {
+            target.classList.add('is-danger');
+            target.children[0].children[0].classList.add('fa-chevron-up');
+        }
+        target.classList.add('is-selected');
+        target.classList.add('is-loading');
+    }
+}, false);
+
+document.addEventListener('mouseup', function (e) {
+    let target = getTarget(e);
+
+    if (target.classList.contains('sort_btn')) {
+        heapSortTable(mouse_down_sort_by);
+        target.classList.remove('is-loading');
+    }
+}, false);
+
+
+function getTarget(e) {
+    e = e || window.event;
+    let target = e.target || e.srcElement, text = target.textContent || target.innerText;
+
+    if (target.tagName === 'TH') {
+        target = target.children[0];
+    }
+    else if (target.tagName === 'SPAN') {
+        target = target.parentElement;
+    }
+    else if (target.tagName === 'I') {
+        target = target.parentElement.parentElement;
+    }
+
+    return target;
 }

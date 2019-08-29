@@ -1,22 +1,83 @@
 <!DOCTYPE html>
-<html lang="en-gb">
+<html lang="en-gb" class="has-navbar-fixed-top">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
-<script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% if title is defined %}
+            {{ title }}
+        {% else %}
+            HouseScrape
+        {% endif %}
+    </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script src="https://kit.fontawesome.com/c783395ecf.js"></script>
 </head>
 <body>
-    <section class="content">
-      <header>
-        {% block header %}{% endblock %}
-      </header>
+{#    <section class="hero is-primary">#}
+  <nav class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+    {% block nav %}
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <img src="{{ url_for('static', filename='assets/H_white.png') }}" alt="HouseScrape logo"    >
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="main_navbar">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="main_navbar" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Home
+                </a>
+                <a class="navbar-item">
+                    Documentation
+                </a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-dark">
+                            <strong>Log in</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+{#        <h1 class="title">#}
+{#            {% if title is defined %}#}
+{#                {{ title }}#}
+{#            {% else %}#}
+{#                HouseScrape#}
+{#            {% endif %}#}
+{#        </h1>#}
+{#        <h2 class="subtitle">#}
+{#            Find your ideal location#}
+{#        </h2>#}
+    {% endblock %}
+  </nav>
+{#    </section>#}
+    <section class="section hero is-info">
       {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
       {% endfor %}
       {% block content %}{% endblock %}
     </section>
+    <footer class="footer is-dark hero is-paddingless">
+        <div class="content has-text-centered hero-body">
+            <p>
+                <strong class="has-text-light is-size-5">HouseScrape</strong> by <a href="http://benjilevine.com/">Benji Levine</a> &#169; {{ year }}
+            </p>
+        </div>
+    </footer>
 </body>
 </html>
 
