@@ -9,6 +9,14 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import random
+import string
+
+
+def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
 BOT_NAME = 'house_scrape'
 
 SPIDER_MODULES = ['house_scrape.spiders']
@@ -16,7 +24,9 @@ NEWSPIDER_MODULE = 'house_scrape.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'house_scrape (+http://www.yourdomain.com)'
+
+user_agent_str = id_generator()
+USER_AGENT = f'Will The Puffin {user_agent_str}'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -64,9 +74,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'house_scrape.pipelines.HouseScrapePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'house_scrape.pipelines.HouseScrapePipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
