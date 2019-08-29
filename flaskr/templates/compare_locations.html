@@ -16,7 +16,7 @@
             <th><button id='duration_to_london' class='sort_btn' onclick="sortTable(6)">Duration to London</button></th>
             <th><button id='score' class='sort_btn' onclick="sortTable(7)">Score</button></th>
         </tr>
-        {% for row in location_array|sort(attribute='average_rent', reverse=False) %}
+        {% for row in location_array|sort(attribute='score', reverse=True) %}
             {% if row.total_properties > 0 %}
                 <tr>
                     {% for cell in row %}
