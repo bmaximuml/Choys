@@ -30,7 +30,22 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    from flaskr.model import db
+    # a test page to confirm the google distance matrix functions work
+    @app.route('/gmapi')
+    def gmapi():
+        from .services.g_maps import get_distance, get_duration
+        result = os.environ['GMAPI'] + str(get_distance('Albrighton', 'London')) + \
+                                      str(get_duration('Albrighton', 'London')) + \
+                                    str(int(get_distance('Albrighton', 'London'))) + \
+                                    str(int(get_duration('Albrighton', 'London')))
+        return result
+
+    # a page to trigger a run of the google maps distance matrix api
+    @app.route('/gm')
+    def start_gmapi():
+        from .services import run_google_maps_distance_matrix
+        run_google_maps_distance_matrix()
+        return 'Running...'
     db.init_app(app)
     db.create_all(app=app)
 
