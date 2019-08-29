@@ -216,7 +216,7 @@ function sortTable(sort_by) {
     // console.log('last_sort_by: ' + last_sort_by);
     // bubbleSortTable(sort_by);
     heapSortTable(sort_by);
-    last_sort_dir = (last_sort_by === sort_by && last_sort_dir === 'asc' ? 'desc' : 'asc')
+    last_sort_dir = (last_sort_by === sort_by && last_sort_dir === 'asc' ? 'desc' : 'asc');
     last_sort_by = sort_by;
 }
 
