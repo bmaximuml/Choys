@@ -93,7 +93,11 @@ function heapifyTable(arr, n, i, sort_by, dir) {
         arr_i = arr[i].getElementsByTagName('td')[sort_by];
         arr_left = arr[left].getElementsByTagName('td')[sort_by];
 
-        if (isNaN(arr_i.innerHTML) || isNaN(arr_left.innerHTML)) {
+        if (arr_i.hasAttribute('data-value') || arr_left.hasAttribute('data-value')) {
+            i_comp = +arr_i.getAttribute('data-value');
+            left_comp = +arr_left.getAttribute('data-value');
+        }
+        else if (isNaN(arr_i.innerHTML) || isNaN(arr_left.innerHTML)) {
             i_comp = arr_i.innerHTML.toLowerCase();
             left_comp = arr_left.innerHTML.toLowerCase();
         } else {
@@ -117,7 +121,11 @@ function heapifyTable(arr, n, i, sort_by, dir) {
         arr_largest = arr[largest].getElementsByTagName('td')[sort_by];
         arr_right = arr[right].getElementsByTagName('td')[sort_by];
 
-        if (isNaN(arr_largest.innerHTML) || isNaN(arr_right.innerHTML)) {
+        if (arr_largest.hasAttribute('data-value') || arr_right.hasAttribute('data-value')) {
+            largest_comp = +arr_largest.getAttribute('data-value');
+            right_comp = +arr_right.getAttribute('data-value');
+        }
+        else if (isNaN(arr_largest.innerHTML) || isNaN(arr_right.innerHTML)) {
             largest_comp = arr_largest.innerHTML.toLowerCase();
             right_comp = arr_right.innerHTML.toLowerCase();
         } else {
