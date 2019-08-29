@@ -32,10 +32,42 @@ def create_app(test_config=None):
 
     from flaskr.model import db
     db.init_app(app)
-    db.create_all(app)
+    db.create_all(app=app)
 
     from . import compare_locations
     app.register_blueprint(compare_locations.bp)
     app.add_url_rule('/', endpoint='index')
 
     return app
+
+
+def get_data_for_location_name(data, location_name):
+    from logging import getLogger
+    from sqlalchemy import desc
+    from .model import db  # , RentalData, DistanceMatrixData, Scores
+
+    logger = getLogger()
+    try:
+        result = db.session.query(data).filter(location_name == data.location_name).\
+            order_by(desc(data.datetime)).first()
+        return result
+    except NameError:
+        logger.warning(f'Invalid data type: {repr(data)}')
+        return None
+
+
+def get_data_max(data, column):
+    from logging import getLogger
+    from sqlalchemy import desc
+    from sqlalchemy.sql.expression import func
+    from .model import db  # , RentalData, DistanceMatrixData, Scores
+
+    logger = getLogger()
+    try:
+        # result = db.session.query(data).order_by(desc(column)).first()
+        result = float(db.session.query(func.max(column)).scalar())
+        return result
+    except NameError:
+        logger.warning(f"Invalid data type or column name: {repr(column)}")
+        return None
+

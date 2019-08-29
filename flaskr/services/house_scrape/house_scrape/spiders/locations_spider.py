@@ -1,6 +1,8 @@
 import logging
-import scrapy
 import re
+
+from scrapy import Spider
+from scrapy.exceptions import DropItem
 
 
 def strip_commas(string):
@@ -22,7 +24,7 @@ def catch_and_zero(response, css, regex=None):
         return 0
 
 
-class LocationsSpider(scrapy.Spider):
+class LocationsSpider(Spider):
     name = "locations"
     start_urls = [
             'https://www.home.co.uk/for_rent/current_rents_by_town.htm'
@@ -30,16 +32,17 @@ class LocationsSpider(scrapy.Spider):
 
     def parse(self, response):
         logger = logging.getLogger()
-        if 'Market Rents' in response.css('title::text').get():
+        title = response.css('title::text').get()
+        if 'Market Rents' in title:
             for li in response.css('li a::attr(href)').getall():
                 yield response.follow(li, callback=self.parse)
-        elif 'Market Rent Summary' in response.css('title::text').get():
+        elif 'Market Rent Summary' in title:
             current_location = response.css('title::text').re(
                 '(?!Home\\.co\\.uk:)[A-Za-z\\- ]*(?=Market Rent Summary)')[0].strip()
             logger.info(f'Crawling {current_location}')
-            if current_location is not None and current_location.len > 0:
+            if current_location is not None and len(current_location) > 0:
                 yield {
-                    'location_name': current_location,
+                    'name': current_location,
                     'total_properties': strip_commas(catch_and_zero(
                         response, 'div:nth-child(3) tr:nth-child(1) td:nth-child(2)::text')),
                     'average_rent': strip_commas(catch_and_zero(
@@ -50,10 +53,9 @@ class LocationsSpider(scrapy.Spider):
                     'rent_250_to_500': strip_commas(catch_and_zero(
                         response, 'div:nth-child(6) tr:nth-child(3) td:nth-child(2)::text')),
                 }
-        elif 'Website Error' in response.css('title::text').get():
-            logger.warning('Website error detected.')
-        page = response.url.split("/")[-2]
-        filename = 'Location Files/locations-%s.html' % page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)
+            else:
+                raise DropItem(f"Invalid name: '{current_location}'")
+        elif 'Website Error' in title:
+            raise DropItem(f"Website error detected. Page title: '{title}'")
+        else:
+            raise DropItem(f"Invalid page title: '{title}'")
