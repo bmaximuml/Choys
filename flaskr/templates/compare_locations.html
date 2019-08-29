@@ -1,0 +1,24 @@
+{% extends 'default.html' %}
+
+{% block header %}
+    <h1>{% block title %}Compare Locations{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+               <th>Location</th>
+               <th>Total Properties</th>
+               <th>Average Rent (pcm) / &#163</th>
+               <th>Number of properties under &#163 250 pcm</th>
+               <th>Number of properties between &#163 250 and &#500 pcm</th>
+        </tr>
+        {% for row in json_locations %}
+            <tr>
+                {% for cell in row.values() %}
+                    <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
