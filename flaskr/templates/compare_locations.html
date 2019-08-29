@@ -5,20 +5,22 @@
 {% endblock %}
 
 {% block content %}
-    <table>
+    <table id='compare_table'>
         <tr>
-               <th>Location</th>
-               <th>Total Properties</th>
-               <th>Average Rent (pcm) / &#163</th>
-               <th>Number of properties under &#163 250 pcm</th>
-               <th>Number of properties between &#163 250 and &#500 pcm</th>
+            <th><button id='location_name_btn' class='sort_btn' onclick="sortTable(0)">Location</button></th>
+            <th><button id='total_properties_btn' class='sort_btn' onclick="sortTable(1)">Number of Properties</button></th>
+            <th><button id='average_rent_btn' class='sort_btn' onclick="sortTable(2)">Average Rent (&#163; / pcm)</button></th>
+            <th><button id='rent_under_250_btn' class='sort_btn' onclick="sortTable(3)">Number of properties under &#163;250 pcm</button></th>
+            <th><button id='rent_250_to_500_btn' class='sort_btn' onclick="sortTable(4)">Number of properties between &#163;250 and &#163;500 pcm</button></th>
         </tr>
-        {% for row in json_locations %}
-            <tr>
-                {% for cell in row.values() %}
-                    <td>{{ cell }}</td>
-                {% endfor %}
-            </tr>
+        {% for row in location_array|sort(attribute='average_rent', reverse=False) %}
+            {% if row.total_properties > 0 %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endif %}
         {% endfor %}
     </table>
 {% endblock %}
