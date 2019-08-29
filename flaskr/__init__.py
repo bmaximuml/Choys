@@ -46,7 +46,10 @@ def create_app(test_config=None):
         from .services import run_google_maps_distance_matrix
         run_google_maps_distance_matrix()
         return 'Running...'
-    db.init_app(app)
+
+    from .model import db
+
+    db.init_app(app=app)
     db.create_all(app=app)
 
     from . import compare_locations
