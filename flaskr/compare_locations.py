@@ -1,31 +1,24 @@
-import json
-
 from flask import (
     Blueprint, render_template
 )
 
-# from db import get_db
+from flaskr.model import Locations
 
 bp = Blueprint('compare_locations', __name__)
 
 
 @bp.route('/')
 def index():
-    # db = get_db()
-    # data = db.execute(
-    #     'SELECT id, name, total_properties, average_rent, rent_under_250, rent_250_to_500 '
-    #     'FROM location ORDER by average_rent ASC'
-    # ).fetchall()
-    with open('/home/benji/Documents/HouseScrape/house_scrape/Location Files/locations10.json') as f:
-        location_list = []
-        json_locations = json.loads(f.read())
-        for row in json_locations:
-            location_list.append(Location(
-                row.get('location_name'),
-                row.get('total_properties'),
-                row.get('average_rent'),
-                row.get('rent_under_250'),
-                row.get('rent_250_to_500')))
+    location_list = []
+    all_orm_locations = Locations.query.filter_by(newest=True)
+    for location in all_orm_locations:
+        location_list.append(Location(
+            location.location_name,
+            location.total_properties,
+            location.average_rent,
+            location.rent_250_to_500,
+            location.rent_250_to_500
+        ))
 
     return render_template('compare_locations.html', location_array=location_list)
 

@@ -8,7 +8,8 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        SQLALCHEMY_DATABASE_URI='postgresql:///locations',
+        SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
 
     if test_config is None:
@@ -29,8 +30,9 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    from . import db
+    from flaskr.model import db
     db.init_app(app)
+    db.create_all(app)
 
     from . import compare_locations
     app.register_blueprint(compare_locations.bp)
