@@ -9,7 +9,13 @@ setup(
     install_requires=[
         'flask',
         'psycopg2',
-        'flask_sqlalchemy'
+        'flask_sqlalchemy',
+        'scrapy',
+        'requests',
+        'Twisted==18.9.0',
+        'SQLAlchemy',
+        'requests',
+        'datetime'
     ],
 
     # metadata to display on PyPI
