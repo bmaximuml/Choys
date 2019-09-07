@@ -21,8 +21,7 @@ def test_delete(db_session):
     check_loc = db_session.query(Location).filter_by(name='Wadhurst').first()
     if check_loc is not None:
         db_session.delete(check_loc)
-        db_session.flush()
-        # db_session.commit()
+        db_session.commit()
         check_loc = db_session.query(Location).filter_by(name='Wadhurst').first()
         assert check_loc is None
     else:
