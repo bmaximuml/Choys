@@ -3,10 +3,9 @@
 import pytest
 
 from flask_sqlalchemy import SQLAlchemy
+from os import environ
 
 from HouseScrape.flaskr import create_app
-
-TEST_DATABASE_URI = 'postgresql:///locations'
 
 
 @pytest.fixture(scope='session')
@@ -14,7 +13,7 @@ def app(request):
     """Session-wide test `Flask` application."""
     settings_override = {
         'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': TEST_DATABASE_URI
+        'SQLALCHEMY_DATABASE_URI': environ['TEST_DATABASE_URL']
     }
 
     app = create_app(settings_override)

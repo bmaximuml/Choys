@@ -10,8 +10,6 @@ from HouseScrape.flaskr import create_app
 
 pytest_plugins = ['pytester']
 
-TEST_DATABASE_URI = 'postgresql:///locations'
-
 
 @pytest.fixture
 def db_testdir(conftest, testdir):
@@ -41,7 +39,7 @@ def app(request):
     """Session-wide test `Flask` application."""
     settings_override = {
         'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': TEST_DATABASE_URI
+        'SQLALCHEMY_DATABASE_URI': os.environ['TEST_DATABASE_URL']
     }
 
     app = create_app(settings_override)
