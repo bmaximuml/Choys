@@ -56,7 +56,7 @@ before_script:
   - psql travis_ci_test < tests/data.sql
 
 script:
-- python -m unittest discover -p 'test*.py' -v
+  - pytest -v
 
 notifications:
   email:
