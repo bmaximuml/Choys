@@ -1,5 +1,6 @@
 import os
 import pytest
+import tempfile
 
 # This import prevents SQLAlchemy from throwing an AttributeError
 # claiming that <class 'object'> is already a registered type -- it is suspicious
@@ -85,3 +86,17 @@ def session(db, request):
 
     request.addfinalizer(teardown)
     return session
+
+
+@pytest.fixture
+def client(app):
+    db_fd, app.config['DATABASE'] = tempfile.mkstemp()
+    app.config['TESTING'] = True
+
+    with app.test_client() as client:
+        # with app.app_context():
+        #     flaskr.init_db()
+        yield client
+
+    os.close(db_fd)
+    os.unlink(app.config['DATABASE'])
