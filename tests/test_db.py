@@ -1,4 +1,4 @@
-from ..flaskr.model import Location
+from HouseScrape.flaskr.model import Location
 
 
 def test_insert(db_session):
