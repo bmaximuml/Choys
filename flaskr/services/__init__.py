@@ -22,9 +22,12 @@ def run_house_scrape():
     print('Finished crawling')
 
 
-def run_google_maps_distance_matrix():
+def run_google_maps_distance_matrix(limit=None):
     logger = getLogger()
-    all_locations = Location.query.all()
+    if limit is None:
+        all_locations = Location.query.all()
+    else:
+        all_locations = Location.query.limit(limit).all()
     for location in all_locations:
         distance_duration = get_distance_matrix(location.name, 'London')
         if distance_duration[0] is not None and distance_duration[1] is not None:
