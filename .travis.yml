@@ -44,7 +44,7 @@ before_script:
   - psql travis_ci_test < tests/data.sql
 
 script:
-  - pytest -v -n 4
+  - pytest -v -n 2
 
 notifications:
   email:
