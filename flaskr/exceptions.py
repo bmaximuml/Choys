@@ -21,3 +21,12 @@ class RequestError(DistanceMatrixAPIError):
 
     def __str__(self):
         return repr(self.value) + ': ' + self.status_code
+
+
+class NoResultsError(DistanceMatrixAPIError):
+    def __init__(self, value, status_code):
+        self.status_code = status_code
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value) + ': ' + self.status_code

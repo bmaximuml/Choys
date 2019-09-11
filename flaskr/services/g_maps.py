@@ -1,21 +1,11 @@
 from datetime import datetime, timedelta
-from logging import getLogger
 from os import environ
 from requests import get
 
-from ..exceptions import InvalidModeError, RequestError
-
-
-def get_duration(start, dest, mode='transit', language='en-GB', region='uk', units='metric'):
-    return get_distance_matrix(start, dest, mode, language, region, units)[0]
-
-
-def get_distance(start, dest, mode='transit', language='en-GB', region='uk', units='metric'):
-    return get_distance_matrix(start, dest, mode, language, region, units)[1]
+from ..exceptions import InvalidModeError, NoResultsError, RequestError
 
 
 def get_distance_matrix(start, dest, mode='transit', language='en-GB', region='uk', units='metric'):
-    logger = getLogger()
     if mode not in ['driving', 'walking', 'bicycling', 'transit']:
         raise InvalidModeError(f'Invalid mode: {str(mode)}')
 
@@ -47,7 +37,6 @@ def get_distance_matrix(start, dest, mode='transit', language='en-GB', region='u
             distance = r_json['rows'][0]['elements'][0]['distance']
             return duration, distance
         else:
-            logger.warning(f'Could not find distance for {start}. Status: {element_status}')
-            return None, None
+            raise NoResultsError(f'Could not find distance for {start}', element_status)
     else:
         raise RequestError('Google Maps Distance Matrix request returned an error.', r_json['status'])
