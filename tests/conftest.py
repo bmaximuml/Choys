@@ -14,10 +14,8 @@ pytest_plugins = ['pytester']
 
 @pytest.fixture
 def db_testdir(conftest, testdir):
-    '''
-    Set up a temporary test directory loaded with the configuration file for
-    the tests.
-    '''
+    """Set up a temporary test directory loaded with the configuration file for
+    the tests."""
     testdir.makeconftest(conftest)
 
     return testdir
@@ -25,10 +23,8 @@ def db_testdir(conftest, testdir):
 
 @pytest.fixture(scope='module')
 def conftest():
-    '''
-    Load configuration file for the tests to a string, in order to run it in
-    its own temporary directory.
-    '''
+    """Load configuration file for the tests to a string, in order to run it in
+    its own temporary directory."""
     with open(os.path.join('tests', '_conftest.py'), 'r') as conf:
         conftest = conf.read()
 

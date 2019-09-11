@@ -63,9 +63,8 @@ def session(db, request):
 
 @pytest.fixture(scope='module')
 def person(request, _db):
-    '''
-    Create a table to use for updating in the process of testing direct database access.
-    '''
+    """Create a table to use for updating in the process of testing direct
+    database access."""
     class Person(_db.Model):
         __tablename__ = 'person'
         id = _db.Column(_db.Integer, primary_key=True)
@@ -83,9 +82,7 @@ def person(request, _db):
 
 @pytest.fixture(scope='module')
 def account_address(request, _db, person):
-    '''
-    Create tables to use for testing deletes and relationships.
-    '''
+    """Create tables to use for testing deletes and relationships."""
     class Account(_db.Model):
         __tablename__ = 'account'
 

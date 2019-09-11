@@ -1,7 +1,6 @@
 import logging
 
 from flask import Blueprint, render_template
-from sqlalchemy import desc
 
 from . import get_data_for_location_name
 from .model import db, Location, RentalData, DistanceMatrixData, Scores
@@ -13,32 +12,40 @@ bp = Blueprint('compare_locations', __name__)
 def index():
     logger = logging.getLogger()
     location_list = []
-    # all_orm_locations = db.session.query(Location, RentalData, DistanceMatrixData, Scores).\
-    #     filter(Location.id == RentalData.location_id).\
-    #     filter(Location.id == DistanceMatrixData.location_id).\
-    #     filter(Location.id == Scores.location_id).all()
-
     all_locations = db.session.query(Location).all()
+
     for loc in all_locations:
         rental_data = get_data_for_location_name(RentalData, loc.name)
-        distance_matrix_data = get_data_for_location_name(DistanceMatrixData, loc.name)
+        distance_matrix_data = get_data_for_location_name(DistanceMatrixData,
+                                                          loc.name)
         scores = get_data_for_location_name(Scores, loc.name)
-        # if distance_matrix_data is not None and \
-                # distance_matrix_data.duration_to_london <= 16200 and \
-                # rental_data is not None and \
-                # rental_data.total_properties >= 10 and \
-                # rental_data.average_rent <= 450:
+
+        distance_to_london_text = distance_matrix_data.distance_to_london_text
+        duration_to_london_text = distance_matrix_data.duration_to_london_text
+
         if distance_matrix_data is not None and rental_data is not None:
             location_list.append(Row(
                 name=loc.name,
-                total_properties=(rental_data.total_properties if rental_data is not None else None),
-                average_rent=(rental_data.average_rent if rental_data is not None else None),
-                rent_under_250=(rental_data.rent_under_250 if rental_data is not None else None),
-                rent_250_to_500=(rental_data.rent_250_to_500 if rental_data is not None else None),
-                distance_to_london=(distance_matrix_data.distance_to_london if distance_matrix_data is not None else None),
-                duration_to_london=(distance_matrix_data.duration_to_london if distance_matrix_data is not None else None),
-                distance_to_london_text=(distance_matrix_data.distance_to_london_text if distance_matrix_data is not None else None),
-                duration_to_london_text=(distance_matrix_data.duration_to_london_text if distance_matrix_data is not None else None),
+                total_properties=(rental_data.total_properties
+                                  if rental_data is not None else None),
+                average_rent=(rental_data.average_rent
+                              if rental_data is not None else None),
+                rent_under_250=(rental_data.rent_under_250
+                                if rental_data is not None else None),
+                rent_250_to_500=(rental_data.rent_250_to_500
+                                 if rental_data is not None else None),
+                distance_to_london=(distance_matrix_data.distance_to_london
+                                    if distance_matrix_data is not None
+                                    else None),
+                duration_to_london=(distance_matrix_data.duration_to_london
+                                    if distance_matrix_data is not None
+                                    else None),
+                distance_to_london_text=(distance_to_london_text
+                                         if distance_matrix_data is not None
+                                         else None),
+                duration_to_london_text=(duration_to_london_text
+                                         if distance_matrix_data is not None
+                                         else None),
                 score=(scores.score if scores is not None else None)
             ))
 
@@ -47,9 +54,18 @@ def index():
 
 
 class Row:
-    def __init__(self, name, total_properties=0, average_rent=None, rent_under_250=0, rent_250_to_500=0,
-                 distance_to_london=None, duration_to_london=None, distance_to_london_text=None,
-                 duration_to_london_text=None, score=None):
+    def __init__(self,
+                 name,
+                 total_properties=0,
+                 average_rent=None,
+                 rent_under_250=0,
+                 rent_250_to_500=0,
+                 distance_to_london=None,
+                 duration_to_london=None,
+                 distance_to_london_text=None,
+                 duration_to_london_text=None,
+                 score=None
+                 ):
         self.name = name
         self.total_properties = total_properties
         self.average_rent = average_rent

@@ -1,3 +1,5 @@
+"""Tests for the configuration of Flask"""
+
 from os import environ
 
 from HouseScrape.flaskr import create_app

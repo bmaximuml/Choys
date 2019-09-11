@@ -1,7 +1,8 @@
 import pytest
 
 from . import location_list
-from HouseScrape.flaskr.exceptions import InvalidModeError, NoResultsError, RequestError
+from HouseScrape.flaskr.exceptions import (InvalidModeError, NoResultsError,
+                                           RequestError)
 from HouseScrape.flaskr.services.g_maps import get_distance_matrix
 
 
@@ -35,7 +36,8 @@ def test_get_distance_matrix_valid(start, dest, mode, language, region, units):
 @pytest.mark.parametrize('language', ['en-GB'])
 @pytest.mark.parametrize('region', ['uk'])
 @pytest.mark.parametrize('units', ['metric', 'imperial'])
-def test_get_distance_matrix_invalid_mode(start, dest, mode, language, region, units):
+def test_get_distance_matrix_invalid_mode(start, dest, mode, language, region,
+                                          units):
     with pytest.raises(InvalidModeError):
         get_distance_matrix(start, dest, mode, language, region, units)
 
@@ -46,6 +48,7 @@ def test_get_distance_matrix_invalid_mode(start, dest, mode, language, region, u
 @pytest.mark.parametrize('language', ['en-GB'])
 @pytest.mark.parametrize('region', ['uk'])
 @pytest.mark.parametrize('units', ['metric', 'imperial'])
-def test_get_distance_matrix_invalid_mode(start, dest, mode, language, region, units):
+def test_get_distance_matrix_invalid_mode(start, dest, mode, language, region,
+                                          units):
     with pytest.raises(NoResultsError):
         get_distance_matrix(start, dest, mode, language, region, units)

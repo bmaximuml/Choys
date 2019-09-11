@@ -67,8 +67,9 @@ def get_data_for_location_name(data, location_name):
 
     logger = getLogger()
     try:
-        result = db.session.query(data).filter(location_name == data.location_name).\
-            order_by(desc(data.datetime)).first()
+        result = db.session.query(data).filter(
+            location_name == data.location_name
+        ).order_by(desc(data.datetime)).first()
         return result
     except NameError:
         logger.warning(f'Invalid data type: {repr(data)}')
@@ -77,13 +78,11 @@ def get_data_for_location_name(data, location_name):
 
 def get_data_max(data, column):
     from logging import getLogger
-    from sqlalchemy import desc
     from sqlalchemy.sql.expression import func
-    from .model import db  # , RentalData, DistanceMatrixData, Scores
+    from .model import db
 
     logger = getLogger()
     try:
-        # result = db.session.query(data).order_by(desc(column)).first()
         result = float(db.session.query(func.max(column)).scalar())
         return result
     except NameError:
