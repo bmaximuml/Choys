@@ -9,42 +9,6 @@ from logging import getLogger
 from datetime import datetime
 from scrapy.exceptions import DropItem
 
-"""
-from house_scrape import Session, Locations
-
-
-class HouseScrapePipeline(object):
-    def open_spider(self, spider):
-        self.session = Session()
-
-    def close_spider(self, spider):
-        self.session.close()
-
-
-    def process_item(self, item, spider):
-        logger = logging.getLogger()
-        previous = self.session.query(Locations).filter(Locations.newest is True).all()
-        for row in previous:
-            row.newest = False
-
-        if item.get('location_name') and item.get('average_rent'):
-            self.session.add(Locations(
-                location_name=item['location_name'],
-                total_properties=item['total_properties'],
-                average_rent=item['average_rent'],
-                rent_under_250=item['rent_under_250'],
-                rent_250_to_500=item['rent_250_to_500'],
-                newest=True
-            ))
-            self.session.commit()
-            logger.info(f"Inserted {item['name']} into database")
-            # print(f"Inserted {item['location_name']} into database")
-        else:
-            raise DropItem("No location_name or average_rent")
-        return item
-"""
-
-
 from HouseScrape.flaskr.model import db, Location, RentalData
 
 

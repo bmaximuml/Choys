@@ -1,11 +1,9 @@
-import os
+"""Tests for the database configuration set up for testing"""
 
 
 def test_use_db_session_to_alter_database(db_testdir):
-    '''
-    Test that creating objects and emitting SQL in the ORM won't bleed into
-    other tests.
-    '''
+    """Test that creating objects and emitting SQL in the ORM won't bleed into
+    other tests."""
     # Load tests from file
     db_testdir.makepyfile("""
         def test_use_db_session_to_alter_database(person, db_engine, db_session):
@@ -46,9 +44,7 @@ def test_use_db_session_to_alter_database(db_testdir):
 
 
 def test_use_db_engine_to_alter_database(db_testdir):
-    '''
-    Use the `db_engine` fixture to alter the database directly.
-    '''
+    """Use the `db_engine` fixture to alter the database directly."""
     db_testdir.makepyfile("""
         def test_use_db_engine_to_alter_database(person, db_engine, db_session):
 
@@ -81,10 +77,9 @@ def test_use_db_engine_to_alter_database(db_testdir):
 
 
 def test_raise_programmingerror_rolls_back_transaction(db_testdir):
-    '''
-    Make sure that when a ProgrammingError gets raised and handled, the
-    connection will continue to be useable.
-    '''
+    """Make sure that when a ProgrammingError gets raised and handled, the
+    connection will continue to be useable."""
+
     db_testdir.makepyfile("""
         import pytest
         import sqlalchemy as sa
@@ -135,10 +130,8 @@ def test_raise_programmingerror_rolls_back_transaction(db_testdir):
 
 
 def test_transaction_commit(db_testdir):
-    '''
-    Make some changes directly using the Transaction object and confirm that
-    they appear.
-    '''
+    """Make some changes directly using the Transaction object and confirm that
+    they appear."""
     db_testdir.makepyfile("""
         def test_transaction_commit(person, db_engine, db_session):
 
@@ -168,11 +161,9 @@ def test_transaction_commit(db_testdir):
 
 
 def test_transaction_rollback(db_testdir):
-    '''
-    Attempt to roll back the active transaction and then alter the database. When not
-    handled properly, this can have the effect of causing changes to persist
-    across tests.
-    '''
+    """Attempt to roll back the active transaction and then alter the database.
+    When not handled properly, this can have the effect of causing changes to
+    persist across tests."""
     db_testdir.makepyfile("""
         import sqlalchemy as sa
 
@@ -209,10 +200,8 @@ def test_transaction_rollback(db_testdir):
 
 
 def test_drop_table(db_testdir):
-    '''
-    Make sure that we can drop tables and verify they do not exist in the context
-    of a test.
-    '''
+    """Make sure that we can drop tables and verify they do not exist in the
+    context of a test."""
     db_testdir.makepyfile("""
         def test_drop_table(person, db_engine):
 
@@ -248,9 +237,8 @@ def test_drop_table(db_testdir):
 
 
 def test_use_raw_connection_to_alter_database(db_testdir):
-    '''
-    Retrieve a raw DBAPI connection and use it to make changes to the database.
-    '''
+    """Retrieve a raw DBAPI connection and use it to make changes to the
+    database."""
     db_testdir.makepyfile("""
         def test_use_raw_connection_to_alter_database(person, db_engine, db_session):
 
@@ -297,13 +285,11 @@ def test_use_raw_connection_to_alter_database(db_testdir):
 
 
 def test_commit_works_with_deleted_dependent(db_testdir):
-    '''
-    Make sure a commit still works with a dangling reference to a
+    """Make sure a commit still works with a dangling reference to a
     deleted instance.
 
     Exercise one way to trigger the issue reported in
-    https://github.com/jeancochrane/pytest-flask-sqlalchemy/issues/5
-    '''
+    https://github.com/jeancochrane/pytest-flask-sqlalchemy/issues/5"""
     db_testdir.makepyfile("""
         def test_delete_message(account_address, db_session):
             account, address = account_address

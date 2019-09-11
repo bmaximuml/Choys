@@ -1,8 +1,6 @@
 def test_mocked_engines(db_testdir):
-    '''
-    Test that we can specify paths to specific Engine objects that the plugin
-    will mock.
-    '''
+    """Test that we can specify paths to specific Engine objects that the
+    plugin will mock."""
     db_testdir.makeini("""
         [pytest]
         mocked-engines=collections.namedtuple collections.deque
@@ -20,10 +18,8 @@ def test_mocked_engines(db_testdir):
 
 
 def test_mocked_sessions(db_testdir):
-    '''
-    Test that we can specify paths to specific Session objects that the plugin
-    will mock.
-    '''
+    """Test that we can specify paths to specific Session objects that the
+    plugin will mock."""
     db_testdir.makeini("""
         [pytest]
         mocked-sessions=collections.namedtuple collections.Counter
@@ -41,10 +37,9 @@ def test_mocked_sessions(db_testdir):
 
 
 def test_mocked_sessionmakers(db_testdir):
-    '''
-    Test that we can specify paths to specific Sessionmaker objects that the plugin
-    will mock.
-    '''
+    """Test that we can specify paths to specific Sessionmaker objects that the
+    plugin will mock."""
+
     db_testdir.makeini("""
         [pytest]
         mocked-sessionmakers=collections.namedtuple collections.Counter
@@ -62,10 +57,9 @@ def test_mocked_sessionmakers(db_testdir):
 
 
 def test_missing_db_fixture(testdir):
-    '''
-    Test that in the case where the user neglects to define a _db fixture, any
-    tests requiring transactional context will raise an error.
-    '''
+    """Test that in the case where the user neglects to define a _db fixture,
+     any tests requiring transactional context will raise an error."""
+
     # Create a conftest file that is missing a _db fixture but is otherwise
     # valid for a Flask-SQLAlchemy test suite
     conftest = """

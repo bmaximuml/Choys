@@ -1,3 +1,5 @@
+"""Tests for Scrapy and its spiders"""
+
 import pytest
 
 from scrapy.http import HtmlResponse
@@ -5,8 +7,6 @@ from scrapy.http import HtmlResponse
 from . import location_list
 from HouseScrape.flaskr.services.house_scrape.house_scrape.spiders.\
       locations_spider import strip_commas, catch_and_zero
-
-
 
 
 @pytest.mark.parametrize(
@@ -38,6 +38,7 @@ from HouseScrape.flaskr.services.house_scrape.house_scrape.spiders.\
     ]
 )
 def test_strip_commas_valid(test_input, expected):
+    """Test the strip_commas function with valid inputs"""
     assert strip_commas(test_input) == expected
 
 
@@ -62,6 +63,7 @@ def test_strip_commas_valid(test_input, expected):
     ]
 )
 def test_strip_commas_invalid(test_input):
+    """Test the strip_commas function with invalid inputs"""
     with pytest.raises(ValueError):
         strip_commas(test_input)
 
@@ -177,6 +179,7 @@ def test_strip_commas_invalid(test_input):
     ))
 )
 def test_catch_and_zero_total_properties(test_file, expected):
+    """Test the catch_and_zero function with using total_properties data"""
     with open(f'tests/services/html/{test_file}') as f:
         html = f.read()
         result = catch_and_zero(
@@ -297,6 +300,7 @@ def test_catch_and_zero_total_properties(test_file, expected):
     ))
 )
 def test_catch_and_zero_average_rent(test_file, expected):
+    """Test the catch_and_zero function with using average_rent data"""
     with open(f'tests/services/html/{test_file}') as f:
         html = f.read()
         result = catch_and_zero(
@@ -418,6 +422,7 @@ def test_catch_and_zero_average_rent(test_file, expected):
     ))
 )
 def test_catch_and_zero_rent_under_250(test_file, expected):
+    """Test the catch_and_zero function with using rent_under_250 data"""
     with open(f'tests/services/html/{test_file}') as f:
         html = f.read()
         result = catch_and_zero(
@@ -538,6 +543,7 @@ def test_catch_and_zero_rent_under_250(test_file, expected):
     ))
 )
 def test_catch_and_zero_rent_250_to_500(test_file, expected):
+    """Test the catch_and_zero function with using rent_250_to_500 data"""
     with open(f'tests/services/html/{test_file}') as f:
         html = f.read()
         result = catch_and_zero(
