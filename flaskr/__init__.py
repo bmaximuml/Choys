@@ -33,11 +33,12 @@ def create_app(test_config=None):
     # a test page to confirm the google distance matrix functions work
     @app.route('/gmapi')
     def gmapi():
-        from .services.g_maps import get_distance, get_duration
-        result = os.environ['GMAPI'] + str(get_distance('Albrighton', 'London')) + \
-                                      str(get_duration('Albrighton', 'London')) + \
-                                    str(int(get_distance('Albrighton', 'London'))) + \
-                                    str(int(get_duration('Albrighton', 'London')))
+        from .services.g_maps import get_distance_matrix
+        distance_duration = get_distance_matrix('Albrighton', 'London')
+        result = (os.environ['GMAPI'] + str(distance_duration[0])
+                                      + str(distance_duration[1])
+                                      + str(int(distance_duration[0]))
+                                      + str(int(distance_duration[1])))
         return result
 
     # a page to trigger a run of the google maps distance matrix api

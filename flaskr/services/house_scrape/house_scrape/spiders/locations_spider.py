@@ -6,8 +6,18 @@ from scrapy.exceptions import DropItem
 
 
 def strip_commas(string):
-    """Strips commas from a given string and returns an int"""
-    return int(re.sub(',', '', str(string)))
+    """Strips commas from a given string and returns a float rounded to 2dp"""
+    if type(string) == bool:
+        raise ValueError('String expected, received boolean')
+    if len(str(string)) == 0:
+        raise ValueError('Empty string supplied')
+    just_commas = True
+    for char in str(string):
+        if char != ',':
+            just_commas = False
+    if just_commas:
+        raise ValueError('String contained only commas')
+    return round(float(re.sub(',', '', str(string))), 2)
 
 
 def catch_and_zero(response, css, regex=None):
@@ -21,7 +31,7 @@ def catch_and_zero(response, css, regex=None):
             result = response.css(css).re(regex).pop(0)
         return result
     except IndexError:
-        return 0
+        return '0'
 
 
 class LocationsSpider(Spider):
@@ -43,15 +53,15 @@ class LocationsSpider(Spider):
             if current_location is not None and len(current_location) > 0:
                 yield {
                     'name': current_location,
-                    'total_properties': strip_commas(catch_and_zero(
-                        response, 'div:nth-child(3) tr:nth-child(1) td:nth-child(2)::text')),
+                    'total_properties': int(strip_commas(catch_and_zero(
+                        response, 'div:nth-child(3) tr:nth-child(1) td:nth-child(2)::text'))),
                     'average_rent': strip_commas(catch_and_zero(
                         response, 'div:nth-child(3) tr:nth-child(3) td:nth-child(2)::text',
                         '(?!£)\\d{1,3}(?:[,\\.]\\d{3})*(?= pcm)')),
-                    'rent_under_250': strip_commas(catch_and_zero(
-                        response, 'div:nth-child(6) tr:nth-child(2) td:nth-child(2)::text')),
-                    'rent_250_to_500': strip_commas(catch_and_zero(
-                        response, 'div:nth-child(6) tr:nth-child(3) td:nth-child(2)::text')),
+                    'rent_under_250': int(strip_commas(catch_and_zero(
+                        response, 'div:nth-child(6) tr:nth-child(2) td:nth-child(2)::text'))),
+                    'rent_250_to_500': int(strip_commas(catch_and_zero(
+                        response, 'div:nth-child(6) tr:nth-child(3) td:nth-child(2)::text'))),
                 }
             else:
                 raise DropItem(f"Invalid name: '{current_location}'")

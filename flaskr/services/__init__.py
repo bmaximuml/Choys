@@ -6,6 +6,7 @@ from logging import getLogger
 
 from .. import get_data_for_location_name, get_data_max
 from ..model import db, Location, RentalData, DistanceMatrixData, Scores
+from ..exceptions import NoResultsError
 from .house_scrape.house_scrape.spiders.locations_spider import LocationsSpider
 from .g_maps import get_distance_matrix
 
@@ -29,8 +30,11 @@ def run_google_maps_distance_matrix(limit=None):
     else:
         all_locations = Location.query.limit(limit).all()
     for location in all_locations:
-        distance_duration = get_distance_matrix(location.name, 'London')
-        if distance_duration[0] is not None and distance_duration[1] is not None:
+        try:
+            distance_duration = get_distance_matrix(location.name, 'London')
+        except NoResultsError:
+            distance_duration = None
+        if distance_duration is not None:
             db.session.add(DistanceMatrixData(
                 distance_to_london=distance_duration[1]['value'],
                 distance_to_london_text=distance_duration[1]['text'],

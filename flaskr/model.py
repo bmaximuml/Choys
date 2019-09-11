@@ -17,7 +17,7 @@ class Location(db.Model):
 class RentalData(db.Model):
     __tablename__ = 'rental_data'
     total_properties = db.Column(db.Integer, nullable=False, default=0)
-    average_rent = db.Column(db.Integer, nullable=True)
+    average_rent = db.Column(db.Float, nullable=True)
     rent_under_250 = db.Column(db.Integer, nullable=False, default=0)
     rent_250_to_500 = db.Column(db.Integer, nullable=False, default=0)
     datetime = db.Column(db.DateTime, default=datetime.utcnow(), primary_key=True)
