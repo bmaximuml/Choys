@@ -50,7 +50,7 @@ def index():
             ))
 
     logger.info(f'Total Locations: {len(all_locations)}')
-    return render_template('compare_locations.html', location_array=location_list)
+    return render_template('compare_locations.html', location_array=location_list, year=date.today().year)
 
 
 class Row:

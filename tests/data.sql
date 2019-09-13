@@ -10174,4 +10174,3 @@ ALTER TABLE ONLY public.scores
 --
 -- PostgreSQL database dump complete
 --
-
