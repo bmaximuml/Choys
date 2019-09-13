@@ -33,11 +33,12 @@ def create_app(test_config=None):
     # a test page to confirm the google distance matrix functions work
     @app.route('/gmapi')
     def gmapi():
-        from .services.g_maps import get_distance, get_duration
-        result = os.environ['GMAPI'] + str(get_distance('Albrighton', 'London')) + \
-                                      str(get_duration('Albrighton', 'London')) + \
-                                    str(int(get_distance('Albrighton', 'London'))) + \
-                                    str(int(get_duration('Albrighton', 'London')))
+        from .services.g_maps import get_distance_matrix
+        distance_duration = get_distance_matrix('Albrighton', 'London')
+        result = (os.environ['GMAPI'] + str(distance_duration[0])
+                                      + str(distance_duration[1])
+                                      + str(int(distance_duration[0]))
+                                      + str(int(distance_duration[1])))
         return result
 
     # a page to trigger a run of the google maps distance matrix api
@@ -46,7 +47,10 @@ def create_app(test_config=None):
         from .services import run_google_maps_distance_matrix
         run_google_maps_distance_matrix()
         return 'Running...'
-    db.init_app(app)
+
+    from .model import db
+
+    db.init_app(app=app)
     db.create_all(app=app)
 
     from . import compare_locations
@@ -63,8 +67,9 @@ def get_data_for_location_name(data, location_name):
 
     logger = getLogger()
     try:
-        result = db.session.query(data).filter(location_name == data.location_name).\
-            order_by(desc(data.datetime)).first()
+        result = db.session.query(data).filter(
+            location_name == data.location_name
+        ).order_by(desc(data.datetime)).first()
         return result
     except NameError:
         logger.warning(f'Invalid data type: {repr(data)}')
@@ -73,13 +78,11 @@ def get_data_for_location_name(data, location_name):
 
 def get_data_max(data, column):
     from logging import getLogger
-    from sqlalchemy import desc
     from sqlalchemy.sql.expression import func
-    from .model import db  # , RentalData, DistanceMatrixData, Scores
+    from .model import db
 
     logger = getLogger()
     try:
-        # result = db.session.query(data).order_by(desc(column)).first()
         result = float(db.session.query(func.max(column)).scalar())
         return result
     except NameError:

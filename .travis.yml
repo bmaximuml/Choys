@@ -3,19 +3,9 @@ language: python
 matrix:
   include:
     - dist: trusty
-      python: 2.7
-      env: dist="14.04 LTS trusty"
-    - dist: trusty
       python: 3.6
       env: dist="14.04 LTS trusty"
-    # Python 3.7 not currently supported on trusty
-    # - dist: trusty
-      # python: 3.7
-      # env: dist="14.04 LTS trusty"
 
-    - dist: xenial
-      python: 2.7
-      env: dist="16.04 LTS xenial"
     - dist: xenial
       python: 3.6
       env: dist="16.04 LTS xenial"
@@ -24,20 +14,36 @@ matrix:
       env: dist="16.04 LTS xenial"
 
     - dist: bionic
-      python: 2.7
+      python: 3.6
       env: dist="18.04 LTS bionic"
     - dist: bionic
       python: 3.7
       env: dist="18.04 LTS bionic"
-    - dist: bionic
-      python: 3.6
-      env: dist="18.04 LTS bionic"
+
+env:
+  global:
+  - PGPORT=5432
+  - TEST_DATABASE_URL=postgres:///travis_ci_test
+  - secure: tBil4rjTH9+hEJro6tPAUzEJyVvaCVN06VHyOdHc1Q2N6zimw9a/z9z41uUZK2tj8SDI2B9JAwlqlMETaFgpZefSjXtMQLD0YWTblmQThEsCODBmMdpg7rhDtFi6wlcxu45/y0Anqn6Ic/OwhM6QU+nJEMSoMd4qqgOgtMuu35ZI1vXy5BLI6F4NRmmwQiIvFPEBlyiU1/PO39YJFVaN0kABsudftoOpgvzYSEBUHzNYb8sEPKtIrIvTfCpSF64nQ5b5KA6Irr16xTaF82G00XhY/vTPt8xdVi1brmIXuls58IIV0sVYaJ57FCSMm2LV2eu88+VS5zbxlFF8+sjiq5ssldj4kd/kNGo+oQ2/tRIpftJZpzt8aUFJaFgxcVIUVuQy0hPQASafEoC2cUBQoID/Z9gTKl9cvxnEYMkew7f1IM/yaNGL8Y5g5NitDASnYFMWiLkFqm3OmPyXbmynSBwRvuM3gwzCO1naFFkZYP1gw9LI3rLATRjQbsIH73pmopIAePv7XX+KIvc9nNc0UtquXzoe5J8kwif7bwqGxRQrKgx1Vk8OIgmr1577IQz3XeiEcIES/ZxaeysycX70oXL28/uICzOBBYqNM/2ckzxgo8FFDdashnXdAftw4uAbnuYIDX9kouy2oMqFktF5Vj3TPxblFTCQMsJF4XguVhs=
+
+before_install:
+  - sudo service postgresql stop
+  - sudo apt-get --yes remove postgresql\*
+  - sudo apt-get update; sudo apt-get install -y postgresql-11 postgresql-client-11
+  - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
+  - sudo service postgresql restart 11
 
 install:
   - pip install .
 
+before_script:
+  - export PATH="/usr/lib/postgresql/11/bin:$PATH"
+  - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql travis_ci_test < tests/data.sql
+
 script:
-- python -m unittest discover -p 'test*.py' -v
+  - pytest -v
 
 notifications:
   email:

@@ -19,8 +19,11 @@ def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
 
 BOT_NAME = 'house_scrape'
 
-SPIDER_MODULES = ['HouseScrape.flaskr.services.house_scrape.house_scrape.spiders']
-NEWSPIDER_MODULE = 'HouseScrape.flaskr.services.house_scrape.house_scrape.spiders'
+SPIDER_MODULES = [
+    'HouseScrape.flaskr.services.house_scrape.house_scrape.spiders'
+]
+NEWSPIDER_MODULE = ('HouseScrape.flaskr.services.house_scrape.house_scrape.'
+                    'spiders')
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -75,7 +78,8 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'HouseScrape.flaskr.services.house_scrape.house_scrape.pipelines.HouseScrapePipeline': 300,
+    ('HouseScrape.flaskr.services.house_scrape.house_scrape.pipelines.'
+     'HouseScrapePipeline'): 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

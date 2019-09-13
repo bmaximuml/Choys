@@ -15,10 +15,13 @@ setup(
         'Twisted==18.9.0',
         'SQLAlchemy',
         'requests',
-        'datetime'
+        'datetime',
+        'pytest-flask-sqlalchemy',
+        'pytest_postgresql'
     ],
 
     # metadata to display on PyPI
     author="Benji Levine",
-    author_email="benjilev08@gmail.com"
+    author_email="benji@benjilevine.com",
+    url='https://github.com/benjilev08/HouseScrape'
 )
