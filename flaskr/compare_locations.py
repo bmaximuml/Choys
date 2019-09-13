@@ -1,5 +1,6 @@
 import logging
 
+from datetime import datetime
 from flask import Blueprint, render_template
 
 from . import get_data_for_location_name
@@ -51,7 +52,10 @@ def index():
             ))
 
     logger.info(f'Total Locations: {len(all_locations)}')
-    return render_template('compare_locations.html', location_array=location_list, year=date.today().year)
+    return render_template('compare_locations.html',
+                           location_array=location_list,
+                           year=datetime.now().year
+                           )
 
 
 class Row:
