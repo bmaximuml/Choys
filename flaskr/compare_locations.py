@@ -1,5 +1,6 @@
 import logging
 
+from datetime import datetime
 from flask import Blueprint, render_template
 
 from . import get_data_for_location_name
@@ -20,10 +21,11 @@ def index():
                                                           loc.name)
         scores = get_data_for_location_name(Scores, loc.name)
 
-        distance_to_london_text = distance_matrix_data.distance_to_london_text
-        duration_to_london_text = distance_matrix_data.duration_to_london_text
-
         if distance_matrix_data is not None and rental_data is not None:
+            distance_to_london_text = (distance_matrix_data.
+                                       distance_to_london_text)
+            duration_to_london_text = (distance_matrix_data.
+                                       duration_to_london_text)
             location_list.append(Row(
                 name=loc.name,
                 total_properties=(rental_data.total_properties
@@ -50,7 +52,10 @@ def index():
             ))
 
     logger.info(f'Total Locations: {len(all_locations)}')
-    return render_template('compare_locations.html', location_array=location_list, year=date.today().year)
+    return render_template('compare_locations.html',
+                           location_array=location_list,
+                           year=datetime.now().year
+                           )
 
 
 class Row:

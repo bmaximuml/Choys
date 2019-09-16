@@ -269,6 +269,7 @@ function w3cBubbleSortTable(sort_by) {
   }
 }
 
+document.addEventListener('mousedown', function (e) {
     let target = getTarget(e);
 
     if (target.classList.contains('sort_btn')) {
