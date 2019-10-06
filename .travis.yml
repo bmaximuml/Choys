@@ -32,7 +32,7 @@ before_install:
   - sudo apt-get update; sudo apt-get install -y postgresql-11 postgresql-client-11
   - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
   - sudo service postgresql restart 11
-  - pip install pytest>=5.2.0
+  - pip uninstall pytest && pip install pytest
 
 install:
   - pip install .
