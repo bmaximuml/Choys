@@ -16,61 +16,70 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE IF EXISTS ONLY "public"."scores" DROP CONSTRAINT IF EXISTS "scores_location_name_fkey";
+ALTER TABLE IF EXISTS ONLY "public"."rental_data" DROP CONSTRAINT IF EXISTS "rental_data_location_name_fkey";
+ALTER TABLE IF EXISTS ONLY "public"."distance_matrix_data" DROP CONSTRAINT IF EXISTS "distance_matrix_data_location_name_fkey";
+ALTER TABLE IF EXISTS ONLY "public"."scores" DROP CONSTRAINT IF EXISTS "scores_pkey";
+ALTER TABLE IF EXISTS ONLY "public"."rental_data" DROP CONSTRAINT IF EXISTS "rental_data_pkey";
+ALTER TABLE IF EXISTS ONLY "public"."locations" DROP CONSTRAINT IF EXISTS "locations_pkey";
+ALTER TABLE IF EXISTS ONLY "public"."location" DROP CONSTRAINT IF EXISTS "location_pkey";
+ALTER TABLE IF EXISTS ONLY "public"."distance_matrix_data" DROP CONSTRAINT IF EXISTS "distance_matrix_data_pkey";
+ALTER TABLE IF EXISTS "public"."locations" ALTER COLUMN "id" DROP DEFAULT;
+DROP TABLE IF EXISTS "public"."scores";
+DROP TABLE IF EXISTS "public"."rental_data";
+DROP SEQUENCE IF EXISTS "public"."locations_id_seq";
+DROP TABLE IF EXISTS "public"."locations";
+DROP TABLE IF EXISTS "public"."location";
+DROP TABLE IF EXISTS "public"."distance_matrix_data";
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: distance_matrix_data; Type: TABLE; Schema: public; Owner: benji
+-- Name: distance_matrix_data; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.distance_matrix_data (
-    distance_to_london integer,
-    duration_to_london integer,
-    distance_to_london_text character varying(100),
-    duration_to_london_text character varying(100),
-    datetime timestamp without time zone NOT NULL,
-    location_name character varying(500) NOT NULL
+CREATE TABLE "public"."distance_matrix_data" (
+    "distance_to_london" integer,
+    "duration_to_london" integer,
+    "distance_to_london_text" character varying(100),
+    "duration_to_london_text" character varying(100),
+    "datetime" timestamp without time zone NOT NULL,
+    "location_name" character varying(500) NOT NULL
 );
 
 
-ALTER TABLE public.distance_matrix_data OWNER TO benji;
-
 --
--- Name: location; Type: TABLE; Schema: public; Owner: benji
+-- Name: location; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.location (
-    name character varying(500) NOT NULL
+CREATE TABLE "public"."location" (
+    "name" character varying(500) NOT NULL
 );
 
 
-ALTER TABLE public.location OWNER TO benji;
-
 --
--- Name: locations; Type: TABLE; Schema: public; Owner: benji
+-- Name: locations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.locations (
-    id integer NOT NULL,
-    location_name character varying(500),
-    total_properties integer NOT NULL,
-    average_rent integer,
-    rent_under_250 integer NOT NULL,
-    rent_250_to_500 integer NOT NULL,
-    distance_to_london integer,
-    duration_to_london integer,
-    newest boolean NOT NULL
+CREATE TABLE "public"."locations" (
+    "id" integer NOT NULL,
+    "location_name" character varying(500),
+    "total_properties" integer NOT NULL,
+    "average_rent" integer,
+    "rent_under_250" integer NOT NULL,
+    "rent_250_to_500" integer NOT NULL,
+    "distance_to_london" integer,
+    "duration_to_london" integer,
+    "newest" boolean NOT NULL
 );
 
 
-ALTER TABLE public.locations OWNER TO benji;
-
 --
--- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: benji
+-- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.locations_id_seq
+CREATE SEQUENCE "public"."locations_id_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -79,56 +88,50 @@ CREATE SEQUENCE public.locations_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.locations_id_seq OWNER TO benji;
-
 --
--- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: benji
+-- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
+ALTER SEQUENCE "public"."locations_id_seq" OWNED BY "public"."locations"."id";
 
 
 --
--- Name: rental_data; Type: TABLE; Schema: public; Owner: benji
+-- Name: rental_data; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.rental_data (
-    total_properties integer NOT NULL,
-    average_rent integer,
-    rent_under_250 integer NOT NULL,
-    rent_250_to_500 integer NOT NULL,
-    datetime timestamp without time zone NOT NULL,
-    location_name character varying(500) NOT NULL
+CREATE TABLE "public"."rental_data" (
+    "total_properties" integer NOT NULL,
+    "average_rent" integer,
+    "rent_under_250" integer NOT NULL,
+    "rent_250_to_500" integer NOT NULL,
+    "datetime" timestamp without time zone NOT NULL,
+    "location_name" character varying(500) NOT NULL
 );
 
 
-ALTER TABLE public.rental_data OWNER TO benji;
-
 --
--- Name: scores; Type: TABLE; Schema: public; Owner: benji
+-- Name: scores; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.scores (
-    score double precision NOT NULL,
-    datetime timestamp without time zone NOT NULL,
-    location_name character varying(500) NOT NULL
+CREATE TABLE "public"."scores" (
+    "score" double precision NOT NULL,
+    "datetime" timestamp without time zone NOT NULL,
+    "location_name" character varying(500) NOT NULL
 );
 
 
-ALTER TABLE public.scores OWNER TO benji;
-
 --
--- Name: locations id; Type: DEFAULT; Schema: public; Owner: benji
+-- Name: locations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.locations_id_seq'::regclass);
+ALTER TABLE ONLY "public"."locations" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."locations_id_seq"'::"regclass");
 
 
 --
--- Data for Name: distance_matrix_data; Type: TABLE DATA; Schema: public; Owner: benji
+-- Data for Name: distance_matrix_data; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.distance_matrix_data (distance_to_london, duration_to_london, distance_to_london_text, duration_to_london_text, datetime, location_name) FROM stdin;
+COPY "public"."distance_matrix_data" ("distance_to_london", "duration_to_london", "distance_to_london_text", "duration_to_london_text", "datetime", "location_name") FROM stdin;
 24758	3861	24.8 km	1 hour 4 mins	2019-09-06 22:39:29.676641	Wilmington
 67069	6426	67.1 km	1 hour 47 mins	2019-09-06 22:39:30.510952	Toddington
 373553	11400	374 km	3 hours 10 mins	2019-09-06 22:39:31.604532	Burnley
@@ -335,6 +338,7 @@ COPY public.distance_matrix_data (distance_to_london, duration_to_london, distan
 27585	1680	27.6 km	28 mins	2019-09-06 22:42:53.416305	Broxbourne
 23301	2460	23.3 km	41 mins	2019-09-06 22:42:54.23428	Brookmans Park
 33841	2586	33.8 km	43 mins	2019-09-06 22:42:55.166809	Bricket Wood
+21857	2520	21.9 km	42 mins	2019-09-08 22:43:04.341041	Elstree
 44130	3180	44.1 km	53 mins	2019-09-06 22:42:55.958609	Bovingdon
 44785	2400	44.8 km	40 mins	2019-09-06 22:42:56.695463	Berkhamsted
 18726	2887	18.7 km	48 mins	2019-09-06 22:42:57.979191	Barnet
@@ -1254,6 +1258,7 @@ COPY public.distance_matrix_data (distance_to_london, duration_to_london, distan
 187912	9000	188 km	2 hours 30 mins	2019-09-06 22:57:28.232446	Wellesbourne
 212624	10440	213 km	2 hours 54 mins	2019-09-06 22:57:29.597278	Studley
 185344	8160	185 km	2 hours 16 mins	2019-09-06 22:57:31.032788	Stratford-upon-Avon
+15382	1440	15.4 km	24 mins	2019-09-11 22:57:18.30847	Welling
 202916	10860	203 km	3 hours 1 min	2019-09-06 22:57:32.028449	Shipston On Stour
 156006	4500	156 km	1 hour 15 mins	2019-09-06 22:57:33.078819	Nuneaton
 161321	6540	161 km	1 hour 49 mins	2019-09-06 22:57:34.06863	Kenilworth
@@ -4091,14 +4096,532 @@ COPY public.distance_matrix_data (distance_to_london, duration_to_london, distan
 280132	11536	280 km	3 hours 12 mins	2019-09-07 15:09:43.003607	Barnton
 248405	7440	248 km	2 hours 4 mins	2019-09-07 15:09:43.49034	Alsager
 281626	8220	282 km	2 hours 17 mins	2019-09-07 15:09:44.078536	Alderley Edge
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 18:27:10.916761	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 18:27:11.352563	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 18:27:12.114746	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 18:27:12.764539	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 18:27:13.176107	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 18:27:13.942135	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 18:27:14.439603	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 18:27:15.338354	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 18:27:15.965814	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 18:27:16.453625	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 18:27:17.007571	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 18:27:17.706866	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 18:27:18.430266	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 18:27:18.996969	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 18:27:19.65057	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 18:27:20.145512	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 18:27:20.616823	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 18:27:21.23209	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 18:27:21.85271	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 18:27:22.336203	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 18:28:00.136535	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 18:28:00.339573	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 18:28:00.710455	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 18:28:01.15937	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 18:28:01.409846	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 18:28:01.917065	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 18:28:02.196214	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 18:28:02.87854	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 18:28:03.33545	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 18:28:03.63992	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 18:28:03.995943	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 18:28:04.562684	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 18:28:05.057931	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 18:28:05.469575	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 18:28:06.053815	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 18:28:06.336664	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 18:28:06.631208	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 18:28:07.075384	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 18:28:07.454591	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 18:28:07.746848	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 18:39:39.078748	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 18:39:39.274766	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 18:39:39.765864	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 18:39:40.309638	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 18:39:40.54425	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 18:39:41.005525	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 18:39:41.319072	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 18:39:42.031339	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 18:39:42.540247	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 18:39:42.877815	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 18:39:43.201243	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 18:39:43.673386	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 18:39:44.171624	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 18:39:44.531368	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 18:39:45.018877	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 18:39:45.351789	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 18:39:45.677237	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 18:39:46.065092	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 18:39:46.39241	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 18:39:46.679385	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 18:40:58.129314	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 18:40:58.327017	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 18:40:58.725729	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 18:40:59.3864	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 18:40:59.637336	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 18:41:00.194228	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 18:41:00.494538	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 18:41:01.055424	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 18:41:01.492943	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 18:41:01.835193	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 18:41:02.193237	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 18:41:02.734873	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 18:41:03.232271	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 18:41:03.59601	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 18:41:04.136921	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 18:41:04.502278	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 18:41:04.808622	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 18:41:05.304924	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 18:41:05.70426	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 18:41:05.947768	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 18:41:24.383885	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 18:41:24.564445	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 18:41:24.97852	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 18:41:25.427377	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 18:41:25.782626	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 18:41:26.307482	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 18:41:26.581416	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 18:41:27.204286	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 18:41:27.695423	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 18:41:27.982746	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 18:41:28.28633	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 18:41:28.814369	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 18:41:29.346767	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 18:41:29.673993	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 18:41:30.144709	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 18:41:30.484437	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 18:41:30.766248	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 18:41:31.168452	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 18:41:31.552211	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 18:41:31.808827	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:22:59.843179	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:23:00.246223	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:23:00.83759	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:23:01.621771	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:23:02.070369	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:23:02.719585	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:23:03.23261	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:23:04.16588	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:23:04.91109	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:23:05.423743	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:23:06.111623	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:23:06.807336	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:23:07.654937	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:23:08.183465	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:23:08.817323	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:23:09.377741	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:23:09.860736	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:23:10.500345	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:23:11.158779	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:23:11.639476	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:23:53.234511	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:23:53.398821	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:23:53.770042	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:23:54.368204	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:23:54.643496	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:23:55.228073	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:23:55.523092	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:23:56.263874	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:23:56.888589	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:23:57.273609	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:23:57.704117	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:23:58.175884	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:23:58.713178	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:23:59.121044	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:23:59.674772	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:24:00.004095	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:24:00.419912	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:24:00.895341	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:24:01.381603	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:24:01.657353	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:26:40.759592	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:26:41.00998	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:26:41.393029	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:26:41.985058	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:26:42.224129	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:26:42.745616	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:26:43.055852	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:26:43.722914	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:26:44.312526	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:26:44.661645	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:26:45.009394	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:26:45.459138	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:26:45.830829	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:26:46.246427	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:26:46.916537	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:26:47.334584	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:26:47.84325	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:26:48.263975	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:26:48.687655	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:26:48.979781	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:26:57.016226	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:26:57.21381	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:26:57.593163	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:26:58.190519	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:26:58.416013	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:26:58.956969	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:26:59.295778	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:27:00.065421	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:27:00.648193	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:27:01.060311	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:27:01.547163	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:27:02.04382	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:27:02.521396	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:27:02.91949	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:27:03.440441	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:27:03.802117	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:27:04.19574	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:27:04.532461	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:27:04.972961	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:27:05.220374	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:29:08.496674	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:29:08.662769	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:29:09.086579	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:29:09.713386	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:29:09.96367	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:29:10.471203	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:29:10.809035	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:29:11.634098	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:29:12.313726	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:29:12.676622	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:29:13.062347	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:29:13.559404	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:29:14.136113	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:29:14.54114	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:29:15.079188	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:29:15.464211	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:29:15.846524	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:29:16.30303	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:29:16.764693	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:29:17.001469	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:30:03.196511	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:30:03.367346	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:30:03.802669	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:30:04.360335	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:30:04.618142	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:30:05.202031	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:30:05.466684	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:30:06.397477	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:30:06.979001	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:30:07.320469	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:30:07.665896	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:30:08.074861	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:30:08.6862	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:30:09.077851	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:30:09.614689	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:30:10.002609	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:30:10.278331	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:30:10.758014	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:30:11.267565	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:30:11.52975	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:39:12.508388	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:39:12.93938	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:39:13.493017	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:39:14.266429	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:39:14.690908	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:39:15.362186	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:39:15.953876	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:39:16.974593	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:39:17.779354	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:39:18.295531	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:39:18.822682	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:39:19.521473	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:39:20.315988	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:39:20.967854	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:39:21.643388	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:39:22.246984	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:39:22.841532	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:39:23.480111	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:39:24.15378	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:39:24.625372	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:40:13.343629	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:40:13.566633	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:40:14.009089	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:40:14.582469	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:40:14.829051	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:40:15.330531	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:40:15.619025	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:40:16.480174	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:40:17.115981	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:40:17.471153	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:40:17.854836	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:40:18.358335	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:40:18.90175	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:40:19.325266	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:40:19.846412	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:40:20.18011	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:40:20.604359	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:40:21.045989	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:40:21.511172	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:40:21.768953	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:41:41.129958	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:41:41.343736	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:41:41.807119	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:41:42.240879	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:41:42.551335	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:41:43.21723	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:41:43.499719	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:41:44.23044	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:41:44.871127	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:41:45.169424	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:41:45.558507	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:41:46.047335	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:41:46.635823	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:41:46.993524	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:41:47.593948	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:41:47.923619	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:41:48.314211	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:41:48.777163	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:41:49.218569	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:41:49.490448	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:42:06.44174	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:42:06.668911	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:42:07.201131	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:42:07.788158	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 22:42:08.095729	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:42:08.646939	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:42:08.950473	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:42:09.748058	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:42:10.34846	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:42:10.698139	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:42:11.079006	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:42:11.614628	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:42:12.193008	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:42:12.633122	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:42:13.184254	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:42:13.574354	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:42:13.858984	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:42:14.346696	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:42:14.744036	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:42:14.96814	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 22:43:03.014186	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 22:43:03.197782	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 22:43:03.615846	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 22:43:04.11184	Ventnor
+218084	10560	218 km	2 hours 56 mins	2019-09-08 22:43:04.855448	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 22:43:05.141722	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 22:43:05.933376	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 22:43:06.53486	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 22:43:06.901285	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 22:43:07.346714	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 22:43:07.82543	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 22:43:08.400597	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 22:43:08.875591	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 22:43:09.382289	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 22:43:09.748797	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 22:43:10.193309	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 22:43:10.599235	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 22:43:11.05651	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 22:43:11.360026	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 23:08:56.662555	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 23:08:57.236933	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 23:08:58.02867	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 23:08:59.068443	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 23:08:59.694372	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 23:09:00.760199	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 23:09:01.405915	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 23:09:02.559599	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 23:09:03.565599	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 23:09:04.273395	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 23:09:05.054662	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 23:09:06.119392	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 23:09:07.093751	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 23:09:07.907229	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 23:09:08.86137	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 23:09:09.680709	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 23:09:10.504609	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 23:09:11.408253	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 23:09:12.464651	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 23:09:13.258237	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-08 23:09:31.370304	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-08 23:09:31.693443	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-08 23:09:32.25325	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-08 23:09:32.862756	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-08 23:09:33.205793	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-08 23:09:33.865312	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-08 23:09:34.442902	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-08 23:09:35.445227	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-08 23:09:36.197535	Leominster
+15382	1440	15.4 km	24 mins	2019-09-08 23:09:36.772331	Welling
+12034	1910	12.0 km	32 mins	2019-09-08 23:09:37.305955	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-08 23:09:37.93694	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-08 23:09:38.704384	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-08 23:09:39.380029	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-08 23:09:40.128828	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-08 23:09:40.814336	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-08 23:09:41.47535	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-08 23:09:42.169058	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-08 23:09:42.974315	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-08 23:09:43.545678	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-09 14:56:34.530982	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-09 14:56:34.842545	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-09 14:56:35.412923	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-09 14:56:36.051214	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-09 14:56:36.438377	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-09 14:56:37.022679	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-09 14:56:37.519436	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-09 14:56:38.362374	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-09 14:56:39.147607	Leominster
+15382	1440	15.4 km	24 mins	2019-09-09 14:56:39.699089	Welling
+12034	1910	12.0 km	32 mins	2019-09-09 14:56:40.212026	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-09 14:56:40.939896	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-09 14:56:41.638601	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-09 14:56:42.156719	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-09 14:56:42.835874	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-09 14:56:43.35815	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-09 14:56:43.950943	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-09 14:56:44.602729	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-09 14:56:45.212778	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-09 14:56:45.604835	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-09 14:58:34.061665	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-09 14:58:34.534732	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-09 14:58:35.220169	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-09 14:58:36.029695	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-09 14:58:36.591483	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-09 14:58:37.427988	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-09 14:58:37.931691	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-09 14:58:38.788731	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-09 14:58:39.601598	Leominster
+15382	1440	15.4 km	24 mins	2019-09-09 14:58:40.309913	Welling
+12034	1910	12.0 km	32 mins	2019-09-09 14:58:41.003946	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-09 14:58:41.807196	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-09 14:58:42.691626	Wotton-under-Edge
+208323	11340	208 km	3 hours 9 mins	2019-09-09 14:58:43.372116	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-09 14:58:43.959644	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-09 14:58:44.622731	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-09 14:58:45.394193	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-09 14:58:46.075298	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-09 14:58:46.708446	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-09 14:58:47.272905	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-10 19:49:13.883496	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-10 19:49:14.449259	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-10 19:49:15.267267	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-10 19:49:16.062272	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-10 19:49:16.723095	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-10 19:49:17.59323	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-10 19:49:18.270411	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-10 19:49:19.395409	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-10 19:49:20.214307	Leominster
+15382	1440	15.4 km	24 mins	2019-09-10 19:49:21.097544	Welling
+12034	1910	12.0 km	32 mins	2019-09-10 19:49:22.344933	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-10 19:49:23.44735	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-10 19:49:24.405426	Wotton-under-Edge
+268652	11640	269 km	3 hours 14 mins	2019-09-10 19:49:25.520397	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-10 19:49:26.541712	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-10 19:49:27.371834	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-10 19:49:28.450506	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-10 19:49:29.469136	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-10 19:49:30.510096	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-10 19:49:31.281	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-10 20:02:20.134584	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-10 20:02:20.811715	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-10 20:02:21.465828	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-10 20:02:22.10438	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-10 20:02:22.53117	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-10 20:02:23.559286	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-10 20:02:24.129905	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-10 20:02:25.080228	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-10 20:02:25.79829	Leominster
+15382	1440	15.4 km	24 mins	2019-09-10 20:02:26.966347	Welling
+12034	1910	12.0 km	32 mins	2019-09-10 20:02:27.56629	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-10 20:02:28.9315	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-10 20:02:29.755982	Wotton-under-Edge
+268652	11640	269 km	3 hours 14 mins	2019-09-10 20:02:30.613173	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-10 20:02:31.529311	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-10 20:02:32.288807	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-10 20:02:33.751241	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-10 20:02:34.461744	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-10 20:02:34.973884	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-10 20:02:35.495784	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-11 14:48:22.001114	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-11 14:48:22.690436	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-11 14:48:24.341521	Burnley
+173591	13920	174 km	3 hours 52 mins	2019-09-11 14:48:25.324938	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-11 14:48:25.991984	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-11 14:48:27.2797	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-11 14:48:28.383923	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-11 14:48:29.967341	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-11 14:48:30.754866	Leominster
+15382	1440	15.4 km	24 mins	2019-09-11 14:48:31.72074	Welling
+12034	1910	12.0 km	32 mins	2019-09-11 14:48:32.610323	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-11 14:48:33.595445	Yate
+192309	10740	192 km	2 hours 59 mins	2019-09-11 14:48:34.868099	Wotton-under-Edge
+268652	11640	269 km	3 hours 14 mins	2019-09-11 14:48:35.856262	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-11 14:48:36.987222	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-11 14:48:37.908801	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-11 14:48:38.791557	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-11 14:48:39.80211	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-11 14:48:41.058652	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-11 14:48:41.989881	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-11 22:45:27.14082	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-11 22:45:27.590825	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-11 22:45:28.195111	Burnley
+173593	13920	174 km	3 hours 52 mins	2019-09-11 22:45:28.962903	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-11 22:45:29.408176	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-11 22:45:30.122992	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-11 22:45:30.688665	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-11 22:45:31.825265	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-11 22:45:32.524345	Leominster
+15382	1440	15.4 km	24 mins	2019-09-11 22:45:33.054652	Welling
+12034	1910	12.0 km	32 mins	2019-09-11 22:45:33.634305	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-11 22:45:34.396993	Yate
+191172	10740	191 km	2 hours 59 mins	2019-09-11 22:45:35.154211	Wotton-under-Edge
+268653	11640	269 km	3 hours 14 mins	2019-09-11 22:45:35.80914	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-11 22:45:36.611694	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-11 22:45:37.152362	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-11 22:45:37.67806	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-11 22:45:38.356517	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-11 22:45:38.975827	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-11 22:45:39.487637	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-11 22:48:56.94339	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-11 22:48:57.179888	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-11 22:48:57.57208	Burnley
+173593	13920	174 km	3 hours 52 mins	2019-09-11 22:48:58.052859	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-11 22:48:58.293096	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-11 22:48:58.809653	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-11 22:48:59.103624	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-11 22:48:59.889688	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-11 22:49:00.289082	Leominster
+15382	1440	15.4 km	24 mins	2019-09-11 22:49:00.567393	Welling
+12034	1910	12.0 km	32 mins	2019-09-11 22:49:00.894486	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-11 22:49:01.467958	Yate
+191172	10740	191 km	2 hours 59 mins	2019-09-11 22:49:01.969683	Wotton-under-Edge
+268653	11640	269 km	3 hours 14 mins	2019-09-11 22:49:02.350512	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-11 22:49:02.880732	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-11 22:49:03.265039	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-11 22:49:03.618681	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-11 22:49:04.000291	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-11 22:49:04.338874	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-11 22:49:04.57281	Stow-on-the-Wold
+24758	3861	24.8 km	1 hour 4 mins	2019-09-11 22:57:14.752637	Wilmington
+67069	6426	67.1 km	1 hour 47 mins	2019-09-11 22:57:14.988055	Toddington
+373553	11400	374 km	3 hours 10 mins	2019-09-11 22:57:15.371909	Burnley
+173593	13920	174 km	3 hours 52 mins	2019-09-11 22:57:15.885748	Ventnor
+21857	2520	21.9 km	42 mins	2019-09-11 22:57:16.122939	Elstree
+218084	10560	218 km	2 hours 56 mins	2019-09-11 22:57:16.664431	Ledbury
+12491	1457	12.5 km	24 mins	2019-09-11 22:57:16.92122	Woolwich
+297062	12645	297 km	3 hours 31 mins	2019-09-11 22:57:17.546123	Ross-on-Wye
+368481	12360	368 km	3 hours 26 mins	2019-09-11 22:57:17.958427	Leominster
+12034	1910	12.0 km	32 mins	2019-09-11 22:57:18.69873	West Norwood
+191455	7090	191 km	1 hour 58 mins	2019-09-11 22:57:19.196487	Yate
+191172	10740	191 km	2 hours 59 mins	2019-09-11 22:57:19.710336	Wotton-under-Edge
+268653	11640	269 km	3 hours 14 mins	2019-09-11 22:57:20.135766	Winchcombe
+194249	8160	194 km	2 hours 16 mins	2019-09-11 22:57:20.580232	Thornbury
+202488	9970	202 km	2 hours 46 mins	2019-09-11 22:57:20.921396	Tewkesbury
+157808	10267	158 km	2 hours 51 mins	2019-09-11 22:57:21.541766	Tetbury
+163716	6120	164 km	1 hour 42 mins	2019-09-11 22:57:21.9465	Stroud
+171505	8574	172 km	2 hours 23 mins	2019-09-11 22:57:22.390763	Nailsworth
+143126	6733	143 km	1 hour 52 mins	2019-09-11 22:57:22.677647	Stow-on-the-Wold
 \.
 
 
 --
--- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: benji
+-- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.location (name) FROM stdin;
+COPY "public"."location" ("name") FROM stdin;
 Wilmington
 Toddington
 Burnley
@@ -6089,18 +6612,18 @@ Alderley Edge
 
 
 --
--- Data for Name: locations; Type: TABLE DATA; Schema: public; Owner: benji
+-- Data for Name: locations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.locations (id, location_name, total_properties, average_rent, rent_under_250, rent_250_to_500, distance_to_london, duration_to_london, newest) FROM stdin;
+COPY "public"."locations" ("id", "location_name", "total_properties", "average_rent", "rent_under_250", "rent_250_to_500", "distance_to_london", "duration_to_london", "newest") FROM stdin;
 \.
 
 
 --
--- Data for Name: rental_data; Type: TABLE DATA; Schema: public; Owner: benji
+-- Data for Name: rental_data; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.rental_data (total_properties, average_rent, rent_under_250, rent_250_to_500, datetime, location_name) FROM stdin;
+COPY "public"."rental_data" ("total_properties", "average_rent", "rent_under_250", "rent_250_to_500", "datetime", "location_name") FROM stdin;
 12	1340	0	0	2019-09-06 22:37:09.182858	Wilmington
 12	1086	0	0	2019-09-06 22:37:09.247647	Toddington
 264	422	1	225	2019-09-06 22:37:09.781675	Burnley
@@ -8112,10 +8635,10 @@ COPY public.rental_data (total_properties, average_rent, rent_under_250, rent_25
 
 
 --
--- Data for Name: scores; Type: TABLE DATA; Schema: public; Owner: benji
+-- Data for Name: scores; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.scores (score, datetime, location_name) FROM stdin;
+COPY "public"."scores" ("score", "datetime", "location_name") FROM stdin;
 18.5536200615987426	2019-09-06 23:11:09.033371	Wilmington
 18.7643040313496847	2019-09-06 23:11:09.045752	Toddington
 24.6590001540360859	2019-09-06 23:11:09.059796	Burnley
@@ -10101,76 +10624,77 @@ COPY public.scores (score, datetime, location_name) FROM stdin;
 
 
 --
--- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: benji
+-- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.locations_id_seq', 1, false);
-
-
---
--- Name: distance_matrix_data distance_matrix_data_pkey; Type: CONSTRAINT; Schema: public; Owner: benji
---
-
-ALTER TABLE ONLY public.distance_matrix_data
-    ADD CONSTRAINT distance_matrix_data_pkey PRIMARY KEY (datetime, location_name);
+SELECT pg_catalog.setval('"public"."locations_id_seq"', 1, false);
 
 
 --
--- Name: location location_pkey; Type: CONSTRAINT; Schema: public; Owner: benji
+-- Name: distance_matrix_data distance_matrix_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.location
-    ADD CONSTRAINT location_pkey PRIMARY KEY (name);
-
-
---
--- Name: locations locations_pkey; Type: CONSTRAINT; Schema: public; Owner: benji
---
-
-ALTER TABLE ONLY public.locations
-    ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY "public"."distance_matrix_data"
+    ADD CONSTRAINT "distance_matrix_data_pkey" PRIMARY KEY ("datetime", "location_name");
 
 
 --
--- Name: rental_data rental_data_pkey; Type: CONSTRAINT; Schema: public; Owner: benji
+-- Name: location location_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.rental_data
-    ADD CONSTRAINT rental_data_pkey PRIMARY KEY (datetime, location_name);
-
-
---
--- Name: scores scores_pkey; Type: CONSTRAINT; Schema: public; Owner: benji
---
-
-ALTER TABLE ONLY public.scores
-    ADD CONSTRAINT scores_pkey PRIMARY KEY (datetime, location_name);
+ALTER TABLE ONLY "public"."location"
+    ADD CONSTRAINT "location_pkey" PRIMARY KEY ("name");
 
 
 --
--- Name: distance_matrix_data distance_matrix_data_location_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: benji
+-- Name: locations locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.distance_matrix_data
-    ADD CONSTRAINT distance_matrix_data_location_name_fkey FOREIGN KEY (location_name) REFERENCES public.location(name);
-
-
---
--- Name: rental_data rental_data_location_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: benji
---
-
-ALTER TABLE ONLY public.rental_data
-    ADD CONSTRAINT rental_data_location_name_fkey FOREIGN KEY (location_name) REFERENCES public.location(name);
+ALTER TABLE ONLY "public"."locations"
+    ADD CONSTRAINT "locations_pkey" PRIMARY KEY ("id");
 
 
 --
--- Name: scores scores_location_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: benji
+-- Name: rental_data rental_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.scores
-    ADD CONSTRAINT scores_location_name_fkey FOREIGN KEY (location_name) REFERENCES public.location(name);
+ALTER TABLE ONLY "public"."rental_data"
+    ADD CONSTRAINT "rental_data_pkey" PRIMARY KEY ("datetime", "location_name");
+
+
+--
+-- Name: scores scores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "public"."scores"
+    ADD CONSTRAINT "scores_pkey" PRIMARY KEY ("datetime", "location_name");
+
+
+--
+-- Name: distance_matrix_data distance_matrix_data_location_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "public"."distance_matrix_data"
+    ADD CONSTRAINT "distance_matrix_data_location_name_fkey" FOREIGN KEY ("location_name") REFERENCES "public"."location"("name");
+
+
+--
+-- Name: rental_data rental_data_location_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "public"."rental_data"
+    ADD CONSTRAINT "rental_data_location_name_fkey" FOREIGN KEY ("location_name") REFERENCES "public"."location"("name");
+
+
+--
+-- Name: scores scores_location_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "public"."scores"
+    ADD CONSTRAINT "scores_location_name_fkey" FOREIGN KEY ("location_name") REFERENCES "public"."location"("name");
 
 
 --
 -- PostgreSQL database dump complete
 --
+
