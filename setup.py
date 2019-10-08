@@ -1,5 +1,4 @@
 from setuptools import find_packages, setup
-
 setup(
     name='HouseScrape',
     version='0.2',
@@ -7,17 +6,16 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'flask',
-        'psycopg2',
-        'flask_sqlalchemy',
-        'scrapy',
-        'requests',
-        'Twisted==18.9.0',
-        'SQLAlchemy',
-        'requests',
         'datetime',
+        'flask',
+        'flask_sqlalchemy',
+        'psycopg2',
         'pytest-flask-sqlalchemy',
-        'pytest_postgresql'
+        'pytest_postgresql',
+        'requests',
+        'scrapy',
+        'SQLAlchemy',
+        'Twisted==18.9.0',
     ],
 
     # metadata to display on PyPI
