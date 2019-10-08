@@ -9,7 +9,7 @@ setup(
         'datetime',
         'flask',
         'flask_sqlalchemy',
-        'psycopg2',
+        'psycopg2-binary',
         'pytest-flask-sqlalchemy',
         'pytest_postgresql',
         'requests',
