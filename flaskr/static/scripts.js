@@ -162,6 +162,8 @@ document.addEventListener('mouseup', function (e) {
     }
     heapSortGeneric(mouse_down_sort_by, cards_div, cards, {columns: 5});
 
+    updateColours();
+
     let sorters = document.getElementsByClassName("sort_btn");
     for (const sorter of sorters) {
         sorter.classList.remove('is-loading');
@@ -249,5 +251,19 @@ function getDataValue(item) {
     }
     else {
         return +attr;
+    }
+}
+
+function updateColours() {
+    let cards = document.getElementById('cards');
+    let colour = 'is-link';
+    for (const row of cards.children) {
+        for (const card of row.children) {
+            if (!card.classList.contains(colour)) {
+                card.classList.remove((colour === 'is-link') ? 'is-dark' : 'is-link');
+                card.classList.add(colour);
+            }
+            colour = (colour === 'is-link') ? 'is-dark' : 'is-link';
+        }
     }
 }
