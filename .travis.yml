@@ -48,4 +48,5 @@ script:
 
 notifications:
   email:
+    if: branch = master
     on_success: never
