@@ -58,8 +58,66 @@ function heapifyTable(arr, n, i, sort_by, dir) {
     }
 }
 
+function heapSortGeneric(sort_by, wrapper, items, opts) {
+    let i;
+
+    let arr = (opts.header_row) ? Array.prototype.slice.call(items).slice(1) :
+        Array.prototype.slice.call(items);
+    let n = arr.length;
+
+    // Build max heap
+    for (i = n - 1; i >= 0; i--) {
+        if (last_sort_by === sort_by && last_sort_dir === 'asc') {
+            heapifyTable(arr, n, i, sort_by, 'desc');
+        }
+        else {
+            heapifyTable(arr, n, i, sort_by, 'asc');
+        }
+    }
+
+    for (i = n - 1; i >= 0; i--) {
+        // swap
+        let tmp = arr[i];
+        arr[i] = arr[0];
+        arr[0] = tmp;
+
+        // heapify root element
+
+        if (last_sort_by === sort_by && last_sort_dir === 'asc') {
+            heapifyTable(arr, i, 0, sort_by, 'desc');
+        }
+        else {
+            heapifyTable(arr, i, 0, sort_by, 'asc');
+        }
+
+    }
+    while (wrapper.firstChild) {
+        wrapper.removeChild(wrapper.firstChild);
+    }
+    if (opts.header_row) {
+        wrapper.appendChild(opts.header_row);
+    }
+
+    if (opts.columns && opts.columns > 1) {
+        let columns, j;
+        for (i = 0; i < (n / opts.columns); i++) {
+            columns = document.createElement('div');
+            columns.classList.add('columns');
+            for (j = 0; j < opts.columns; j++) {
+                columns.appendChild(arr[(i * opts.columns) + j]);
+            }
+            wrapper.appendChild(columns);
+        }
+    }
+    else {
+        for (i = 0; i < n; i++) {
+            wrapper.appendChild(arr[i]);
+        }
+    }
+}
+
 document.addEventListener('mousedown', function (e) {
-    let target = getTarget(e, 'TH', 'SPAN', 'I');
+    let target = getTarget(e, 'DIV', 'SPAN', 'I');
 
     if (target.classList.contains('sort_btn')) {
         mouse_down_sort_by = parseInt(target.getAttribute('data-sort'));
@@ -91,14 +149,26 @@ document.addEventListener('mousedown', function (e) {
 }, false);
 
 document.addEventListener('mouseup', function (e) {
-    let target = getTarget(e, 'TH', 'SPAN', 'I');
+    let table = document.getElementById("compare_table");
+    let rows = table.rows;
+    heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
 
-    if (target.classList.contains('sort_btn')) {
-        heapSortTable(mouse_down_sort_by);
-        target.classList.remove('is-loading');
+    let cards_div = document.getElementById('cards');
+    let cards = [];
+    for (const card_row of cards_div.children) {
+        for (const card of card_row.children) {
+            cards.push(card);
+        }
+    }
+    heapSortGeneric(mouse_down_sort_by, cards_div, cards, {columns: 5});
+
+    let sorters = document.getElementsByClassName("sort_btn");
+    for (const sorter of sorters) {
+        sorter.classList.remove('is-loading');
     }
 }, false);
 
+// Card / Table switcher button
 document.addEventListener('click', function (e) {
     let target = getTarget(e, '', 'SPAN', 'I');
 

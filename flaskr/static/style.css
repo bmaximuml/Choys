@@ -5,6 +5,7 @@
 
 #compare_table {
     display: none;
+    margin: auto;
 }
 
 .notification {
@@ -13,4 +14,16 @@
 
 #table-cards-btn {
     width: 3.75em;
+}
+
+button.sort_btn {
+    margin: 5px;
+}
+
+div.notification.column.has-text-centered {
+    margin: 0.5rem;
+}
+
+table#compare_table, table#compare_table > tbody, table#compare_table > tbody > tr {
+    width: 100%;
 }
