@@ -121,7 +121,7 @@ document.addEventListener('click', function (e) {
             grandchild.classList.add(second_fa);
             grandchild.classList.add(second_fa_short);
 
-            document.getElementById('compare_table').style.display = 'block';
+            document.getElementById('compare_table').style.display = 'table';
             document.getElementById('compare_cards').style.display = 'none';
         }
         else {
