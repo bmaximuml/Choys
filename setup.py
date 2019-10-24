@@ -10,8 +10,6 @@ setup(
         'flask',
         'flask_sqlalchemy',
         'psycopg2',
-        'pytest-flask-sqlalchemy',
-        'pytest_postgresql',
         'requests',
         'scrapy',
         'SQLAlchemy',
