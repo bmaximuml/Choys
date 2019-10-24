@@ -100,10 +100,10 @@ function heapSortGeneric(sort_by, wrapper, items, opts) {
 
     if (opts.columns && opts.columns > 1) {
         let columns, j;
-        for (i = 0; i < (n / opts.columns); i++) {
+        for (i = 0; i < Math.ceil(n / opts.columns); i++) {
             columns = document.createElement('div');
             columns.classList.add('columns');
-            for (j = 0; j < opts.columns; j++) {
+            for (j = 0; j < opts.columns && (i * opts.columns) + j < n; j++) {
                 columns.appendChild(arr[(i * opts.columns) + j]);
             }
             wrapper.appendChild(columns);
