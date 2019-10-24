@@ -9,14 +9,14 @@ from scrapy.utils.project import get_project_settings
 from .. import get_data_for_location_name, get_data_max
 from ..model import db, Location, RentalData, DistanceMatrixData, Scores
 from ..exceptions import NoResultsError
-from .house_scrape.house_scrape.spiders.locations_spider import LocationsSpider
+from .uk_locations_scrape.uk_locations_scrape.spiders.locations_spider import LocationsSpider
 from .g_maps import get_distance_matrix
 
 
-def run_house_scrape():
+def run_uk_locations_scrape():
     """Run the scrapy spider to fetch rental data from home.co.uk"""
-    environ['SCRAPY_SETTINGS_MODULE'] = ('HouseScrape.flaskr.services.'
-                                         'house_scrape.house_scrape.settings')
+    environ['SCRAPY_SETTINGS_MODULE'] = ('Choys.flaskr.services.'
+                                         'uk_locations_scrape.uk_locations_scrape.settings')
     settings = get_project_settings()
     settings['LOG_LEVEL'] = 'INFO'
     process = CrawlerProcess(settings=settings)
@@ -91,6 +91,6 @@ def calculate_scores():
 
 def run_all_services():
     """Fetch data from all available sources"""
-    run_house_scrape()
+    run_uk_locations_scrape()
     run_google_maps_distance_matrix()
     calculate_scores()

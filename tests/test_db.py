@@ -1,6 +1,6 @@
 """Tests relating to configuring and using the database"""
 
-from HouseScrape.flaskr.model import Location
+from Choys.flaskr.model import Location
 
 
 def test_insert(db_session):

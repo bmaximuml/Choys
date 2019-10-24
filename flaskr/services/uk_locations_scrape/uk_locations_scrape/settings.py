@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for house_scrape project
+# Scrapy settings for uk_locations_scrape project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -17,12 +17,12 @@ def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-BOT_NAME = 'house_scrape'
+BOT_NAME = 'uk_locations_scrape'
 
 SPIDER_MODULES = [
-    'HouseScrape.flaskr.services.house_scrape.house_scrape.spiders'
+    'Choys.flaskr.services.uk_locations_scrape.uk_locations_scrape.spiders'
 ]
-NEWSPIDER_MODULE = ('HouseScrape.flaskr.services.house_scrape.house_scrape.'
+NEWSPIDER_MODULE = ('Choys.flaskr.services.uk_locations_scrape.uk_locations_scrape.'
                     'spiders')
 
 
@@ -60,13 +60,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'house_scrape.middlewares.HouseScrapeSpiderMiddleware': 543,
+#    'uk_locations_scrape.middlewares.ChoysSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'house_scrape.middlewares.HouseScrapeDownloaderMiddleware': 543,
+#    'uk_locations_scrape.middlewares.ChoysDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -78,8 +78,8 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    ('HouseScrape.flaskr.services.house_scrape.house_scrape.pipelines.'
-     'HouseScrapePipeline'): 300,
+    ('Choys.flaskr.services.uk_locations_scrape.uk_locations_scrape.pipelines.'
+     'ChoysPipeline'): 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

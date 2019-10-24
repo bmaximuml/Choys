@@ -1,8 +1,8 @@
 """Tests for functions used to gather data"""
 
-from HouseScrape.flaskr.services import run_house_scrape, run_google_maps_distance_matrix, calculate_scores, run_all_services
-from HouseScrape.flaskr.model import Location
-from HouseScrape.flaskr.exceptions import InvalidModeError, RequestError
+from Choys.flaskr.services import run_uk_locations_scrape, run_google_maps_distance_matrix, calculate_scores, run_all_services
+from Choys.flaskr.model import Location
+from Choys.flaskr.exceptions import InvalidModeError, RequestError
 
 
 def test_run_google_maps_distance_matrix(db_session):

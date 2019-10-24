@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 setup(
-    name='HouseScrape',
+    name='Choys',
     version='0.2',
     packages=find_packages(),
     include_package_data=True,
@@ -21,5 +21,5 @@ setup(
     # metadata to display on PyPI
     author="Benji Levine",
     author_email="benji@benjilevine.com",
-    url='https://github.com/benjilev08/HouseScrape'
+    url='https://github.com/benjilev08/Choys'
 )

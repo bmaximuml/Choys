@@ -2,7 +2,7 @@
 
 from os import environ
 
-from HouseScrape.flaskr import create_app
+from Choys.flaskr import create_app
 
 
 def test_config():

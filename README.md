@@ -1,6 +1,6 @@
-# HouseScrape
+# Choys
 
-[![Build Status](https://travis-ci.com/benjilev08/HouseScrape.svg?token=y1QpyeyoJ4P5i7MEt1gp&branch=master)](https://travis-ci.com/benjilev08/HouseScrape)
+[![Build Status](https://travis-ci.com/benjilev08/Choys.svg?token=y1QpyeyoJ4P5i7MEt1gp&branch=master)](https://travis-ci.com/benjilev08/Choys)
 
 This is a [Flask](https://flask.palletsprojects.com/en/1.1.x/) application for comparing different locations within the UK.
 
@@ -42,8 +42,8 @@ To install PostgreSQL 11 on other distributions, follow the instructions [here](
 
 
 ### Install
-1. `git clone https://github.com/benjilev08/HouseScrape`
-2. `cd HouseScrape`
+1. `git clone https://github.com/benjilev08/Choys`
+2. `cd Choys`
 3. `pip3 install .`
 
 ### Setup

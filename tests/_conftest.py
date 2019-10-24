@@ -5,7 +5,7 @@ import pytest
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 
-from HouseScrape.flaskr import create_app
+from Choys.flaskr import create_app
 
 
 @pytest.fixture(scope='session')
