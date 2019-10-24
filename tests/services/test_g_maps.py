@@ -1,9 +1,9 @@
 import pytest
 
 from . import location_list
-from HouseScrape.flaskr.exceptions import (InvalidModeError, NoResultsError,
+from Choys.flaskr.exceptions import (InvalidModeError, NoResultsError,
                                            RequestError)
-from HouseScrape.flaskr.services.g_maps import get_distance_matrix
+from Choys.flaskr.services.g_maps import get_distance_matrix
 
 
 @pytest.mark.parametrize('start', location_list[:30])

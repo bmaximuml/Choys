@@ -9,10 +9,10 @@ from logging import getLogger
 from datetime import datetime
 from scrapy.exceptions import DropItem
 
-from HouseScrape.flaskr.model import db, Location, RentalData
+from Choys.flaskr.model import db, Location, RentalData
 
 
-class HouseScrapePipeline(object):
+class ChoysPipeline(object):
     def process_item(self, item, spider):
         logger = getLogger()
         if item.get('name') and item.get('average_rent'):

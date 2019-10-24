@@ -5,7 +5,7 @@ import pytest
 from scrapy.http import HtmlResponse
 
 from . import location_list
-from HouseScrape.flaskr.services.house_scrape.house_scrape.spiders.\
+from Choys.flaskr.services.uk_locations_scrape.uk_locations_scrape.spiders.\
       locations_spider import strip_commas, catch_and_zero
 
 

@@ -7,7 +7,7 @@ import tempfile
 # code and should eventually be either confirmed to fix a bug, or removed
 from flask_sqlalchemy import SQLAlchemy
 
-from HouseScrape.flaskr import create_app
+from Choys.flaskr import create_app
 
 pytest_plugins = ['pytester']
 
