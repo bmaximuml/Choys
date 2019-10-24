@@ -2,6 +2,8 @@ let last_sort_by = 7;
 let last_sort_dir = 'asc';
 let mouse_down_sort_by = 7;
 
+let table_cards = 'table';
+
 function bubbleSortTable(sort_by) {
     let table, rows, switching, i, x, y, x_comp, y_comp, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("compare_table");
@@ -270,7 +272,7 @@ function w3cBubbleSortTable(sort_by) {
 }
 
 document.addEventListener('mousedown', function (e) {
-    let target = getTarget(e);
+    let target = getTarget(e, 'TH', 'SPAN', 'I');
 
     if (target.classList.contains('sort_btn')) {
         mouse_down_sort_by = parseInt(target.getAttribute('data-sort'));
@@ -302,7 +304,7 @@ document.addEventListener('mousedown', function (e) {
 }, false);
 
 document.addEventListener('mouseup', function (e) {
-    let target = getTarget(e);
+    let target = getTarget(e, 'TH', 'SPAN', 'I');
 
     if (target.classList.contains('sort_btn')) {
         heapSortTable(mouse_down_sort_by);
@@ -310,18 +312,62 @@ document.addEventListener('mouseup', function (e) {
     }
 }, false);
 
+document.addEventListener('click', function (e) {
+    let target = getTarget(e, '', 'SPAN', 'I');
 
-function getTarget(e) {
+    let grandchild = target.children[0].children[0];
+
+    let first_colour = 'is-danger';
+    let second_colour = 'is-link';
+    let first_fa = 'fa-list-alt';
+    let first_fa_short = 'far';
+    let second_fa = 'fa-th';
+    let second_fa_short = 'fas';
+
+    if (target.id === 'table-cards-btn') {
+        if (target.classList.contains(first_colour)) {
+            target.classList.remove(first_colour);
+            target.classList.add(second_colour);
+
+            grandchild.classList.remove(first_fa);
+            grandchild.classList.remove(first_fa_short);
+            grandchild.classList.add(second_fa);
+            grandchild.classList.add(second_fa_short);
+
+            document.getElementById('compare_table').style.display = 'block';
+            document.getElementById('compare_cards').style.display = 'none';
+        }
+        else {
+            target.classList.remove(second_colour);
+            target.classList.add(first_colour);
+
+            grandchild.classList.remove(second_fa);
+            grandchild.classList.remove(second_fa_short);
+            grandchild.classList.add(first_fa);
+            grandchild.classList.add(first_fa_short);
+
+            document.getElementById('compare_table').style.display = 'none';
+            document.getElementById('compare_cards').style.display = 'block';
+        }
+    }
+}, false);
+
+if (table_cards === 'table') {
+}
+else if (table_cards === 'cards') {
+}
+
+function getTarget(e, parent = '', child = '', grandchild = '') {
     e = e || window.event;
     let target = e.target || e.srcElement, text = target.textContent || target.innerText;
 
-    if (target.tagName === 'TH') {
+    if (target.tagName === parent) {
         target = target.children[0];
     }
-    else if (target.tagName === 'SPAN') {
+    else if (target.tagName === child) {
         target = target.parentElement;
     }
-    else if (target.tagName === 'I') {
+    else if (target.tagName === grandchild) {
         target = target.parentElement.parentElement;
     }
 

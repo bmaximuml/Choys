@@ -2,7 +2,7 @@
 {% set title = "HouseScrape - main" %}
 
 {% block content %}
-    <table id='compare_table' class="box table is-fullwidth">
+    <table id='compare_table' class="box tile is-ancestor table">
         <thead>
             <tr>
                 <th>
@@ -107,4 +107,111 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div id = 'compare_cards' class="box tile is-ancestor is-vertical">
+        {% set number_of_columns = 5 %}
+        {% for row in location_array|sort(attribute='score', reverse=True) %}
+{#            {% if loop.index % 8 * 2 == 1 or loop.index % 8 == 3 or loop.index % 8 == 6 or loop.index % 8 == 0 %}#}
+            {% if loop.index % 10 == 1 or loop.index % 10 == 3 or loop.index % 10 == 5 or loop.index % 10 == 7 or loop.index % 10 == 9 %}
+                {% set alternating = true %}
+            {% endif %}
+            {% if loop.index % number_of_columns == 1 %}
+                <div class="tile">
+            {% endif %}
+            <div class="tile is-parent has-text-centered">
+                {% if alternating %}
+                    <div class="tile is-child notification is-link has-text-centered">
+                {% else %}
+                    <div class="tile is-child notification is-dark has-text-centered">
+                {% endif %}
+                    <div class="level">
+                        <div class="level-left">
+                            {% if alternating %}
+                                <div class="title level-item "><strong class="">{{ row.name }}</strong></div>
+                            {% else %}
+                                <div class="title level-item"><strong>{{ row.name }}</strong></div>
+                            {% endif %}
+                        </div>
+                        <div class="level-right">
+{#                            {% if loop.index % 4 == 0 or loop.index % 4 == 1 %}#}
+{#                                <div class="subtitle level-item has-text-dark">Score:&nbsp;<strong class="has-text-dark">{{ row.score }}</strong></div>#}
+{#                            {% else %}#}
+{#                                <div class="subtitle level-item">Score:&nbsp;<strong>{{ row.score }}</strong></div>#}
+{#                            {% endif %}#}
+                        </div>
+                    </div>
+
+                    <div class="">
+                        {% if alternating %}
+                            <div class="notification is-light">Score:&nbsp;<strong>{{ row.score }}</strong></div>
+                        {% else %}
+                            <div class="notification is-light">Score:&nbsp;<strong>{{ row.score }}</strong></div>
+                        {% endif %}
+
+                        <div class="">Average rent is <strong>£{{ row.average_rent }}</strong></div>
+
+                        {% if row.total_properties == 1 %}
+                            <div class=""><strong>{{ row.total_properties }}</strong> property available</div>
+                        {% else %}
+                            <div class=""><strong>{{ row.total_properties }}</strong> properties available</div>
+                        {% endif %}
+
+                        <div class="" data-value="{{ row.distance_to_london[0] }}"><strong>{{ row.distance_to_london[1] }}</strong> to London</div>
+
+                        <div class="" data-value="{{ row.duration_to_london[0] }}"><strong>{{ row.duration_to_london[1] }}</strong> to London</div>
+
+                        {% if row.rent_under_250 == 1 %}
+                            <div class=""><strong>{{ row.rent_under_250 }}</strong> property available under £250</div>
+                        {% else %}
+                            <div class=""><strong>{{ row.rent_under_250 }}</strong> properties available under £250</div>
+                        {% endif %}
+
+                        {% if row.rent_250_to_500 == 1 %}
+                            <div class=""><strong>{{ row.rent_250_to_500 }}</strong> property available between £250 and £500</div>
+                        {% else %}
+                            <div class=""><strong>{{ row.rent_250_to_500 }}</strong> properties available between £250 and £500</div>
+                        {% endif %}
+                    </div>
+
+{#                    {% for cell in row %}#}
+{#                        {% if cell is string or cell is number %}#}
+{#                            {% if cell == row.name %}#}
+{#                                <div class="title"><strong>{{ cell }}</strong></div>#}
+{#                            {% else %}#}
+{#                                <span class="">{{ cell }}</span>#}
+{#                            {% endif %}#}
+{#                        {% else %}#}
+{#                            <span class="" data-value="{{ cell[0] }}">{{ cell[1] }}</span>#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+                </div>
+            </div>
+
+            {% if loop.index % number_of_columns == 0 %}
+                </div>
+            {% endif %}
+
+{#            <div class="tile is-parent box is-primary">#}
+{#                {% for cell in row %}#}
+{#                    {% if cell is string or cell is number %}#}
+{#                        {% if cell == row.name %}#}
+{#                            <span class="tile is-child"><strong>{{ cell }}</strong></span>#}
+{#                        {% else %}#}
+{#                            <span class="tile is-child">{{ cell }}</span>#}
+{#                        {% endif %}#}
+{#                    {% else %}#}
+{#                        <span class="tile is-child" data-value="{{ cell[0] }}">{{ cell[1] }}</span>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            </div>#}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block navbar_end_add %}
+    <a class="button is-danger" id="table-cards-btn">
+        <span class="icon">
+            <i class="far fa-list-alt"></i>
+        </span>
+    </a>
 {% endblock %}
