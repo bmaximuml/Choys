@@ -162,11 +162,11 @@ else if (table_cards === 'cards') {
 }
 
 function getTarget(e, parent = '', child = '', grandchild = '') {
-    e = e || window.event;
-    let target = e.target || e.srcElement, text = target.textContent || target.innerText;
+    e = e || Event;
+    let target = e.target || Event.target;
 
     if (target.tagName === parent) {
-        target = target.children[0];
+        target = target.firstElementChild;
     }
     else if (target.tagName === child) {
         target = target.parentElement;
