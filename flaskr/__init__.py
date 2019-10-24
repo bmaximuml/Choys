@@ -8,8 +8,8 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
     default_config = {
-        'SECRET_KEY': 'dev',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
+        'SECRET_KEY': os.environ['FLASK_SECRET_KEY'],
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
     }
     if test_config is None:
         app.config.from_mapping(
