@@ -4,87 +4,6 @@ let mouse_down_sort_by = 7;
 
 let table_cards = 'table';
 
-function bubbleSortTable(sort_by) {
-    let table, rows, switching, i, x, y, x_comp, y_comp, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("compare_table");
-    switching = true;
-    // Set the sorting direction to ascending
-    dir = 'asc';
-    // Make a loop that will continue until no switching has been done:
-    while (switching) {
-        // start by saying no switching is done:
-        switching = false;
-        rows = table.rows;
-        // Loop through all table rows (except the first which is headers)
-        for (i = 1; i < (rows.length - 1); i++) {
-            // start by saying there should by no switching
-            shouldSwitch = false;
-            // Get the two elements you want to compare, one from current row and one from next
-            x = rows[i].getElementsByTagName('td')[sort_by];
-            y = rows[i + 1].getElementsByTagName('td')[sort_by];
-            // Check if the values are numeric or strings
-            if (isNaN(x.innerHTML) || isNaN(y.innerHTML)) {
-                x_comp = x.innerHTML.toLowerCase();
-                y_comp = y.innerHTML.toLowerCase();
-            }
-            else {
-                x_comp = +x.innerHTML;
-                y_comp = +y.innerHTML;
-            }
-            // Check if the two rows should switch place, based on the direction, asc or desc
-            if (dir === 'asc') {
-                if (x_comp > y_comp) {
-                    // if so, mark as a switch and break the loop
-                    shouldSwitch = true;
-                    break;
-                }
-            } else if (dir === 'desc') {
-                if (x_comp < y_comp) {
-                    // if so, mark as a switch and break the loop
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-        }
-        if (shouldSwitch) {
-            // If a switch has been marked, make the switch and mark that a switch has been done
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-            switchcount++;
-        } else {
-            // If no switching has been done AND the direction is 'asc', set the direction to 'desc' and run the while
-            // loop again
-            if (switchcount === 0 && dir === 'asc') {
-                dir = 'desc';
-                switching = true;
-            }
-        }
-    }
-}
-
-function heapify(arr, n, i) {
-    // Find largest among root and children
-    let largest = i;
-    let left = 2 * i + 1;
-    let right = 2 * i + 2;
-
-    if (left < n && arr[i] < arr[left]) {
-        largest = left;
-    }
-
-    if (right < n && arr[largest] < arr[right]) {
-        largest = right;
-    }
-
-    // If root is not largest, swap with largest and continue heapifying
-    if (largest !== i) {
-        let tmp = arr[largest];
-        arr[largest] = arr[i];
-        arr[i] = tmp;
-        heapify(arr, n, largest);
-    }
-}
-
 function heapifyTable(arr, n, i, sort_by, dir) {
     // Find largest among root and children
     let largest = i;
@@ -93,20 +12,12 @@ function heapifyTable(arr, n, i, sort_by, dir) {
 
     if (left < n) {
         let arr_i, arr_left, i_comp, left_comp;
-        arr_i = arr[i].getElementsByTagName('td')[sort_by];
-        arr_left = arr[left].getElementsByTagName('td')[sort_by];
+        arr_i = getItem(arr, i, sort_by);
+        arr_left = getItem(arr, left, sort_by);
 
-        if (arr_i.hasAttribute('data-value') || arr_left.hasAttribute('data-value')) {
-            i_comp = +arr_i.getAttribute('data-value');
-            left_comp = +arr_left.getAttribute('data-value');
-        }
-        else if (isNaN(arr_i.innerHTML) || isNaN(arr_left.innerHTML)) {
-            i_comp = arr_i.innerHTML.toLowerCase();
-            left_comp = arr_left.innerHTML.toLowerCase();
-        } else {
-            i_comp = +arr_i.innerHTML;
-            left_comp = +arr_left.innerHTML;
-        }
+        i_comp = getDataValue(arr_i);
+        left_comp = getDataValue(arr_left);
+
         if (dir === 'asc') {
             if (i_comp < left_comp) {
                 largest = left;
@@ -121,20 +32,11 @@ function heapifyTable(arr, n, i, sort_by, dir) {
 
     if (right < n) {
         let arr_largest, arr_right, largest_comp, right_comp;
-        arr_largest = arr[largest].getElementsByTagName('td')[sort_by];
-        arr_right = arr[right].getElementsByTagName('td')[sort_by];
+        arr_largest = getItem(arr, largest, sort_by);
+        arr_right = getItem(arr, right, sort_by);
 
-        if (arr_largest.hasAttribute('data-value') || arr_right.hasAttribute('data-value')) {
-            largest_comp = +arr_largest.getAttribute('data-value');
-            right_comp = +arr_right.getAttribute('data-value');
-        }
-        else if (isNaN(arr_largest.innerHTML) || isNaN(arr_right.innerHTML)) {
-            largest_comp = arr_largest.innerHTML.toLowerCase();
-            right_comp = arr_right.innerHTML.toLowerCase();
-        } else {
-            largest_comp = +arr_largest.innerHTML;
-            right_comp = +arr_right.innerHTML;
-        }
+        largest_comp = getDataValue(arr_largest);
+        right_comp = getDataValue(arr_right);
         if (dir === 'asc') {
             if (largest_comp < right_comp) {
                 largest = right;
@@ -156,34 +58,12 @@ function heapifyTable(arr, n, i, sort_by, dir) {
     }
 }
 
-function heapSort(arr) {
-    let n = arr.length;
-
-    // Build max heap
-    for (let i = n; i >= 0; i--) {
-        heapify(arr, n, i);
-    }
-
-    for (let i = n - 1; i >= 0; i--) {
-        // swap
-        let tmp = arr[i];
-        arr[i] = arr[0];
-        arr[0] = tmp;
-
-        // heapify root element
-        heapify(arr, i, 0);
-    }
-}
-
-function heapSortTable(sort_by) {
+function heapSortGeneric(sort_by, wrapper, items, opts) {
     let i;
-    let table = document.getElementById("compare_table");
-    let rows = table.rows;
-    // -1 to account for header row
-    let n = rows.length - 1;
-    // Convert HTMLCollection to array, then remove header row (i.e. slice first row)
-    let arr = Array.prototype.slice.call(rows).slice(1);
-    // let arr = rows.slice(1);
+
+    let arr = (opts.header_row) ? Array.prototype.slice.call(items).slice(1) :
+        Array.prototype.slice.call(items);
+    let n = arr.length;
 
     // Build max heap
     for (i = n - 1; i >= 0; i--) {
@@ -211,68 +91,33 @@ function heapSortTable(sort_by) {
         }
 
     }
-    let header_row = table.rows[0];
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
+    while (wrapper.firstChild) {
+        wrapper.removeChild(wrapper.firstChild);
     }
-    table.appendChild(header_row);
-    for (i = 0; i < n; i++) {
-        // table.append(arr);
-        table.appendChild(arr[i]);
+    if (opts.header_row) {
+        wrapper.appendChild(opts.header_row);
     }
-}
 
-function w3cBubbleSortTable(sort_by) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("compare_table");
-  switching = true;
-  //Set the sorting direction to ascending:
-  dir = "asc";
-  //Make a loop that will continue until no switching has been done:
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    // Loop through all table rows (except the first, which contains table headers):
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      // Get the two elements you want to compare, one from current row and one from the next:
-      x = rows[i].getElementsByTagName("TD")[sort_by];
-      y = rows[i + 1].getElementsByTagName("TD")[sort_by];
-      // check if the two rows should switch place, based on the direction, asc or desc:
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
+    if (opts.columns && opts.columns > 1) {
+        let columns, j;
+        for (i = 0; i < Math.ceil(n / opts.columns); i++) {
+            columns = document.createElement('div');
+            columns.classList.add('columns');
+            for (j = 0; j < opts.columns && (i * opts.columns) + j < n; j++) {
+                columns.appendChild(arr[(i * opts.columns) + j]);
+            }
+            wrapper.appendChild(columns);
         }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
+    }
+    else {
+        for (i = 0; i < n; i++) {
+            wrapper.appendChild(arr[i]);
         }
-      }
     }
-    if (shouldSwitch) {
-      // If a switch has been marked, make the switch and mark that a switch has been done:
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      //Each time a switch is done, increase this count by 1:
-      switchcount ++;
-    } else {
-      //If no switching has been done AND the direction is "asc", set the direction to "desc" and run the while loop again.
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
 }
 
 document.addEventListener('mousedown', function (e) {
-    let target = getTarget(e, 'TH', 'SPAN', 'I');
+    let target = getTarget(e, 'DIV', 'SPAN', 'I');
 
     if (target.classList.contains('sort_btn')) {
         mouse_down_sort_by = parseInt(target.getAttribute('data-sort'));
@@ -304,14 +149,28 @@ document.addEventListener('mousedown', function (e) {
 }, false);
 
 document.addEventListener('mouseup', function (e) {
-    let target = getTarget(e, 'TH', 'SPAN', 'I');
+    let table = document.getElementById("compare_table");
+    let rows = table.rows;
+    heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
 
-    if (target.classList.contains('sort_btn')) {
-        heapSortTable(mouse_down_sort_by);
-        target.classList.remove('is-loading');
+    let cards_div = document.getElementById('cards');
+    let cards = [];
+    for (const card_row of cards_div.children) {
+        for (const card of card_row.children) {
+            cards.push(card);
+        }
+    }
+    heapSortGeneric(mouse_down_sort_by, cards_div, cards, {columns: 5});
+
+    updateColours();
+
+    let sorters = document.getElementsByClassName("sort_btn");
+    for (const sorter of sorters) {
+        sorter.classList.remove('is-loading');
     }
 }, false);
 
+// Card / Table switcher button
 document.addEventListener('click', function (e) {
     let target = getTarget(e, '', 'SPAN', 'I');
 
@@ -334,7 +193,7 @@ document.addEventListener('click', function (e) {
             grandchild.classList.add(second_fa);
             grandchild.classList.add(second_fa_short);
 
-            document.getElementById('compare_table').style.display = 'block';
+            document.getElementById('compare_table').style.display = 'table';
             document.getElementById('compare_cards').style.display = 'none';
         }
         else {
@@ -358,11 +217,11 @@ else if (table_cards === 'cards') {
 }
 
 function getTarget(e, parent = '', child = '', grandchild = '') {
-    e = e || window.event;
-    let target = e.target || e.srcElement, text = target.textContent || target.innerText;
+    e = e || Event;
+    let target = e.target || Event.target;
 
     if (target.tagName === parent) {
-        target = target.children[0];
+        target = target.firstElementChild;
     }
     else if (target.tagName === child) {
         target = target.parentElement;
@@ -372,4 +231,39 @@ function getTarget(e, parent = '', child = '', grandchild = '') {
     }
 
     return target;
+}
+
+function getItem(arr, num, sort_by) {
+    let result;
+    if (arr[num].cells) {
+        result = arr[num].cells[sort_by];
+    }
+    if (!result) {
+        result = arr[num].children[sort_by]
+    }
+    return result;
+}
+
+function getDataValue(item) {
+    let attr = item.getAttribute('data-value');
+    if (isNaN(attr)) {
+        return attr;
+    }
+    else {
+        return +attr;
+    }
+}
+
+function updateColours() {
+    let cards = document.getElementById('cards');
+    let colour = 'is-link';
+    for (const row of cards.children) {
+        for (const card of row.children) {
+            if (!card.classList.contains(colour)) {
+                card.classList.remove((colour === 'is-link') ? 'is-dark' : 'is-link');
+                card.classList.add(colour);
+            }
+            colour = (colour === 'is-link') ? 'is-dark' : 'is-link';
+        }
+    }
 }
