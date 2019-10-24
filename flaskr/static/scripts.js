@@ -12,20 +12,12 @@ function heapifyTable(arr, n, i, sort_by, dir) {
 
     if (left < n) {
         let arr_i, arr_left, i_comp, left_comp;
-        arr_i = arr[i].getElementsByTagName('td')[sort_by];
-        arr_left = arr[left].getElementsByTagName('td')[sort_by];
+        arr_i = getItem(arr, i, sort_by);
+        arr_left = getItem(arr, left, sort_by);
 
-        if (arr_i.hasAttribute('data-value') || arr_left.hasAttribute('data-value')) {
-            i_comp = +arr_i.getAttribute('data-value');
-            left_comp = +arr_left.getAttribute('data-value');
-        }
-        else if (isNaN(arr_i.innerHTML) || isNaN(arr_left.innerHTML)) {
-            i_comp = arr_i.innerHTML.toLowerCase();
-            left_comp = arr_left.innerHTML.toLowerCase();
-        } else {
-            i_comp = +arr_i.innerHTML;
-            left_comp = +arr_left.innerHTML;
-        }
+        i_comp = getDataValue(arr_i);
+        left_comp = getDataValue(arr_left);
+
         if (dir === 'asc') {
             if (i_comp < left_comp) {
                 largest = left;
@@ -40,20 +32,11 @@ function heapifyTable(arr, n, i, sort_by, dir) {
 
     if (right < n) {
         let arr_largest, arr_right, largest_comp, right_comp;
-        arr_largest = arr[largest].getElementsByTagName('td')[sort_by];
-        arr_right = arr[right].getElementsByTagName('td')[sort_by];
+        arr_largest = getItem(arr, largest, sort_by);
+        arr_right = getItem(arr, right, sort_by);
 
-        if (arr_largest.hasAttribute('data-value') || arr_right.hasAttribute('data-value')) {
-            largest_comp = +arr_largest.getAttribute('data-value');
-            right_comp = +arr_right.getAttribute('data-value');
-        }
-        else if (isNaN(arr_largest.innerHTML) || isNaN(arr_right.innerHTML)) {
-            largest_comp = arr_largest.innerHTML.toLowerCase();
-            right_comp = arr_right.innerHTML.toLowerCase();
-        } else {
-            largest_comp = +arr_largest.innerHTML;
-            right_comp = +arr_right.innerHTML;
-        }
+        largest_comp = getDataValue(arr_largest);
+        right_comp = getDataValue(arr_right);
         if (dir === 'asc') {
             if (largest_comp < right_comp) {
                 largest = right;
@@ -176,4 +159,25 @@ function getTarget(e, parent = '', child = '', grandchild = '') {
     }
 
     return target;
+}
+
+function getItem(arr, num, sort_by) {
+    let result;
+    if (arr[num].cells) {
+        result = arr[num].cells[sort_by];
+    }
+    if (!result) {
+        result = arr[num].children[sort_by]
+    }
+    return result;
+}
+
+function getDataValue(item) {
+    let attr = item.getAttribute('data-value');
+    if (isNaN(attr)) {
+        return attr;
+    }
+    else {
+        return +attr;
+    }
 }
