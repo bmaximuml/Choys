@@ -124,18 +124,10 @@
         <div id="cards">
             {% set number_of_columns = 5 %}
             {% for row in location_array|sort(attribute='score', reverse=True) %}
-    {#            {% if loop.index % 8 * 2 == 1 or loop.index % 8 == 3 or loop.index % 8 == 6 or loop.index % 8 == 0 %}#}
-                {% if loop.index % 10 == 1 or loop.index % 10 == 3 or loop.index % 10 == 5 or loop.index % 10 == 7 or loop.index % 10 == 9 %}
-                    {% set alternating = true %}
-                {% endif %}
                 {% if loop.index % number_of_columns == 1 %}
                     <div class="columns">
                 {% endif %}
-                    {% if alternating %}
-                        <div class="column notification is-link has-text-centered">
-                    {% else %}
-                        <div class="column notification is-dark has-text-centered">
-                    {% endif %}
+                    <div class="column notification is-{{ loop.cycle('link', 'dark') }} has-text-centered">
                         <div class="title level-item" data-value="{{ row.name }}"><strong>{{ row.name }}</strong></div>
                             <div data-value="{{ row.total_properties }}">
                                 <strong>{{ row.total_properties }}</strong>
@@ -180,7 +172,7 @@
                             </div>
 
                             <div class="notification is-light" data-value="{{ row.score }}">
-                                Score:&nbsp;<strong>{{ row.score }}</strong>
+                                Score:&nbsp;<strong>{{ row.score|round(3) }}</strong>
                             </div>
                         </div>
 
