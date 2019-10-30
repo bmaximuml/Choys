@@ -35,7 +35,7 @@ before_script:
   - export PATH="/usr/lib/postgresql/11/bin:$PATH"
   - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
   - psql -c 'create database travis_ci_test;' -U postgres
-  - psql travis_ci_test < tests/data.sql
+  - psql --dbname=${TEST_DATABASE_URL} < tests/data.sql
 
 script:
   - pytest -v --ignore=tests/test_services.py --ignore=tests/services/test_g_maps.py
