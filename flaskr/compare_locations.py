@@ -21,7 +21,8 @@ def index():
     all_locations = recent_data.fetchall()
 
     logger.info(f'Total Locations: {len(all_locations)}')
-    return render_template('compare_locations.html',
-                           location_array=all_locations,
-                           year=datetime.now().year
-                           )
+    return render_template(
+        'compare_locations.html',
+        location_array=all_locations,
+        year=datetime.now().year
+    )
