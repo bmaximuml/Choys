@@ -21,13 +21,14 @@ class ChoysPipeline(object):
                 location = Location(name=item['name'])
                 db.session.add(location)
                 db.session.commit()
-            rental_data = RentalData(total_properties=item['total_properties'],
-                                     average_rent=item['average_rent'],
-                                     rent_under_250=item['rent_under_250'],
-                                     rent_250_to_500=item['rent_250_to_500'],
-                                     datetime=datetime.utcnow(),
-                                     location_name=item['name']
-                                     )
+            rental_data = RentalData(
+                total_properties=item['total_properties'],
+                average_rent=item['average_rent'],
+                rent_under_250=item['rent_under_250'],
+                rent_250_to_500=item['rent_250_to_500'],
+                datetime=datetime.utcnow(),
+                location_name=item['name']
+            )
             db.session.add(rental_data)
             db.session.commit()
             logger.info(f"Inserted {item['name']} into database")
