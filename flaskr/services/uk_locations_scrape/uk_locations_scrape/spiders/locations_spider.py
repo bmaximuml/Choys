@@ -57,18 +57,22 @@ class LocationsSpider(Spider):
                 yield {
                     'name': current_location,
                     'total_properties': int(strip_commas(catch_and_zero(
-                        response, ('div:nth-child(3) tr:nth-child(1) '
-                                   'td:nth-child(2)::text')))),
+                        response,
+                        'div:nth-child(3) tr:nth-child(1) td:nth-child(2)::text'
+                    ))),
                     'average_rent': strip_commas(catch_and_zero(
-                        response, ('div:nth-child(3) tr:nth-child(3) '
-                                   'td:nth-child(2)::text'),
-                        '(?!£)\\d{1,3}(?:[,\\.]\\d{3})*(?= pcm)')),
+                        response,
+                        'div:nth-child(3) tr:nth-child(3) td:nth-child(2)::text',
+                        '(?!£)\\d{1,3}(?:[,\\.]\\d{3})*(?= pcm)'
+                    )),
                     'rent_under_250': int(strip_commas(catch_and_zero(
-                        response, ('div:nth-child(6) tr:nth-child(2) '
-                                   'td:nth-child(2)::text')))),
+                        response,
+                        'div:nth-child(6) tr:nth-child(2) td:nth-child(2)::text'
+                    ))),
                     'rent_250_to_500': int(strip_commas(catch_and_zero(
-                        response, ('div:nth-child(6) tr:nth-child(3) '
-                                   'td:nth-child(2)::text')))),
+                        response,
+                        'div:nth-child(6) tr:nth-child(3) td:nth-child(2)::text'
+                    ))),
                 }
             else:
                 raise DropItem(f"Invalid name: '{current_location}'")

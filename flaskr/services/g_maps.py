@@ -7,8 +7,14 @@ from requests import get
 from ..exceptions import InvalidModeError, NoResultsError, RequestError
 
 
-def get_distance_matrix(start, dest, mode='transit', language='en-GB',
-                        region='uk', units='metric'):
+def get_distance_matrix(
+    start,
+    dest,
+    mode='transit',
+    language='en-GB',
+    region='uk',
+    units='metric'
+):
     """Use the Google Maps Distance Matrix API to find the distance between
     two locations."""
     if mode not in ['driving', 'walking', 'bicycling', 'transit']:
@@ -17,10 +23,12 @@ def get_distance_matrix(start, dest, mode='transit', language='en-GB',
     weekday = datetime.weekday(datetime.now())
     days_until_saturday = 6 if weekday == 6 else 5 - weekday
 
-    midday_today = datetime.today().replace(hour=12, minute=0, second=0,
-                                            microsecond=0)
-    midday_sat = int(datetime.timestamp(midday_today
-                                        + timedelta(days=days_until_saturday)))
+    midday_today = datetime.today().replace(
+        hour=12, minute=0, second=0, microsecond=0
+    )
+    midday_sat = int(datetime.timestamp(
+        midday_today + timedelta(days=days_until_saturday))
+    )
     params = {
         'origins': f'{start}, UK',
         'destinations': dest,
@@ -32,8 +40,10 @@ def get_distance_matrix(start, dest, mode='transit', language='en-GB',
         'units': units,
     }
 
-    response = get("https://maps.googleapis.com/maps/api/distancematrix/json",
-                   params=params)
+    response = get(
+        "https://maps.googleapis.com/maps/api/distancematrix/json",
+        params=params
+    )
     r_json = response.json()
     if r_json['status']:
         element_status = r_json['rows'][0]['elements'][0]['status']
@@ -42,8 +52,9 @@ def get_distance_matrix(start, dest, mode='transit', language='en-GB',
             distance = r_json['rows'][0]['elements'][0]['distance']
             return duration, distance
         else:
-            raise NoResultsError(f'Could not find distance for {start}',
-                                 element_status)
+            raise NoResultsError(
+                f'Could not find distance for {start}', element_status
+            )
     else:
         raise RequestError(
             'Google Maps Distance Matrix request returned an error.',

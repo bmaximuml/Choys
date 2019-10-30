@@ -65,18 +65,34 @@ def calculate_scores():
     for loc in all_locations:
         logger.info(f'Calculating score for {loc.name}...')
         rental_data = get_data_for_location_name(RentalData, loc.name)
-        distance_matrix_data = get_data_for_location_name(DistanceMatrixData,
-                                                          loc.name)
+        distance_matrix_data = get_data_for_location_name(
+            DistanceMatrixData,
+            loc.name
+        )
         if rental_data is not None and distance_matrix_data is not None:
-            total_properties_score = (float(rental_data.total_properties)
-                                      ** 0.17) * 1.7
-            average_rent_score = ((float(rental_data.average_rent) ** -0.37)
-                                  * 150.0)
-            duration_to_london_score = ((float(distance_matrix_data.
-                                               duration_to_london) ** -0.24)
-                                        * 40.0)
-            score = (average_rent_score + duration_to_london_score
-                     + total_properties_score)
+            total_properties_score = (
+                (
+                    float(rental_data.total_properties)
+                    ** 0.17
+                ) * 1.7
+            )
+            average_rent_score = (
+                (
+                    float(rental_data.average_rent)
+                    ** -0.37
+                ) * 150.0
+            )
+            duration_to_london_score = (
+                (
+                    float(distance_matrix_data.duration_to_london)
+                    ** -0.24
+                ) * 40.0
+            )
+            score = (
+                average_rent_score
+                + duration_to_london_score
+                + total_properties_score
+            )
             db.session.add(Scores(
                 score=score,
                 datetime=datetime.utcnow(),
