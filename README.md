@@ -63,6 +63,8 @@ There are two environment variables available for this purpose; `DATABASE_URL` a
     Set the URL for the database to be a local postgres database called locations
 * `export GMAPI=<API_KEY>`
     Set the Google Maps Distance Matrix API key
+* `export FLASK_SECRET_KEY=<secret_key>`
+    Set a secret key to be used by Flask. This must be set in order for the application to function. More detail on the Flask secret key can be found in [the Flask docs](https://flask.palletsprojects.com/en/1.1.x/quickstart/#sessions).
 * `export FLASK_APP=flaskr`,
     Specify the directory to be targeted by the Flask development web server
 * `export FLASK_ENV=development` 
