@@ -20,21 +20,11 @@ matrix:
       python: 3.7
       env: dist="18.04 LTS bionic"
 
-before_install:
-  - sudo service postgresql stop
-  - sudo apt-get --yes remove postgresql\*
-  - sudo apt-get update; sudo apt-get install -y postgresql-11 postgresql-client-11
-  - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
-  - sudo service postgresql restart 11
-
 install:
   - pip3 install -r testing_requirements.txt
   - pip3 install .
 
 before_script:
-  - export PATH="/usr/lib/postgresql/11/bin:$PATH"
-  - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
-  - psql -c 'create database travis_ci_test;' -U postgres
   - psql --dbname=${TEST_DATABASE_URL} < tests/data.sql
 
 script:
