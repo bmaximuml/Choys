@@ -13,8 +13,6 @@ bp = Blueprint('compare_locations', __name__)
 def index():
     logger = logging.getLogger()
 
-    import os
-    print(os.listdir('.'))
     with open('flaskr/services/get_recent_data.sql') as sql_f:
         recent_data = db.engine.execute(sql_f.read())
 
