@@ -101,19 +101,36 @@
             {% for row in location_array|sort(attribute='score', reverse=True) %}
                 {% if row.total_properties > 0 %}
                     <tr>
-                        {% for cell in row %}
-                            {% if cell is string or cell is number %}
-                                <td data-value="{{ cell }}">
-                                    {% if cell == row.name %}
-                                        <strong>{{ cell }}</strong>
-                                    {% else %}
-                                        {{ cell }}
-                                    {% endif %}
-                                </td>
-                            {% else %}
-                                <td data-value="{{ cell[0] }}">{{ cell[1] }}</td>
-                            {% endif %}
-                        {% endfor %}
+                        <td data-value="{{ row.name }}">
+                            <strong>{{ row.name }}</strong>
+                        </td>
+                            <td data-value="{{ row.total_properties }}">
+                            {{ row.total_properties }}
+                        </td>
+                        </td>
+                            <td data-value="{{ row.average_rent }}">
+                            {{ row.average_rent }}
+                        </td>
+                        </td>
+                            <td data-value="{{ row.rent_under_250 }}">
+                            {{ row.rent_under_250 }}
+                        </td>
+                        </td>
+                            <td data-value="{{ row.rent_250_to_500 }}">
+                            {{ row.rent_250_to_500 }}
+                        </td>
+                        </td>
+                            <td data-value="{{ row.distance_to_london }}">
+                            {{ row.distance_to_london_text }}
+                        </td>
+                        </td>
+                            <td data-value="{{ row.duration_to_london }}">
+                            {{ row.duration_to_london_text }}
+                        </td>
+                        </td>
+                            <td data-value="{{ row.score }}">
+                            {{ row.score }}
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -163,12 +180,12 @@
                                 available between £250 and £500
                             </div>
 
-                            <div data-value="{{ row.distance_to_london[0] }}">
-                                <strong>{{ row.distance_to_london[1] }}</strong> to London
+                            <div data-value="{{ row.distance_to_london }}">
+                                <strong>{{ row.distance_to_london_text }}</strong> to London
                             </div>
 
-                            <div data-value="{{ row.duration_to_london[0] }}">
-                                <strong>{{ row.duration_to_london[1] }}</strong> to London
+                            <div data-value="{{ row.duration_to_london }}">
+                                <strong>{{ row.duration_to_london_text }}</strong> to London
                             </div>
 
                             <div class="notification is-light" data-value="{{ row.score }}">
