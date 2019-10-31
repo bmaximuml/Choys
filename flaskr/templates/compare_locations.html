@@ -138,65 +138,59 @@
     </table>
 
     <div id = 'compare_cards' class="box is-vertical">
-        <div id="cards">
-            {% set number_of_columns = 5 %}
-            {% for row in location_array|sort(attribute='score', reverse=True) %}
-                {% if loop.index % number_of_columns == 1 %}
-                    <div class="columns">
-                {% endif %}
-                    <div class="column notification is-{{ loop.cycle('link', 'dark') }} has-text-centered">
-                        <div class="title level-item" data-value="{{ row.name }}"><strong>{{ row.name }}</strong></div>
-                            <div data-value="{{ row.total_properties }}">
-                                <strong>{{ row.total_properties }}</strong>
-                                {% if row.total_properties == 1 %}
-                                    property
-                                {% else %}
-                                    properties
-                                {% endif %}
-                                available
-                            </div>
+        <div id="cards" class="tile is-ancestor is-vertical">
+            <div class="tile is-parent">
+                {% for row in location_array|sort(attribute='score', reverse=True) %}
+                        <div class="tile is-child notification is-{{ loop.cycle('link', 'dark') }} has-text-centered">
+                            <div class="title level-item" data-value="{{ row.name }}"><strong>{{ row.name }}</strong></div>
+                                <div data-value="{{ row.total_properties }}">
+                                    <strong>{{ row.total_properties }}</strong>
+                                    {% if row.total_properties == 1 %}
+                                        property
+                                    {% else %}
+                                        properties
+                                    {% endif %}
+                                    available
+                                </div>
 
-                            <div data-value="{{ row.average_rent }}">
-                                Average rent is <strong>£{{ row.average_rent }}</strong>
-                            </div>
+                                <div data-value="{{ row.average_rent }}">
+                                    Average rent is <strong>£{{ row.average_rent }}</strong>
+                                </div>
 
-                            <div data-value="{{ row.rent_under_250 }}">
-                                <strong>{{ row.rent_under_250 }}</strong>
-                                {% if row.rent_under_250 == 1 %}
-                                    property
-                                {% else %}
-                                    properties
-                                {% endif %}
-                                available under £250
-                            </div>
+                                <div data-value="{{ row.rent_under_250 }}">
+                                    <strong>{{ row.rent_under_250 }}</strong>
+                                    {% if row.rent_under_250 == 1 %}
+                                        property
+                                    {% else %}
+                                        properties
+                                    {% endif %}
+                                    available under £250
+                                </div>
 
-                            <div data-value="{{ row.rent_250_to_500 }}">
-                                <strong>{{ row.rent_250_to_500 }}</strong>
-                                {% if row.rent_250_to_500 == 1 %}
-                                    property
-                                {% else %}
-                                    properties
-                                {% endif %}
-                                available between £250 and £500
-                            </div>
+                                <div data-value="{{ row.rent_250_to_500 }}">
+                                    <strong>{{ row.rent_250_to_500 }}</strong>
+                                    {% if row.rent_250_to_500 == 1 %}
+                                        property
+                                    {% else %}
+                                        properties
+                                    {% endif %}
+                                    available between £250 and £500
+                                </div>
 
-                            <div data-value="{{ row.distance_to_london }}">
-                                <strong>{{ row.distance_to_london_text }}</strong> to London
-                            </div>
+                                <div data-value="{{ row.distance_to_london }}">
+                                    <strong>{{ row.distance_to_london_text }}</strong> to London
+                                </div>
 
-                            <div data-value="{{ row.duration_to_london }}">
-                                <strong>{{ row.duration_to_london_text }}</strong> to London
-                            </div>
+                                <div data-value="{{ row.duration_to_london }}">
+                                    <strong>{{ row.duration_to_london_text }}</strong> to London
+                                </div>
 
-                            <div class="notification is-light" data-value="{{ row.score }}">
-                                Score:&nbsp;<strong>{{ row.score|round(3) }}</strong>
+                                <div class="notification is-light" data-value="{{ row.score }}">
+                                    Score:&nbsp;<strong>{{ row.score|round(3) }}</strong>
+                                </div>
                             </div>
-                        </div>
-
-                {% if loop.index % number_of_columns == 0 %}
-                    </div>
-                {% endif %}
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
