@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en-gb" class="has-navbar-fixed-top">
+<html lang="en-GB" class="has-navbar-fixed-top">
 <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
         {% if title is defined %}
@@ -13,11 +14,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/all.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </head>
 <body>
 {#    <section class="hero is-primary">#}
-  <nav class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-fixed-top is-primary" aria-label="main navigation">
     {% block nav %}
         <div class="navbar-brand">
             <a class="navbar-item" href="/">
