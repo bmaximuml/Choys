@@ -12,10 +12,6 @@
     padding: 1.25rem 1.5rem;
 }
 
-div.notification.column.has-text-centered {
-    margin: 0.5rem;
-}
-
 table#compare_table, table#compare_table > tbody, table#compare_table > tbody > tr {
     width: 100%;
 }
