@@ -39,5 +39,6 @@ div#cards.tile.is-ancestor > div.tile.is-parent > div.tile.is-child {
 
 div#cards.tile.is-ancestor > div.tile.is-parent > div.tile.is-child > div:first-child {
     height: 15vh;
+    color: currentColor;
 }
 
