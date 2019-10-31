@@ -27,3 +27,13 @@ div.notification.column.has-text-centered {
 table#compare_table, table#compare_table > tbody, table#compare_table > tbody > tr {
     width: 100%;
 }
+
+div#cards.tile.is-ancestor > div.tile.is-parent {
+    flex-wrap: wrap;
+}
+
+div#cards.tile.is-ancestor > div.tile.is-parent > div.tile.is-child {
+    min-width: 16em;
+    margin: 0.5rem !important;
+}
+
