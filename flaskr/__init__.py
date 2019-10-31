@@ -83,6 +83,6 @@ def get_data_max(data, column):
 
 def get_location_data():
     from .model import db
-    with open('flaskr/services/get_recent_data.sql') as sql_f:
+    with open('flaskr/get_recent_data.sql') as sql_f:
         recent_data = db.engine.execute(sql_f.read())
     return recent_data.fetchall()
