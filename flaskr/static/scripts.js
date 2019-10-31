@@ -155,16 +155,17 @@ function getDataValue(item) {
 }
 
 function updateColours() {
-    let cards = document.getElementById('cards');
-    let colour = 'is-link';
-    for (const row of cards.children) {
-        for (const card of row.children) {
-            if (!card.classList.contains(colour)) {
-                card.classList.remove((colour === 'is-link') ? 'is-dark' : 'is-link');
-                card.classList.add(colour);
+    const cards = document.getElementById('cards').firstElementChild;
+    const colours = ['is-link', 'is-success', 'is-primary', 'is-warning', 'is-danger', 'is-dark'];
+    let colour = 0;
+    for (const card of cards.children) {
+        if (!card.classList.contains(colours[colour])) {
+            for (const rm_colour of colours) {
+                card.classList.remove(rm_colour);
             }
-            colour = (colour === 'is-link') ? 'is-dark' : 'is-link';
+            card.classList.add(colours[colour]);
         }
+        colour = (colour === colours.length - 1) ? 0 : colour + 1;
     }
 }
 
