@@ -37,3 +37,7 @@ div#cards.tile.is-ancestor > div.tile.is-parent > div.tile.is-child {
     margin: 0.5rem !important;
 }
 
+div#cards.tile.is-ancestor > div.tile.is-parent > div.tile.is-child > div:first-child {
+    height: 15vh;
+}
+
