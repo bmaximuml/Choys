@@ -116,11 +116,6 @@ function heapSortGeneric(sort_by, wrapper, items, opts) {
     }
 }
 
-if (table_cards === 'table') {
-}
-else if (table_cards === 'cards') {
-}
-
 function getTarget(e, parent = '', child = '', grandchild = '') {
     e = e || Event;
     let target = e.target || Event.target;
