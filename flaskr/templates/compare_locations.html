@@ -136,7 +136,10 @@
             <div class="tile is-parent">
                 {% for row in location_array|sort(attribute='score', reverse=True) %}
                         <div class="tile is-child notification is-{{ loop.cycle('link', 'dark') }} has-text-centered">
-                            <div class="title level-item" data-value="{{ row.name }}"><strong>{{ row.name }}</strong></div>
+                            <div class="title level-item" data-value="{{ row.name }}">
+                                <strong>{{ row.name }}</strong>
+                            </div>
+
                             <div data-value="{{ row.total_properties }}">
                                 <strong>{{ row.total_properties }}</strong>
                                 {% if row.total_properties == 1 %}
