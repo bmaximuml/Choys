@@ -207,14 +207,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         let rows = table.rows;
         heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
 
-        let cards_div = document.getElementById('cards');
-        let cards = [];
-        for (const card_row of cards_div.children) {
-            for (const card of card_row.children) {
-                cards.push(card);
-            }
-        }
-        heapSortGeneric(mouse_down_sort_by, cards_div, cards, {columns: 5});
+        let cards_div = document.getElementById('cards').firstElementChild;
+        heapSortGeneric(mouse_down_sort_by, cards_div, cards_div.children, {});
 
         updateColours();
 
