@@ -6,7 +6,7 @@ from os import environ
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from .. import get_data_for_location_name, get_data_max
+from .. import get_data_max, get_location_data
 from ..model import db, Location, RentalData, DistanceMatrixData, Scores
 from ..exceptions import NoResultsError
 from .uk_locations_scrape.uk_locations_scrape.spiders.locations_spider import LocationsSpider
@@ -57,50 +57,35 @@ def run_google_maps_distance_matrix(limit=None):
     db.session.commit()
 
 
+def score_component(component, power, multiplier):
+    if component is not None and component != 0:
+        return (float(component) ** power) * multiplier
+    else:
+        return 0
+
+
 def calculate_scores():
     """Calculate an updated score for each existing Location"""
-    all_locations = db.session.query(Location).all()
+    all_locations = get_location_data()
     logger = getLogger()
 
     for loc in all_locations:
         logger.info(f'Calculating score for {loc.name}...')
-        rental_data = get_data_for_location_name(RentalData, loc.name)
-        distance_matrix_data = get_data_for_location_name(
-            DistanceMatrixData,
-            loc.name
-        )
-        if rental_data is not None and distance_matrix_data is not None:
-            total_properties_score = (
-                (
-                    float(rental_data.total_properties)
-                    ** 0.17
-                ) * 1.7
-            )
-            average_rent_score = (
-                (
-                    float(rental_data.average_rent)
-                    ** -0.37
-                ) * 150.0
-            )
-            duration_to_london_score = (
-                (
-                    float(distance_matrix_data.duration_to_london)
-                    ** -0.24
-                ) * 40.0
-            )
-            score = (
-                average_rent_score
-                + duration_to_london_score
-                + total_properties_score
-            )
-            db.session.add(Scores(
-                score=score,
-                datetime=datetime.utcnow(),
-                location_name=loc.name,
-            ))
-            logger.info(f'Added score for {loc.name}.')
-        else:
-            logger.warning(f'Could not calculate score for {loc.name}')
+        score = 0
+        components = [
+            [loc.total_properties, 0.17, 1.7],
+            [loc.average_rent, -0.37, 150.0],
+            [loc.duration_to_london, -0.24, 40.0]
+        ]
+        for component in components:
+            score += score_component(*component)
+
+        db.session.add(Scores(
+            score=score,
+            datetime=datetime.utcnow(),
+            location_name=loc.name,
+        ))
+        logger.info(f'Added score for {loc.name}.')
     db.session.commit()
     logger.warning('Calculated scores.')
 

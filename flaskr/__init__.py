@@ -67,22 +67,6 @@ def create_app(test_config=None):
     return app
 
 
-def get_data_for_location_name(data, location_name):
-    from logging import getLogger
-    from sqlalchemy import desc
-    from .model import db  # , RentalData, DistanceMatrixData, Scores
-
-    logger = getLogger()
-    try:
-        result = db.session.query(data).filter(
-            location_name == data.location_name
-        ).order_by(desc(data.datetime)).first()
-        return result
-    except NameError:
-        logger.warning(f'Invalid data type: {repr(data)}')
-        return None
-
-
 def get_data_max(data, column):
     from logging import getLogger
     from sqlalchemy.sql.expression import func
@@ -96,3 +80,9 @@ def get_data_max(data, column):
         logger.warning(f"Invalid data type or column name: {repr(column)}")
         return None
 
+
+def get_location_data():
+    from .model import db
+    with open('flaskr/get_recent_data.sql') as sql_f:
+        recent_data = db.engine.execute(sql_f.read())
+    return recent_data.fetchall()
