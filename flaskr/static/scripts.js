@@ -116,101 +116,6 @@ function heapSortGeneric(sort_by, wrapper, items, opts) {
     }
 }
 
-document.addEventListener('mousedown', function (e) {
-    let target = getTarget(e, 'DIV', 'SPAN', 'I');
-
-    if (target.classList.contains('sort_btn')) {
-        mouse_down_sort_by = parseInt(target.getAttribute('data-sort'));
-        last_sort_dir = (last_sort_by === mouse_down_sort_by && last_sort_dir === 'asc' ? 'desc' : 'asc');
-        last_sort_by = mouse_down_sort_by;
-
-        let sort_btns = document.getElementsByClassName('sort_btn');
-        for (const btn of sort_btns) {
-            btn.classList.remove('is-selected');
-            btn.classList.remove('is-primary');
-            btn.classList.remove('is-danger');
-
-            btn.children[0].children[0].classList.remove('fa-chevron-up');
-            btn.children[0].children[0].classList.remove('fa-chevron-down');
-            btn.children[0].children[0].classList.remove('fa-chevron-right');
-            btn.children[0].children[0].classList.add('fa-chevron-right');
-        }
-        target.children[0].children[0].classList.remove('fa-chevron-right');
-        if (last_sort_dir === 'asc') {
-            target.classList.add('is-primary');
-            target.children[0].children[0].classList.add('fa-chevron-down');
-        } else {
-            target.classList.add('is-danger');
-            target.children[0].children[0].classList.add('fa-chevron-up');
-        }
-        target.classList.add('is-selected');
-        target.classList.add('is-loading');
-    }
-}, false);
-
-document.addEventListener('mouseup', function (e) {
-    let table = document.getElementById("compare_table");
-    let rows = table.rows;
-    heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
-
-    let cards_div = document.getElementById('cards');
-    let cards = [];
-    for (const card_row of cards_div.children) {
-        for (const card of card_row.children) {
-            cards.push(card);
-        }
-    }
-    heapSortGeneric(mouse_down_sort_by, cards_div, cards, {columns: 5});
-
-    updateColours();
-
-    let sorters = document.getElementsByClassName("sort_btn");
-    for (const sorter of sorters) {
-        sorter.classList.remove('is-loading');
-    }
-}, false);
-
-// Card / Table switcher button
-document.addEventListener('click', function (e) {
-    let target = getTarget(e, '', 'SPAN', 'I');
-
-    let grandchild = target.children[0].children[0];
-
-    let first_colour = 'is-danger';
-    let second_colour = 'is-link';
-    let first_fa = 'fa-list-alt';
-    let first_fa_short = 'far';
-    let second_fa = 'fa-th';
-    let second_fa_short = 'fas';
-
-    if (target.id === 'table-cards-btn') {
-        if (target.classList.contains(first_colour)) {
-            target.classList.remove(first_colour);
-            target.classList.add(second_colour);
-
-            grandchild.classList.remove(first_fa);
-            grandchild.classList.remove(first_fa_short);
-            grandchild.classList.add(second_fa);
-            grandchild.classList.add(second_fa_short);
-
-            document.getElementById('compare_table').style.display = 'table';
-            document.getElementById('compare_cards').style.display = 'none';
-        }
-        else {
-            target.classList.remove(second_colour);
-            target.classList.add(first_colour);
-
-            grandchild.classList.remove(second_fa);
-            grandchild.classList.remove(second_fa_short);
-            grandchild.classList.add(first_fa);
-            grandchild.classList.add(first_fa_short);
-
-            document.getElementById('compare_table').style.display = 'none';
-            document.getElementById('compare_cards').style.display = 'block';
-        }
-    }
-}, false);
-
 if (table_cards === 'table') {
 }
 else if (table_cards === 'cards') {
@@ -267,3 +172,100 @@ function updateColours() {
         }
     }
 }
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener('mousedown', function (e) {
+        let target = getTarget(e, 'DIV', 'SPAN', 'I');
+
+        if (target.classList.contains('sort_btn')) {
+            mouse_down_sort_by = parseInt(target.getAttribute('data-sort'));
+            last_sort_dir = (last_sort_by === mouse_down_sort_by && last_sort_dir === 'asc' ? 'desc' : 'asc');
+            last_sort_by = mouse_down_sort_by;
+
+            let sort_btns = document.getElementsByClassName('sort_btn');
+            for (const btn of sort_btns) {
+                btn.classList.remove('is-selected');
+                btn.classList.remove('is-primary');
+                btn.classList.remove('is-danger');
+
+                btn.children[0].children[0].classList.remove('fa-chevron-up');
+                btn.children[0].children[0].classList.remove('fa-chevron-down');
+                btn.children[0].children[0].classList.remove('fa-chevron-right');
+                btn.children[0].children[0].classList.add('fa-chevron-right');
+            }
+            target.children[0].children[0].classList.remove('fa-chevron-right');
+            if (last_sort_dir === 'asc') {
+                target.classList.add('is-primary');
+                target.children[0].children[0].classList.add('fa-chevron-down');
+            } else {
+                target.classList.add('is-danger');
+                target.children[0].children[0].classList.add('fa-chevron-up');
+            }
+            target.classList.add('is-selected');
+            target.classList.add('is-loading');
+        }
+    }, false);
+
+    document.addEventListener('mouseup', function (e) {
+        let table = document.getElementById("compare_table");
+        let rows = table.rows;
+        heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
+
+        let cards_div = document.getElementById('cards');
+        let cards = [];
+        for (const card_row of cards_div.children) {
+            for (const card of card_row.children) {
+                cards.push(card);
+            }
+        }
+        heapSortGeneric(mouse_down_sort_by, cards_div, cards, {columns: 5});
+
+        updateColours();
+
+        let sorters = document.getElementsByClassName("sort_btn");
+        for (const sorter of sorters) {
+            sorter.classList.remove('is-loading');
+        }
+    }, false);
+
+    // Card / Table switcher button
+    document.addEventListener('click', function (e) {
+        let target = getTarget(e, '', 'SPAN', 'I');
+
+        let grandchild = target.children[0].children[0];
+
+        let first_colour = 'is-danger';
+        let second_colour = 'is-link';
+        let first_fa = 'fa-list-alt';
+        let first_fa_short = 'far';
+        let second_fa = 'fa-th';
+        let second_fa_short = 'fas';
+
+        if (target.id === 'table-cards-btn') {
+            if (target.classList.contains(first_colour)) {
+                target.classList.remove(first_colour);
+                target.classList.add(second_colour);
+
+                grandchild.classList.remove(first_fa);
+                grandchild.classList.remove(first_fa_short);
+                grandchild.classList.add(second_fa);
+                grandchild.classList.add(second_fa_short);
+
+                document.getElementById('compare_table').style.display = 'table';
+                document.getElementById('compare_cards').style.display = 'none';
+            }
+            else {
+                target.classList.remove(second_colour);
+                target.classList.add(first_colour);
+
+                grandchild.classList.remove(second_fa);
+                grandchild.classList.remove(second_fa_short);
+                grandchild.classList.add(first_fa);
+                grandchild.classList.add(first_fa_short);
+
+                document.getElementById('compare_table').style.display = 'none';
+                document.getElementById('compare_cards').style.display = 'block';
+            }
+        }
+    }, false);
+});
