@@ -137,7 +137,7 @@
                 {% for row in location_array|sort(attribute='score', reverse=True) %}
                         <div class="tile is-child notification is-{{ loop.cycle('link', 'dark') }} has-text-centered">
                             <div class="title" data-value="{{ row.name }}">
-                                <strong>{{ row.name }}</strong>
+                                {{ row.name }}
                             </div>
 
                             <div data-value="{{ row.total_properties }}">
