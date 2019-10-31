@@ -13,12 +13,6 @@ from .uk_locations_scrape.uk_locations_scrape.spiders.locations_spider import Lo
 from .g_maps import get_distance_matrix
 
 
-def get_location_data():
-    with open('flaskr/services/get_recent_data.sql') as sql_f:
-        recent_data = db.engine.execute(sql_f.read())
-    return recent_data.fetchall()
-
-
 def run_uk_locations_scrape():
     """Run the scrapy spider to fetch rental data from home.co.uk"""
     environ['SCRAPY_SETTINGS_MODULE'] = ('Choys.flaskr.services.'

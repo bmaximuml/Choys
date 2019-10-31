@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 from flask import Blueprint, render_template
 
-from .services import get_location_data
+from . import get_location_data
 
 bp = Blueprint('compare_locations', __name__)
 
