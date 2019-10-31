@@ -169,7 +169,7 @@ function updateColours() {
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    document.addEventListener('mousedown', function (e) {
+    document.getElementById('sorters').addEventListener('mousedown', function (e) {
         let target = getTarget(e, 'DIV', 'SPAN', 'I');
 
         if (target.classList.contains('sort_btn')) {
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     }, false);
 
-    document.addEventListener('mouseup', function (e) {
+    document.getElementById('sorters').addEventListener('mouseup', function (e) {
         let table = document.getElementById("compare_table");
         let rows = table.rows;
         heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }, false);
 
     // Card / Table switcher button
-    document.addEventListener('click', function (e) {
+    document.getElementById('table-cards-btn').addEventListener('click', function (e) {
         let target = getTarget(e, '', 'SPAN', 'I');
 
         let grandchild = target.children[0].children[0];
