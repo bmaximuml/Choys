@@ -29,3 +29,11 @@ div#cards.tile.is-ancestor > div.tile.is-parent > div.tile.is-child > div.title 
     height: 15vh;
     color: currentColor;
 }
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+button {
+    outline: none;
+}
