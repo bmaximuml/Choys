@@ -15,6 +15,9 @@ You will first need to install *git* and *Python 3*.
 
 You will also need a database. Currently, the only supported database system is PostgreSQL 11.
 
+To connect to PostgreSQL, this application uses the _psycopg2_ package. This requires the _pg\_config_ program, which can be installed from the _libpq-dev_ package.
+* To install _libpq-dev_, run `apt-get install libpq-dev`.
+
 #### Installing and setting up PostgreSQL 11
 To install PostgreSQL 11 on Ubuntu 19.04, follow the instructions below.
 
