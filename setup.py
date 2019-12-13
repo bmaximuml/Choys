@@ -13,7 +13,7 @@ setup(
         'requests',
         'scrapy',
         'SQLAlchemy',
-        'Twisted==18.9.0',
+        'Twisted>=19.7.0',
     ],
 
     # metadata to display on PyPI
