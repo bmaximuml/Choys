@@ -81,3 +81,13 @@ There are two environment variables available for this purpose; `DATABASE_URL` a
 
 It is not recommended to use Flask's development server in a production environment.
 See [the Flask docs](https://flask.palletsprojects.com/en/1.1.x/deploying/#deployment) for more information on deploying a Flask-based application.
+
+## Editing
+
+This template uses SASS. After making changes to `static/sass/sass_styles.scss`,
+run the command `sass --no-source-map sass/sass_styles.scss:sass_styles.css` to
+regenerate the `static/sass_styles.css` file, which is looked at by the
+application.
+
+To run these commands, you will first need to install SASS.
+SASS installation instructions can be found [here](https://sass-lang.com/install).
