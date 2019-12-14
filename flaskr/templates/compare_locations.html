@@ -3,70 +3,26 @@
 
 {% block content %}
     <div id='sorters' class="field is-grouped">
-        <button id='name_btn' class='sort_btn button' data-sort='0' {# onclick="sortTable(0)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Location
-            </span>
-        </button>
-        <button id='total_properties_btn' class='sort_btn button' data-sort='1' {# onclick="sortTable(1)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Number of Properties
-            </span>
-        </button>
-        <button id='average_rent_btn' class='sort_btn button' data-sort='2' {# onclick="sortTable(2)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Average Rent (&#163; / pcm)
-            </span>
-        </button>
-        <button id='rent_under_250_btn' class='sort_btn button' data-sort='3' {# onclick="sortTable(3)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Number of properties under &#163;250 pcm
-            </span>
-        </button>
-        <button id='rent_250_to_500_btn' class='sort_btn button' data-sort='4' {# onclick="sortTable(4)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Number of properties between &#163;250 and &#163;500 pcm
-            </span>
-        </button>
-        <button id='distance_to_london' class='sort_btn button' data-sort='5' {# onclick="sortTable(5)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Distance to London
-            </span>
-        </button>
-        <button id='duration_to_london' class='sort_btn button' data-sort='6' {# onclick="sortTable(6)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Duration to London
-            </span>
-        </button>
-        <button id='score' class='sort_btn button is-selected is-primary' data-sort='7' {# onclick="sortTable(7)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-down"></i>
-            </span>
-            <span>
-                Score
-            </span>
-        </button>
+        {% set sorters = [
+            {'id': 'name_btn', 'extra_classes': '', 'data_sort': 0, 'label': 'Location'},
+            {'id': 'total_properties_btn', 'extra_classes': '', 'data_sort': 1, 'label': 'Number of Properties'},
+            {'id': 'average_rent_btn', 'extra_classes': '', 'data_sort': 2, 'label': 'Average Rent (£ / pcm)'},
+            {'id': 'rent_under_250_btn', 'extra_classes': '', 'data_sort': 3, 'label': 'Number of properties under £250 pcm'},
+            {'id': 'rent_250_to_500_btn', 'extra_classes': '', 'data_sort': 4, 'label': 'Number of properties between £250 and £500 pcm'},
+            {'id': 'distance_to_london', 'extra_classes': '', 'data_sort': 5, 'label': 'Distance to London'},
+            {'id': 'duration_to_london', 'extra_classes': '', 'data_sort': 6, 'label': 'Duration to London'},
+            {'id': 'score', 'extra_classes': 'is-selected is-primary', 'data_sort': 7, 'label': 'Score'}
+        ] %}
+        {% for sorter in sorters %}
+            <button id='{{ sorter['id']|e }}' class='sort_btn button {{ sorter['extra_classes']|e }}' data-sort={{ sorter['data_sort'] }}>
+                <span class="icon">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+                <span>
+                    {{ sorter['label']|e }}
+                </span>
+            </button>
+        {% endfor %}
     </div>
     <table id='compare_table' class="box table">
         <thead>
@@ -183,6 +139,14 @@
 {% endblock %}
 
 {% block navbar_end_add %}
+    <a class="button is-link" id="filter-btn">
+        <span>
+            Filter
+        </span>
+        <span class="icon">
+            <i class="fas fa-filter"></i>
+        </span>
+    </a>
     <a class="button is-danger" id="table-cards-btn">
         <span class="icon">
             <i class="far fa-list-alt"></i>
