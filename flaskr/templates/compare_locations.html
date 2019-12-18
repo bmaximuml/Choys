@@ -101,30 +101,21 @@
             {% for row in location_array|sort(attribute='score', reverse=True) %}
                 {% if row.total_properties > 0 %}
                     <tr>
-                        <td data-value="{{ row.name }}">
-                            <strong>{{ row.name }}</strong>
-                        </td>
-                            <td data-value="{{ row.total_properties }}">
-                            {{ row.total_properties }}
-                        </td>
-                            <td data-value="{{ row.average_rent }}">
-                            {{ row.average_rent }}
-                        </td>
-                            <td data-value="{{ row.rent_under_250 }}">
-                            {{ row.rent_under_250 }}
-                        </td>
-                            <td data-value="{{ row.rent_250_to_500 }}">
-                            {{ row.rent_250_to_500 }}
-                        </td>
-                            <td data-value="{{ row.distance_to_london }}">
-                            {{ row.distance_to_london_text }}
-                        </td>
-                            <td data-value="{{ row.duration_to_london }}">
-                            {{ row.duration_to_london_text }}
-                        </td>
-                            <td data-value="{{ row.score }}">
-                            {{ row.score }}
-                        </td>
+                        {% set row_data = [
+                            {'data_value': row.name, 'content': '<strong>' + row.name + '</strong>'},
+                            {'data_value': row.total_properties, 'content': row.total_properties},
+                            {'data_value': row.average_rent, 'content': row.average_rent},
+                            {'data_value': row.rent_under_250, 'content': row.rent_under_250},
+                            {'data_value': row.rent_250_to_500, 'content': row.rent_250_to_500},
+                            {'data_value': row.distance_to_london, 'content': row.distance_to_london},
+                            {'data_value': row.duration_to_london, 'content': row.duration_to_london},
+                            {'data_value': row.score, 'content': row.score},
+                        ] %}
+                        {% for cell in row_data %}
+                            <td data-value="{{ cell['data_value'] }}">
+                                {{ cell['content']|safe }}
+                            </td>
+                        {% endfor %}
                     </tr>
                 {% endif %}
             {% endfor %}
