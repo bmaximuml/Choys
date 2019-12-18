@@ -169,6 +169,14 @@ function updateColours() {
     }
 }
 
+function showFilterModal() {
+    document.getElementById('filter-modal').classList.add('is-active');
+}
+
+function hideFilterModal() {
+    document.getElementById('filter-modal').classList.remove('is-active');
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('sorters').addEventListener('mousedown', function (e) {
         let target = getTarget(e, 'DIV', 'SPAN', 'I');
@@ -258,4 +266,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
             }
         }
     }, false);
+
+    // Show filter modal on button click
+    document.getElementById('filter-btn').addEventListener('click', function() {
+        showFilterModal();
+    });
+
+    // Hide filter modal on x click
+    // Assumes there will be only one x element
+    document.getElementById('filter-modal').getElementsByClassName('modal-close')[0].addEventListener('click', function(){
+        hideFilterModal();
+    });
+
+    // Hide filter modal on modal background click
+    // Assumes there will be only one background element
+    document.getElementById('filter-modal').getElementsByClassName('modal-background')[0].addEventListener('click', function(){
+        hideFilterModal();
+    });
 });
