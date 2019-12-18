@@ -2,6 +2,13 @@
 {% set title = "Choys - main" %}
 
 {% block content %}
+    <div class="modal" id="filter-modal">
+       <div class="modal-background"></div>
+       <div class="modal-content">
+           <!-- Any other Bulma elements you want -->
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
     <div id='sorters' class="field is-grouped">
         {% set sorters = [
             {'id': 'name_btn', 'extra_classes': '', 'data_sort': 0, 'label': 'Location'},
