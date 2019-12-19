@@ -3,9 +3,40 @@
 
 {% block content %}
     <div class="modal" id="filter-modal">
-       <div class="modal-background"></div>
-       <div class="modal-content">
-           <!-- Any other Bulma elements you want -->
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <form>
+                    {% set sliders = [
+                        {'id': 'total_properties', 'title': 'Number of Properties'},
+                        {'id': 'average_rent', 'title': 'Average Rent (£ / pcm)'},
+                        {'id': 'rent_under_250', 'title': 'Number of properties under £250 pcm'},
+                        {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm'},
+                        {'id': 'distance_to_london', 'title': 'Distance to London'},
+                        {'id': 'duration_to_london', 'title': 'Duration to London'},
+                        {'id': 'score', 'title': 'Score'}
+                    ] %}
+                    <table class="table">
+                        {% for slider in sliders %}
+                            {% set min = location_array|sort(attribute=slider['id'], reverse=False)|first()|attr(slider['id'])|round(0, 'floor') %}
+                            {% set max = location_array|sort(attribute=slider['id'], reverse=True)|first()|attr(slider['id'])|round(0, 'ceil') %}
+                            <tr>
+                                <td>
+                                    <label for="{{ slider['id'] }}_range">
+                                        {{ slider['title'] }}
+                                    </label>
+                                </td>
+                                <td>
+                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range">
+                                </td>
+                                <td>
+                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" id="{{ slider['id'] }}_value">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </form>
+            </div>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
