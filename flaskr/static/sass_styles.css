@@ -1,5 +1,6 @@
 @charset "UTF-8";
 /*! bulma.io v0.8.0 | MIT License | github.com/jgthms/bulma */
+@import 'bulma-slider.mis.css';
 @keyframes spinAround {
   from {
     transform: rotate(0deg);

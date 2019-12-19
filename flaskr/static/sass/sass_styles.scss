@@ -37,3 +37,6 @@ $beige-lighter: #EFF0EB;
 // @import "../node_modules/bulma/sass/layout/section.sass";
 @import "../bulma/bulma.sass";
 
+
+// Import Extensions
+@import "../bulma/sass/extensions/_all.sass"
