@@ -177,6 +177,32 @@ function hideFilterModal() {
     document.getElementById('filter-modal').classList.remove('is-active');
 }
 
+
+// Find output element associated to the DOM element passed as parameter
+// Assumes there is only one output for the given element
+// If there is more than one output element, will return the last one in the DOM
+function findOutputForSlider(element) {
+    let result = null;
+    document.querySelectorAll('input[type=number].slider-output').forEach(output => {
+        if (output.dataset.for === element.id) {
+            result = output;
+        }
+    });
+    return result;
+}
+
+function updateModalSliderOutput(slider) {
+    const output = findOutputForSlider(slider);
+    if (output)
+        output.value = Math.round(slider.value);
+}
+
+function updateAllModalSliderOutputs() {
+    const sliders = document.querySelectorAll('input[type="range"].slider');
+    sliders.forEach(slider => updateModalSliderOutput(slider));
+}
+
+
 document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('sorters').addEventListener('mousedown', function (e) {
         let target = getTarget(e, 'DIV', 'SPAN', 'I');
@@ -283,4 +309,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('filter-modal').getElementsByClassName('modal-background')[0].addEventListener('click', function(){
         hideFilterModal();
     });
+
+    updateAllModalSliderOutputs();
 });
