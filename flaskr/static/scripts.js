@@ -238,6 +238,17 @@ function addEventListenerSliderOutputs(outputs) {
     outputs.forEach(output => addEventListenerSliderOutput(output));
 }
 
+// Hides filter modal on click of element which is a descendent of the specified id, and is of the specified class.
+function idClassAddEventHideFilterModal(idName, className) {
+    Array.from(document.getElementById(idName).getElementsByClassName(className)).forEach(item => item.addEventListener('click', () => hideFilterModal()));
+}
+
+// Hides filter modal on click of element of specified class which is a descendent of any of the specified ids, and is of any of the specified classes.
+function idsClassesAddEventHideFilterModal(idNames, classNames) {
+    idNames.forEach(idName => classNames.forEach(className => idClassAddEventHideFilterModal(idName, className)));
+}
+
+
 document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('sorters').addEventListener('mousedown', function (e) {
         let target = getTarget(e, 'DIV', 'SPAN', 'I');
@@ -333,21 +344,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         showFilterModal();
     });
 
-    // Hide filter modal on x click
-    // Assumes there will be only one x element
-    document.getElementById('filter-modal').getElementsByClassName('modal-close')[0].addEventListener('click', function(){
-        hideFilterModal();
-    });
-
-    // Hide filter modal on modal background click
-    // Assumes there will be only one background element
-    document.getElementById('filter-modal').getElementsByClassName('modal-background')[0].addEventListener('click', function(){
-        hideFilterModal();
-    });
-
     const sliders = document.querySelectorAll('input[type="range"].slider');
     const outputs = document.querySelectorAll('input[type="number"].slider-output');
 
+    idsClassesAddEventHideFilterModal(['filter-modal'], ['filter-modal-close', 'modal-close', 'modal-background']);
     addEventListenerSliders(sliders);
     addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
