@@ -191,6 +191,25 @@ function findOutputForSlider(element) {
     return result;
 }
 
+// Find slider element associated to the DOM element passed as parameter
+// Assumes there is only one slider for the given element
+// If there is more than one slider element, will return the last one in the DOM
+function findSliderForOutput(element) {
+    let result = null;
+    document.querySelectorAll('input[type=range].slider').forEach(slider => {
+        if (slider.id === element.dataset.for) {
+            result = slider;
+        }
+    });
+    return result;
+}
+
+function updateModalSlider(output) {
+    const slider = findSliderForOutput(output);
+    if (slider)
+        slider.value = output.value;
+}
+
 function updateModalSliderOutput(slider) {
     const output = findOutputForSlider(slider);
     if (output)
@@ -209,6 +228,14 @@ function addEventListenerSlider(slider) {
 
 function addEventListenerSliders(sliders) {
     sliders.forEach(slider => addEventListenerSlider(slider));
+}
+
+function addEventListenerSliderOutput(output) {
+    output.addEventListener('change', () => updateModalSlider(output));
+}
+
+function addEventListenerSliderOutputs(outputs) {
+    outputs.forEach(output => addEventListenerSliderOutput(output));
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -319,7 +346,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     const sliders = document.querySelectorAll('input[type="range"].slider');
+    const outputs = document.querySelectorAll('input[type="number"].slider-output');
 
     addEventListenerSliders(sliders);
+    addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
 });
