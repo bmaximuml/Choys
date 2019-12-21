@@ -202,6 +202,14 @@ function updateAllModalSliderOutputs() {
     sliders.forEach(slider => updateModalSliderOutput(slider));
 }
 
+function addEventListenerSlider(slider) {
+    slider.addEventListener('mousemove', () => updateModalSliderOutput(slider));
+    slider.addEventListener('change', () => updateModalSliderOutput(slider));
+}
+
+function addEventListenerSliders(sliders) {
+    sliders.forEach(slider => addEventListenerSlider(slider));
+}
 
 document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('sorters').addEventListener('mousedown', function (e) {
@@ -310,5 +318,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         hideFilterModal();
     });
 
+    const sliders = document.querySelectorAll('input[type="range"].slider');
+
+    addEventListenerSliders(sliders);
     updateAllModalSliderOutputs();
 });
