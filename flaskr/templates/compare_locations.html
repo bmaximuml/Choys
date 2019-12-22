@@ -16,6 +16,7 @@
                         {'id': 'duration_to_london', 'title': 'Duration to London'},
                         {'id': 'score', 'title': 'Score'}
                     ] %}
+                    <div>These sliders currently set the maximum allowed value</div>
                     <table class="table">
                         {% for slider in sliders %}
                             {% set min = location_array|sort(attribute=slider['id'], reverse=False)|first()|attr(slider['id'])|round(0, 'floor') %}
