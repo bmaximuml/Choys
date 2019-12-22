@@ -116,6 +116,16 @@ function heapSortGeneric(sort_by, wrapper, items, opts) {
     }
 }
 
+// Return an HTMLCollection of all cards
+function getAllCards() {
+    const grandparent = document.getElementById('cards');
+    if (grandparent && grandparent.hasChildNodes()) {
+        const parent = grandparent.firstElementChild;
+        if (parent && parent.hasChildNodes())
+            return parent.childNodes;
+    }
+}
+
 function getTarget(e, parent = '', child = '', grandchild = '') {
     e = e || Event;
     let target = e.target || Event.target;
@@ -152,6 +162,11 @@ function getDataValue(item) {
     else {
         return +attr;
     }
+}
+
+// Return true if an element is current shown (not hidden), false otherwise
+function isShown(element) {
+    return element.classList && !(element.classList.contains('is-hidden'))
 }
 
 function updateColours() {
