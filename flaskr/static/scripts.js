@@ -174,13 +174,15 @@ function updateColours() {
     const colours = ['is-link', 'is-success', 'is-primary', 'is-warning', 'is-danger', 'is-dark'];
     let colour = 0;
     for (const card of cards.children) {
-        if (!card.classList.contains(colours[colour])) {
-            for (const rm_colour of colours) {
-                card.classList.remove(rm_colour);
+        if (isShown(card)) {
+            if (!card.classList.contains(colours[colour])) {
+                for (const rm_colour of colours) {
+                    card.classList.remove(rm_colour);
+                }
+                card.classList.add(colours[colour]);
             }
-            card.classList.add(colours[colour]);
+            colour = (colour === colours.length - 1) ? 0 : colour + 1;
         }
-        colour = (colour === colours.length - 1) ? 0 : colour + 1;
     }
 }
 
