@@ -190,6 +190,8 @@ function showFilterModal() {
 
 function hideFilterModal() {
     document.getElementById('filter-modal').classList.remove('is-active');
+    hideFilterModalLoading();
+    showFilterModalSliders();
 }
 
 function showFilterModalSliders() {
