@@ -291,6 +291,30 @@ function idsClassesAddEventHideFilterModal(idNames, classNames) {
     idNames.forEach(idName => classNames.forEach(className => idClassAddEventHideFilterModal(idName, className)));
 }
 
+// Returns value of a particular category for a given element
+// Will perform a recursive DFS of element's children until a value is found
+// If multiple children exist, will return the value for the first one found
+function getCategoryValueForElement(element, category) {
+    let result = null;
+    if (element.classList && element.dataset.category === category)
+        return element.dataset.value;
+    if (element.hasChildNodes() > 0) {
+        element.childNodes.forEach(child => {
+            const child_result =  getCategoryValueForElement(child, category);
+            if (child_result)
+                result = child_result
+        });
+    }
+    return result;
+}
+
+// Returns value of a slider for a given category
+function getSliderValueForCategory(category) {
+    const slider = document.getElementById(category + '_range');
+    if (slider)
+        return slider.value;
+}
+
 
 document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('sorters').addEventListener('mousedown', function (e) {
