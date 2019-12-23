@@ -192,6 +192,30 @@ function hideFilterModal() {
     document.getElementById('filter-modal').classList.remove('is-active');
 }
 
+function showFilterModalSliders() {
+    document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-sliders'
+    ).classList.remove('is-hidden');
+}
+
+function hideFilterModalSliders() {
+    document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-sliders'
+    ).classList.add('is-hidden');
+}
+
+function showFilterModalLoading() {
+    document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-loading'
+    ).classList.remove('is-hidden');
+}
+
+function hideFilterModalLoading() {
+    document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-loading'
+    ).classList.add('is-hidden');
+}
+
 
 // Find output element associated to the DOM element passed as parameter
 // Assumes there is only one output for the given element
