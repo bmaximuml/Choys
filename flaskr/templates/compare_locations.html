@@ -1,6 +1,16 @@
 {% extends 'default.html' %}
 {% set title = "Choys - main" %}
 
+{% set categories = [
+    {'id': 'name', 'title': 'Location', 'extra_classes': '', 'data_sort': 0},
+    {'id': 'total_properties', 'title': 'Number of Properties', 'extra_classes': '', 'data_sort': 1},
+    {'id': 'average_rent', 'title': 'Average Rent (£ / pcm)', 'extra_classes': '', 'data_sort': 2},
+    {'id': 'rent_under_250', 'title': 'Number of properties under £250 pcm', 'extra_classes': '', 'data_sort': 3},
+    {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm', 'extra_classes': '', 'data_sort': 4},
+    {'id': 'distance_to_london', 'title': 'Distance to London', 'extra_classes': '', 'data_sort': 5},
+    {'id': 'duration_to_london', 'title': 'Duration to London', 'extra_classes': '', 'data_sort': 6},
+    {'id': 'score', 'title': 'Score', 'extra_classes': 'is-selected is-primary', 'data_sort': 7}
+] %}
 {% block content %}
     <div class="modal" id="filter-modal">
         <div class="modal-background filter-modal-close"></div>
