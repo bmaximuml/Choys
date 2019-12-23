@@ -281,14 +281,19 @@ function addEventListenerSliderOutputs(outputs) {
     outputs.forEach(output => addEventListenerSliderOutput(output));
 }
 
+// Add an event listener on the given element to filter the cards
+function addEventFilterCards(element) {
+    element.addEventListener('click', () => hideFilterModal());
+}
+
 // Hides filter modal on click of element which is a descendent of the specified id, and is of the specified class.
-function idClassAddEventHideFilterModal(idName, className) {
-    Array.from(document.getElementById(idName).getElementsByClassName(className)).forEach(item => item.addEventListener('click', () => hideFilterModal()));
+function idClassAddEventFilterCards(idName, className) {
+    Array.from(document.getElementById(idName).getElementsByClassName(className)).forEach(item => addEventFilterCards(item));
 }
 
 // Hides filter modal on click of element of specified class which is a descendent of any of the specified ids, and is of any of the specified classes.
-function idsClassesAddEventHideFilterModal(idNames, classNames) {
-    idNames.forEach(idName => classNames.forEach(className => idClassAddEventHideFilterModal(idName, className)));
+function idsClassesAddEventFilterCards(idNames, classNames) {
+    idNames.forEach(idName => classNames.forEach(className => idClassAddEventFilterCards(idName, className)));
 }
 
 // Returns value of a particular category for a given element
@@ -414,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const sliders = document.querySelectorAll('input[type="range"].slider');
     const outputs = document.querySelectorAll('input[type="number"].slider-output');
 
-    idsClassesAddEventHideFilterModal(['filter-modal'], ['filter-modal-close', 'modal-close', 'modal-background']);
+    idsClassesAddEventFilterCards(['filter-modal'], ['filter-modal-close', 'modal-close', 'modal-background']);
     addEventListenerSliders(sliders);
     addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
