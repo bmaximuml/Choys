@@ -17,18 +17,9 @@
         <div class="modal-content">
             <div class="box modal-sliders">
                 <form>
-                    {% set sliders = [
-                        {'id': 'total_properties', 'title': 'Number of Properties'},
-                        {'id': 'average_rent', 'title': 'Average Rent (£ / pcm)'},
-                        {'id': 'rent_under_250', 'title': 'Number of properties under £250 pcm'},
-                        {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm'},
-                        {'id': 'distance_to_london', 'title': 'Distance to London'},
-                        {'id': 'duration_to_london', 'title': 'Duration to London'},
-                        {'id': 'score', 'title': 'Score'}
-                    ] %}
                     <div>These sliders currently set the maximum allowed value</div>
                     <table class="table">
-                        {% for slider in sliders %}
+                        {% for slider in categories[1:] %}
                             {% set min = location_array|sort(attribute=slider['id'], reverse=False)|first()|attr(slider['id'])|round(0, 'floor') %}
                             {% set max = location_array|sort(attribute=slider['id'], reverse=True)|first()|attr(slider['id'])|round(0, 'ceil') %}
                             <tr>
@@ -57,23 +48,13 @@
         <button class="modal-close filter-modal-close is-large" aria-label="close"></button>
     </div>
     <div id='sorters' class="field is-grouped">
-        {% set sorters = [
-            {'id': 'name_btn', 'extra_classes': '', 'data_sort': 0, 'label': 'Location'},
-            {'id': 'total_properties_btn', 'extra_classes': '', 'data_sort': 1, 'label': 'Number of Properties'},
-            {'id': 'average_rent_btn', 'extra_classes': '', 'data_sort': 2, 'label': 'Average Rent (£ / pcm)'},
-            {'id': 'rent_under_250_btn', 'extra_classes': '', 'data_sort': 3, 'label': 'Number of properties under £250 pcm'},
-            {'id': 'rent_250_to_500_btn', 'extra_classes': '', 'data_sort': 4, 'label': 'Number of properties between £250 and £500 pcm'},
-            {'id': 'distance_to_london', 'extra_classes': '', 'data_sort': 5, 'label': 'Distance to London'},
-            {'id': 'duration_to_london', 'extra_classes': '', 'data_sort': 6, 'label': 'Duration to London'},
-            {'id': 'score', 'extra_classes': 'is-selected is-primary', 'data_sort': 7, 'label': 'Score'}
-        ] %}
-        {% for sorter in sorters %}
-            <button id='{{ sorter['id']|e }}' class='sort_btn button {{ sorter['extra_classes']|e }}' data-sort={{ sorter['data_sort'] }}>
+        {% for sorter in categories %}
+            <button id='{{ sorter['id']|e }}' class='sort_btn button {{ sorter['extra_classes'] }}' data-sort={{ loop.index0 }}>
                 <span class="icon">
                     <i class="fas fa-chevron-right"></i>
                 </span>
                 <span>
-                    {{ sorter['label']|e }}
+                    {{ sorter['title'] }}
                 </span>
             </button>
         {% endfor %}
@@ -81,30 +62,11 @@
     <table id='compare_table' class="box table">
         <thead>
             <tr>
-                <th>
-                    Location
-                </th>
-                <th>
-                    Number of Properties
-                </th>
-                <th>
-                    Average Rent (&#163; / pcm)
-                </th>
-                <th>
-                    Number of properties under &#163;250 pcm
-                </th>
-                <th>
-                    Number of properties between &#163;250 and &#163;500 pcm
-                </th>
-                <th>
-                    Distance to London
-                </th>
-                <th>
-                    Duration to London
-                </th>
-                <th>
-                    Score
-                </th>
+                {% for category in categories %}
+                    <th>
+                        {{ category['title'] }}
+                    </th>
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
