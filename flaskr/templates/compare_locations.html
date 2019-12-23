@@ -84,7 +84,7 @@
                             {'data_value': row.score, 'content': row.score},
                         ] %}
                         {% for cell in row_data %}
-                            <td data-value="{{ cell['data_value'] }}">
+                            <td data-value="{{ cell['data_value'] }}" data-category="{{ categories[loop.index0]['id'] }}">
                                 {{ cell['content']|safe }}
                             </td>
                         {% endfor %}
