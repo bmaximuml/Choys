@@ -454,4 +454,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
     addEventListenerSliders(sliders);
     addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
+    finishFilterCards();
 });
