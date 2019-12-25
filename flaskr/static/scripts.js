@@ -285,7 +285,7 @@ function addEventListenerSliderOutputs(outputs) {
     outputs.forEach(output => addEventListenerSliderOutput(output));
 }
 
-// Add an event listener on the given element to filter the cards
+// Add an event listener on click of the given element to filter the cards
 function addEventFilterCards(element) {
     element.addEventListener('mousedown', () => startFilterCards());
     element.addEventListener('mouseup', () => finishFilterCards());
