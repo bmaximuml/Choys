@@ -251,6 +251,10 @@ function getAllSliders() {
     return document.querySelectorAll('input[type=range].slider');
 }
 
+function getAllRows() {
+    return document.querySelectorAll('table#compare_table tr');
+}
+
 function updateModalSlider(output) {
     const slider = findSliderForOutput(output);
     if (slider)
@@ -339,6 +343,22 @@ function finishFilterCards() {
     hideFilterModal();
 }
 
+function filterTable() {
+    const all_rows = getAllRows();
+    const all_sliders = getAllSliders();
+
+    all_rows.forEach(row => {
+        all_sliders.forEach(slider => {
+            if (row.nodeName === 'TR') {
+                const row_value = getCategoryValueForElement(row, slider.dataset.category);
+                if (row_value > slider.value && isShown(row))
+                    row.classList.add('is-hidden');
+                else if (row_value <= slider.value && !isShown(row))
+                    row.classList.remove('is-hidden');
+            }
+        })
+    })
+}
 
 document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById('sorters').addEventListener('mousedown', function (e) {
