@@ -313,13 +313,6 @@ function getCategoryValueForElement(element, category) {
     return result;
 }
 
-// Returns value of a slider for a given category
-function getSliderValueForCategory(category) {
-    const slider = document.getElementById(category + '_range');
-    if (slider)
-        return slider.value;
-}
-
 function startFilterCards() {
     showFilterModal();
     hideFilterModalSliders();
