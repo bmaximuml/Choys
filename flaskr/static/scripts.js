@@ -247,6 +247,10 @@ function findSliderForOutput(element) {
     return result;
 }
 
+function getAllSliders() {
+    return document.querySelectorAll('input[type=range].slider');
+}
+
 function updateModalSlider(output) {
     const slider = findSliderForOutput(output);
     if (slider)
@@ -283,7 +287,8 @@ function addEventListenerSliderOutputs(outputs) {
 
 // Add an event listener on the given element to filter the cards
 function addEventFilterCards(element) {
-    element.addEventListener('click', () => hideFilterModal());
+    element.addEventListener('mousedown', () => startFilterCards());
+    element.addEventListener('mouseup', () => finishFilterCards());
 }
 
 // Hides filter modal on click of element which is a descendent of the specified id, and is of the specified class.
@@ -318,6 +323,32 @@ function getSliderValueForCategory(category) {
     const slider = document.getElementById(category + '_range');
     if (slider)
         return slider.value;
+}
+
+function startFilterCards() {
+    showFilterModal();
+    hideFilterModalSliders();
+    showFilterModalLoading();
+}
+
+function finishFilterCards() {
+    const all_cards = getAllCards();
+    const all_sliders = getAllSliders();
+
+    all_cards.forEach(card => {
+        all_sliders.forEach(slider => {
+            if (card.classList && card.classList.contains('tile')) {
+                const card_value = getCategoryValueForElement(card, slider.dataset.category);
+                if (card_value > slider.value && isShown(card))
+                    card.classList.add('is-hidden');
+                else if (card_value <= slider.value && !isShown(card))
+                    card.classList.remove('is-hidden');
+            }
+        });
+    });
+
+    updateColours();
+    hideFilterModal();
 }
 
 
