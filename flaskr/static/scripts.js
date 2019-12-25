@@ -275,6 +275,10 @@ function getAllSliderOutputs() {
     return document.querySelectorAll('input[type=number].slider-output');
 }
 
+function getAllSwitches() {
+    return document.querySelectorAll('select.slider-switch');
+}
+
 function getAllRows() {
     return document.querySelectorAll('table#compare_table tr');
 }
@@ -360,14 +364,16 @@ function startFiltering() {
 
 function filter(data, element_type) {
     const all_sliders = getAllSliders();
+    const all_switches = getAllSwitches();
 
     data.forEach(element => {
-        all_sliders.forEach(slider => {
+        all_sliders.forEach((slider, i) => {
             if (element.nodeName === element_type) {
                 const element_value = getCategoryValueForElement(element, slider.dataset.category);
-                if (element_value > slider.value)
+                if ((all_switches[i].value === 'or-more' && element_value < slider.value)
+                        || (all_switches[i].value === 'or-less' && element_value > slider.value))
                     hide(element);
-                else if (element_value <= slider.value)
+                else
                     show(element);
             }
         });
