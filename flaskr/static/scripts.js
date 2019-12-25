@@ -169,6 +169,18 @@ function isShown(element) {
     return element.classList && !(element.classList.contains('is-hidden'))
 }
 
+function hide(element) {
+    if (isShown(element)) {
+        element.classList.add('is-hidden');
+    }
+}
+
+function show(element) {
+    if (!isShown(element)) {
+        element.classList.remove('is-hidden');
+    }
+}
+
 function updateColours() {
     const cards = document.getElementById('cards').firstElementChild;
     const colours = ['is-link', 'is-success', 'is-primary', 'is-warning', 'is-danger', 'is-dark'];
@@ -197,27 +209,27 @@ function hideFilterModal() {
 }
 
 function showFilterModalSliders() {
-    document.querySelector(
+    show(document.querySelector(
         'div#filter-modal.modal > div.modal-content > div.modal-sliders'
-    ).classList.remove('is-hidden');
+    ));
 }
 
 function hideFilterModalSliders() {
-    document.querySelector(
+    hide(document.querySelector(
         'div#filter-modal.modal > div.modal-content > div.modal-sliders'
-    ).classList.add('is-hidden');
+    ));
 }
 
 function showFilterModalLoading() {
-    document.querySelector(
+    show(document.querySelector(
         'div#filter-modal.modal > div.modal-content > div.modal-loading'
-    ).classList.remove('is-hidden');
+    ));
 }
 
 function hideFilterModalLoading() {
-    document.querySelector(
+    hide(document.querySelector(
         'div#filter-modal.modal > div.modal-content > div.modal-loading'
-    ).classList.add('is-hidden');
+    ));
 }
 
 
@@ -331,10 +343,10 @@ function filter(data, element_type) {
         all_sliders.forEach(slider => {
             if (element.nodeName === element_type) {
                 const element_value = getCategoryValueForElement(element, slider.dataset.category);
-                if (element_value > slider.value && isShown(element))
-                    element.classList.add('is-hidden');
-                else if (element_value <= slider.value && !isShown(element))
-                    element.classList.remove('is-hidden');
+                if (element_value > slider.value)
+                    hide(element);
+                else if (element_value <= slider.value)
+                    show(element);
             }
         });
     });
