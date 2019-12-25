@@ -325,6 +325,16 @@ function addEventsFilter(className) {
     Array.from(document.getElementsByClassName(className)).forEach(item => addEventFilter(item));
 }
 
+// Add an event listener on click of the given element to reset the filters
+function addEventReset(element) {
+    element.addEventListener('click', () => resetFilters());
+}
+
+// Add an event listener on click of descendents of the given class to reset the filters
+function addEventsReset(className) {
+    Array.from(document.getElementsByClassName(className)).forEach(item => addEventReset(item));
+}
+
 // Returns value of a particular category for a given element
 // Will perform a recursive DFS of element's children until a value is found
 // If multiple children exist, will return the value for the first one found
@@ -486,6 +496,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     addEventsFilter('filter-modal-close');
     addEventsFilter('modal-loading');
+    addEventsReset('filter-modal-reset');
     addEventListenerSliders(sliders);
     addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
