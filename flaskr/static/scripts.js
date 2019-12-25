@@ -237,6 +237,9 @@ function hideFilterModalLoading() {
     ));
 }
 
+function setElementMaxValue(element) {
+    element.value = element.max;
+}
 
 // Find output element associated to the DOM element passed as parameter
 // Assumes there is only one output for the given element
@@ -266,6 +269,10 @@ function findSliderForOutput(element) {
 
 function getAllSliders() {
     return document.querySelectorAll('input[type=range].slider');
+}
+
+function getAllSliderOutputs() {
+    return document.querySelectorAll('input[type=number].slider-output');
 }
 
 function getAllRows() {
@@ -366,6 +373,17 @@ function filterCards() {
 
 function filterTable() {
     filter(getAllRows(), 'TR');
+}
+
+function resetFilters() {
+    getAllSliders().forEach(slider => setElementMaxValue(slider));
+    getAllSliderOutputs().forEach(output => setElementMaxValue(output));
+
+    getAllCards().forEach(card => show(card));
+    getAllRows().forEach(row => show(row));
+
+    updateColours();
+    hideFilterModal();
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
