@@ -462,6 +462,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const outputs = document.querySelectorAll('input[type="number"].slider-output');
 
     addEventsFilter('filter-modal-close');
+    addEventsFilter('modal-loading');
     addEventListenerSliders(sliders);
     addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
