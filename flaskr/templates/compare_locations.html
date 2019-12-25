@@ -17,7 +17,6 @@
         <div class="modal-content">
             <div class="box modal-sliders">
                 <form>
-                    <div>These sliders currently set the maximum allowed value</div>
                     <table class="table">
                         {% for slider in categories[1:] %}
                             {% set min = location_array|sort(attribute=slider['id'], reverse=False)|first()|attr(slider['id'])|round(0, 'floor') %}
@@ -29,10 +28,18 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" data-category="{{ slider['id'] }}">
+                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" data-category="{{ slider['id'] }}" value="{{ min }}">
                                 </td>
                                 <td>
-                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" id="{{ slider['id'] }}_value">
+                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" id="{{ slider['id'] }}_value" value="{{ min }}">
+                                </td>
+                                <td>
+                                    <div class="select">
+                                        <select class="slider-switch">
+                                            <option value="or-more" selected>or more</option>
+                                            <option value="or-less">or less</option>
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
