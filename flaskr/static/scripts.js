@@ -169,6 +169,11 @@ function isShown(element) {
     return element.classList && !(element.classList.contains('is-hidden'))
 }
 
+// Return true if an element is current hidden false otherwise
+function isHidden(element) {
+    return element.classList && (element.classList.contains('is-hidden'))
+}
+
 function hide(element) {
     if (isShown(element)) {
         element.classList.add('is-hidden');
@@ -176,7 +181,7 @@ function hide(element) {
 }
 
 function show(element) {
-    if (!isShown(element)) {
+    if (isHidden(element)) {
         element.classList.remove('is-hidden');
     }
 }
