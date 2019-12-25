@@ -290,14 +290,15 @@ function addEventListenerSliderOutputs(outputs) {
 }
 
 // Add an event listener on click of the given element to filter the cards
-function addEventFilterCards(element) {
-    element.addEventListener('mousedown', () => startFilterCards());
-    element.addEventListener('mouseup', () => finishFilterCards());
+function addEventFilter(element) {
+    element.addEventListener('mousedown', () => startFiltering());
+    element.addEventListener('mouseup', () => filterCards());
+    element.addEventListener('mouseup', () => filterTable());
 }
 
 // Add an event listener on click of descendents of the given class to filter the cards
-function addEventsFilterCards(className) {
-    Array.from(document.getElementsByClassName(className)).forEach(item => addEventFilterCards(item));
+function addEventsFilter(className) {
+    Array.from(document.getElementsByClassName(className)).forEach(item => addEventFilter(item));
 }
 
 // Returns value of a particular category for a given element
@@ -317,24 +318,23 @@ function getCategoryValueForElement(element, category) {
     return result;
 }
 
-function startFilterCards() {
+function startFiltering() {
     showFilterModal();
     hideFilterModalSliders();
     showFilterModalLoading();
 }
 
-function finishFilterCards() {
-    const all_cards = getAllCards();
+function filter(data, element_type) {
     const all_sliders = getAllSliders();
 
-    all_cards.forEach(card => {
+    data.forEach(element => {
         all_sliders.forEach(slider => {
-            if (card.classList && card.classList.contains('tile')) {
-                const card_value = getCategoryValueForElement(card, slider.dataset.category);
-                if (card_value > slider.value && isShown(card))
-                    card.classList.add('is-hidden');
-                else if (card_value <= slider.value && !isShown(card))
-                    card.classList.remove('is-hidden');
+            if (element.nodeName === element_type) {
+                const element_value = getCategoryValueForElement(element, slider.dataset.category);
+                if (element_value > slider.value && isShown(element))
+                    element.classList.add('is-hidden');
+                else if (element_value <= slider.value && !isShown(element))
+                    element.classList.remove('is-hidden');
             }
         });
     });
@@ -343,21 +343,12 @@ function finishFilterCards() {
     hideFilterModal();
 }
 
-function filterTable() {
-    const all_rows = getAllRows();
-    const all_sliders = getAllSliders();
+function filterCards() {
+    filter(getAllCards(), 'DIV');
+}
 
-    all_rows.forEach(row => {
-        all_sliders.forEach(slider => {
-            if (row.nodeName === 'TR') {
-                const row_value = getCategoryValueForElement(row, slider.dataset.category);
-                if (row_value > slider.value && isShown(row))
-                    row.classList.add('is-hidden');
-                else if (row_value <= slider.value && !isShown(row))
-                    row.classList.remove('is-hidden');
-            }
-        })
-    })
+function filterTable() {
+    filter(getAllRows(), 'TR');
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -458,9 +449,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const sliders = document.querySelectorAll('input[type="range"].slider');
     const outputs = document.querySelectorAll('input[type="number"].slider-output');
 
-    addEventsFilterCards('filter-modal-close');
+    addEventsFilter('filter-modal-close');
     addEventListenerSliders(sliders);
     addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
-    finishFilterCards();
+    filterCards();
+    filterTable();
 });
