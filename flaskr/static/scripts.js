@@ -402,7 +402,7 @@ function resetFilters() {
     hideFilterModal();
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('sorters').addEventListener('mousedown', function (e) {
         let target = getTarget(e, 'DIV', 'SPAN', 'I');
 
@@ -435,7 +435,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     }, false);
 
-    document.getElementById('sorters').addEventListener('mouseup', function (e) {
+    document.getElementById('sorters').addEventListener('mouseup', function () {
         let table = document.getElementById("compare_table");
         let rows = table.rows;
         heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
