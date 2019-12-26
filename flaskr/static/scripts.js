@@ -394,6 +394,7 @@ function filterTable() {
 function resetFilters() {
     getAllSliders().forEach(slider => setElementMaxValue(slider));
     getAllSliderOutputs().forEach(output => setElementMaxValue(output));
+    getAllSwitches().forEach(switch_i => switch_i.value = 'or-less');
 
     getAllCards().forEach(card => show(card));
     getAllRows().forEach(row => show(row));
