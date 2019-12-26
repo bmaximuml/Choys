@@ -1,100 +1,90 @@
 {% extends 'default.html' %}
 {% set title = "Choys - main" %}
 
+{% set categories = [
+    {'id': 'name', 'title': 'Location', 'extra_classes': '', 'data_sort': 0},
+    {'id': 'total_properties', 'title': 'Number of Properties', 'extra_classes': '', 'data_sort': 1},
+    {'id': 'average_rent', 'title': 'Average Rent (£ / pcm)', 'extra_classes': '', 'data_sort': 2},
+    {'id': 'rent_under_250', 'title': 'Number of properties under £250 pcm', 'extra_classes': '', 'data_sort': 3},
+    {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm', 'extra_classes': '', 'data_sort': 4},
+    {'id': 'distance_to_london', 'title': 'Distance to London', 'extra_classes': '', 'data_sort': 5},
+    {'id': 'duration_to_london', 'title': 'Duration to London', 'extra_classes': '', 'data_sort': 6},
+    {'id': 'score', 'title': 'Score', 'extra_classes': 'is-selected is-primary', 'data_sort': 7}
+] %}
 {% block content %}
+    <div class="modal" id="filter-modal">
+        <div class="modal-background filter-modal-close"></div>
+        <div class="modal-content">
+            <div class="box modal-sliders">
+                <form>
+                    <table class="table">
+                        {% for slider in categories[1:] %}
+                            {% set min = location_array|sort(attribute=slider['id'], reverse=False)|first()|attr(slider['id'])|round(0, 'floor') %}
+                            {% set max = location_array|sort(attribute=slider['id'], reverse=True)|first()|attr(slider['id'])|round(0, 'ceil') %}
+                            <tr>
+                                <td>
+                                    <label for="{{ slider['id'] }}_range">
+                                        {{ slider['title'] }}
+                                    </label>
+                                </td>
+                                <td>
+                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" data-category="{{ slider['id'] }}" value="{{ min }}">
+                                </td>
+                                <td>
+                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" id="{{ slider['id'] }}_value" value="{{ min }}">
+                                </td>
+                                <td>
+                                    <div class="select">
+                                        <select class="slider-switch">
+                                            <option value="or-more" selected>or more</option>
+                                            <option value="or-less">or less</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="level">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <a class="button filter-modal-close is-success">Close and Filter</a>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a class="button filter-modal-reset is-danger">Close and Reset Filters</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="box modal-loading is-hidden">
+                <a class="button is-loading is-large is-fullwidth is-primary">Filtering...</a>
+            </div>
+        </div>
+        <button class="modal-close filter-modal-close is-large" aria-label="close"></button>
+    </div>
     <div id='sorters' class="field is-grouped">
-        <button id='name_btn' class='sort_btn button' data-sort='0' {# onclick="sortTable(0)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Location
-            </span>
-        </button>
-        <button id='total_properties_btn' class='sort_btn button' data-sort='1' {# onclick="sortTable(1)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Number of Properties
-            </span>
-        </button>
-        <button id='average_rent_btn' class='sort_btn button' data-sort='2' {# onclick="sortTable(2)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Average Rent (&#163; / pcm)
-            </span>
-        </button>
-        <button id='rent_under_250_btn' class='sort_btn button' data-sort='3' {# onclick="sortTable(3)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Number of properties under &#163;250 pcm
-            </span>
-        </button>
-        <button id='rent_250_to_500_btn' class='sort_btn button' data-sort='4' {# onclick="sortTable(4)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Number of properties between &#163;250 and &#163;500 pcm
-            </span>
-        </button>
-        <button id='distance_to_london' class='sort_btn button' data-sort='5' {# onclick="sortTable(5)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Distance to London
-            </span>
-        </button>
-        <button id='duration_to_london' class='sort_btn button' data-sort='6' {# onclick="sortTable(6)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-            <span>
-                Duration to London
-            </span>
-        </button>
-        <button id='score' class='sort_btn button is-selected is-primary' data-sort='7' {# onclick="sortTable(7)" #}>
-            <span class="icon">
-                <i class="fas fa-chevron-down"></i>
-            </span>
-            <span>
-                Score
-            </span>
-        </button>
+        {% for sorter in categories %}
+            <button id='{{ sorter['id']|e }}' class='sort_btn button {{ sorter['extra_classes'] }}' data-sort={{ loop.index0 }}>
+                <span class="icon">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+                <span>
+                    {{ sorter['title'] }}
+                </span>
+            </button>
+        {% endfor %}
     </div>
     <table id='compare_table' class="box table">
         <thead>
             <tr>
-                <th>
-                    Location
-                </th>
-                <th>
-                    Number of Properties
-                </th>
-                <th>
-                    Average Rent (&#163; / pcm)
-                </th>
-                <th>
-                    Number of properties under &#163;250 pcm
-                </th>
-                <th>
-                    Number of properties between &#163;250 and &#163;500 pcm
-                </th>
-                <th>
-                    Distance to London
-                </th>
-                <th>
-                    Duration to London
-                </th>
-                <th>
-                    Score
-                </th>
+                {% for category in categories %}
+                    <th>
+                        {{ category['title'] }}
+                    </th>
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
@@ -112,7 +102,7 @@
                             {'data_value': row.score, 'content': row.score},
                         ] %}
                         {% for cell in row_data %}
-                            <td data-value="{{ cell['data_value'] }}">
+                            <td data-value="{{ cell['data_value'] }}" data-category="{{ categories[loop.index0]['id'] }}">
                                 {{ cell['content']|safe }}
                             </td>
                         {% endfor %}
@@ -127,11 +117,11 @@
             <div class="tile is-parent">
                 {% for row in location_array|sort(attribute='score', reverse=True) %}
                     <div class="tile is-child notification is-{{ loop.cycle('link', 'success', 'primary', 'warning', 'danger', 'dark') }} has-text-centered">
-                        <div class="title" data-value="{{ row.name }}">
+                        <div class="title" data-value="{{ row.name }}" data-category="{{ categories[0]['id'] }}">
                             {{ row.name }}
                         </div>
 
-                        <div data-value="{{ row.total_properties }}">
+                        <div data-value="{{ row.total_properties }}" data-category="{{ categories[1]['id'] }}">
                             <strong>{{ row.total_properties }}</strong>
                             {% if row.total_properties == 1 %}
                                 property
@@ -140,11 +130,11 @@
                             {% endif %}
                         </div>
 
-                        <div data-value="{{ row.average_rent }}">
+                        <div data-value="{{ row.average_rent }}" data-category="{{ categories[2]['id'] }}">
                             Average rent is <strong>£{{ row.average_rent }}</strong>
                         </div>
 
-                        <div data-value="{{ row.rent_under_250 }}">
+                        <div data-value="{{ row.rent_under_250 }}" data-category="{{ categories[3]['id'] }}">
                             <strong>{{ row.rent_under_250 }}</strong>
                             {% if row.rent_under_250 == 1 %}
                                 property
@@ -154,7 +144,7 @@
                             under £250
                         </div>
 
-                        <div data-value="{{ row.rent_250_to_500 }}">
+                        <div data-value="{{ row.rent_250_to_500 }}" data-category="{{ categories[4]['id'] }}">
                             <strong>{{ row.rent_250_to_500 }}</strong>
                             {% if row.rent_250_to_500 == 1 %}
                                 property
@@ -164,15 +154,15 @@
                             between £250 and £500
                         </div>
 
-                        <div data-value="{{ row.distance_to_london }}">
+                        <div data-value="{{ row.distance_to_london }}" data-category="{{ categories[5]['id'] }}">
                             <strong>{{ row.distance_to_london_text }}</strong> to London
                         </div>
 
-                        <div data-value="{{ row.duration_to_london }}">
+                        <div data-value="{{ row.duration_to_london }}" data-category="{{ categories[6]['id'] }}">
                             <strong>{{ row.duration_to_london_text }}</strong> to London
                         </div>
 
-                        <div class="notification is-light" data-value="{{ row.score }}">
+                        <div class="notification is-light" data-value="{{ row.score }}" data-category="{{ categories[7]['id'] }}">
                             Score:&nbsp;<strong>{{ row.score|round(3) }}</strong>
                         </div>
                     </div>
@@ -183,6 +173,14 @@
 {% endblock %}
 
 {% block navbar_end_add %}
+    <a class="button is-link" id="filter-btn">
+        <span>
+            Filter
+        </span>
+        <span class="icon">
+            <i class="fas fa-filter"></i>
+        </span>
+    </a>
     <a class="button is-danger" id="table-cards-btn">
         <span class="icon">
             <i class="far fa-list-alt"></i>

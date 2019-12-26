@@ -116,6 +116,16 @@ function heapSortGeneric(sort_by, wrapper, items, opts) {
     }
 }
 
+// Return an HTMLCollection of all cards
+function getAllCards() {
+    const grandparent = document.getElementById('cards');
+    if (grandparent && grandparent.hasChildNodes()) {
+        const parent = grandparent.firstElementChild;
+        if (parent && parent.hasChildNodes())
+            return parent.childNodes;
+    }
+}
+
 function getTarget(e, parent = '', child = '', grandchild = '') {
     e = e || Event;
     let target = e.target || Event.target;
@@ -154,19 +164,242 @@ function getDataValue(item) {
     }
 }
 
+// Return true if an element is current shown (not hidden), false otherwise
+function isShown(element) {
+    return element.classList && !(element.classList.contains('is-hidden'))
+}
+
+// Return true if an element is current hidden false otherwise
+function isHidden(element) {
+    return element.classList && (element.classList.contains('is-hidden'))
+}
+
+function hide(element) {
+    if (isShown(element)) {
+        element.classList.add('is-hidden');
+    }
+}
+
+function show(element) {
+    if (isHidden(element)) {
+        element.classList.remove('is-hidden');
+    }
+}
+
 function updateColours() {
     const cards = document.getElementById('cards').firstElementChild;
     const colours = ['is-link', 'is-success', 'is-primary', 'is-warning', 'is-danger', 'is-dark'];
     let colour = 0;
     for (const card of cards.children) {
-        if (!card.classList.contains(colours[colour])) {
-            for (const rm_colour of colours) {
-                card.classList.remove(rm_colour);
+        if (isShown(card)) {
+            if (!card.classList.contains(colours[colour])) {
+                for (const rm_colour of colours) {
+                    card.classList.remove(rm_colour);
+                }
+                card.classList.add(colours[colour]);
             }
-            card.classList.add(colours[colour]);
+            colour = (colour === colours.length - 1) ? 0 : colour + 1;
         }
-        colour = (colour === colours.length - 1) ? 0 : colour + 1;
     }
+}
+
+function showFilterModal() {
+    document.getElementById('filter-modal').classList.add('is-active');
+}
+
+function hideFilterModal() {
+    document.getElementById('filter-modal').classList.remove('is-active');
+    hideFilterModalLoading();
+    showFilterModalSliders();
+}
+
+function showFilterModalSliders() {
+    show(document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-sliders'
+    ));
+}
+
+function hideFilterModalSliders() {
+    hide(document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-sliders'
+    ));
+}
+
+function showFilterModalLoading() {
+    show(document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-loading'
+    ));
+}
+
+function hideFilterModalLoading() {
+    hide(document.querySelector(
+        'div#filter-modal.modal > div.modal-content > div.modal-loading'
+    ));
+}
+
+function setElementMaxValue(element) {
+    element.value = element.max;
+}
+
+// Find output element associated to the DOM element passed as parameter
+// Assumes there is only one output for the given element
+// If there is more than one output element, will return the last one in the DOM
+function findOutputForSlider(element) {
+    let result = null;
+    document.querySelectorAll('input[type=number].slider-output').forEach(output => {
+        if (output.dataset.for === element.id) {
+            result = output;
+        }
+    });
+    return result;
+}
+
+// Find slider element associated to the DOM element passed as parameter
+// Assumes there is only one slider for the given element
+// If there is more than one slider element, will return the last one in the DOM
+function findSliderForOutput(element) {
+    let result = null;
+    document.querySelectorAll('input[type=range].slider').forEach(slider => {
+        if (slider.id === element.dataset.for) {
+            result = slider;
+        }
+    });
+    return result;
+}
+
+function getAllSliders() {
+    return document.querySelectorAll('input[type=range].slider');
+}
+
+function getAllSliderOutputs() {
+    return document.querySelectorAll('input[type=number].slider-output');
+}
+
+function getAllSwitches() {
+    return document.querySelectorAll('select.slider-switch');
+}
+
+function getAllRows() {
+    return document.querySelectorAll('table#compare_table tr');
+}
+
+function updateModalSlider(output) {
+    const slider = findSliderForOutput(output);
+    if (slider)
+        slider.value = output.value;
+}
+
+function updateModalSliderOutput(slider) {
+    const output = findOutputForSlider(slider);
+    if (output)
+        output.value = Math.round(slider.value);
+}
+
+function updateAllModalSliderOutputs() {
+    const sliders = document.querySelectorAll('input[type="range"].slider');
+    sliders.forEach(slider => updateModalSliderOutput(slider));
+}
+
+function addEventListenerSlider(slider) {
+    slider.addEventListener('mousemove', () => updateModalSliderOutput(slider));
+    slider.addEventListener('change', () => updateModalSliderOutput(slider));
+}
+
+function addEventListenerSliders(sliders) {
+    sliders.forEach(slider => addEventListenerSlider(slider));
+}
+
+function addEventListenerSliderOutput(output) {
+    output.addEventListener('change', () => updateModalSlider(output));
+}
+
+function addEventListenerSliderOutputs(outputs) {
+    outputs.forEach(output => addEventListenerSliderOutput(output));
+}
+
+// Add an event listener on click of the given element to filter the cards
+function addEventFilter(element) {
+    element.addEventListener('mousedown', () => startFiltering());
+    element.addEventListener('mouseup', () => filterCards());
+    element.addEventListener('mouseup', () => filterTable());
+}
+
+// Add an event listener on click of descendents of the given class to filter the cards
+function addEventsFilter(className) {
+    Array.from(document.getElementsByClassName(className)).forEach(item => addEventFilter(item));
+}
+
+// Add an event listener on click of the given element to reset the filters
+function addEventReset(element) {
+    element.addEventListener('click', () => resetFilters());
+}
+
+// Add an event listener on click of descendents of the given class to reset the filters
+function addEventsReset(className) {
+    Array.from(document.getElementsByClassName(className)).forEach(item => addEventReset(item));
+}
+
+// Returns value of a particular category for a given element
+// Will perform a recursive DFS of element's children until a value is found
+// If multiple children exist, will return the value for the first one found
+function getCategoryValueForElement(element, category) {
+    let result = null;
+    if (element.classList && element.dataset.category === category)
+        return element.dataset.value;
+    if (element.hasChildNodes() > 0) {
+        element.childNodes.forEach(child => {
+            const child_result =  getCategoryValueForElement(child, category);
+            if (child_result)
+                result = child_result
+        });
+    }
+    return result;
+}
+
+function startFiltering() {
+    showFilterModal();
+    hideFilterModalSliders();
+    showFilterModalLoading();
+}
+
+function filter(data, element_type) {
+    const all_sliders = getAllSliders();
+    const all_switches = getAllSwitches();
+
+    data.forEach(element => {
+        all_sliders.forEach((slider, i) => {
+            if (element.nodeName === element_type) {
+                const element_value = getCategoryValueForElement(element, slider.dataset.category);
+                if ((all_switches[i].value === 'or-more' && element_value < slider.value)
+                        || (all_switches[i].value === 'or-less' && element_value > slider.value))
+                    hide(element);
+                else
+                    show(element);
+            }
+        });
+    });
+
+    updateColours();
+    hideFilterModal();
+}
+
+function filterCards() {
+    filter(getAllCards(), 'DIV');
+}
+
+function filterTable() {
+    filter(getAllRows(), 'TR');
+}
+
+function resetFilters() {
+    getAllSliders().forEach(slider => setElementMaxValue(slider));
+    getAllSliderOutputs().forEach(output => setElementMaxValue(output));
+
+    getAllCards().forEach(card => show(card));
+    getAllRows().forEach(row => show(row));
+
+    updateColours();
+    hideFilterModal();
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -258,4 +491,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
             }
         }
     }, false);
+
+    // Show filter modal on button click
+    document.getElementById('filter-btn').addEventListener('click', function() {
+        showFilterModal();
+    });
+
+    const sliders = document.querySelectorAll('input[type="range"].slider');
+    const outputs = document.querySelectorAll('input[type="number"].slider-output');
+
+    addEventsFilter('filter-modal-close');
+    addEventsFilter('modal-loading');
+    addEventsReset('filter-modal-reset');
+    addEventListenerSliders(sliders);
+    addEventListenerSliderOutputs(outputs);
+    updateAllModalSliderOutputs();
+    filterCards();
+    filterTable();
 });
