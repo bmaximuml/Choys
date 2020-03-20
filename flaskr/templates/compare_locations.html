@@ -9,7 +9,7 @@
     {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm', 'extra_classes': ''},
     {'id': 'distance_to_london', 'title': 'Distance to London', 'extra_classes': ''},
     {'id': 'duration_to_london', 'title': 'Duration to London', 'extra_classes': ''},
-    {'id': 'score', 'title': 'Score', 'extra_classes': 'is-selected is-primary'}
+    {'id': 'score', 'title': 'Score', 'extra_classes': 'is-selected is-c2'}
 ] %}
 {% block content %}
     <div class="modal" id="filter-modal">
@@ -28,13 +28,13 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" data-category="{{ slider['id'] }}" value="{{ max }}">
+                                    <input class="slider has-output is-c0" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" data-category="{{ slider['id'] }}" value="{{ max }}">
                                 </td>
                                 <td>
-                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" id="{{ slider['id'] }}_value" value="{{ max }}">
+                                    <input class='slider-output input is-c0' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" id="{{ slider['id'] }}_value" value="{{ max }}">
                                 </td>
                                 <td>
-                                    <div class="select">
+                                    <div class="select is-c0">
                                         <select class="slider-switch">
                                             <option value="or-more">or more</option>
                                             <option value="or-less" selected>or less</option>
@@ -47,12 +47,12 @@
                     <div class="level">
                         <div class="level-left">
                             <div class="level-item">
-                                <a class="button filter-modal-close is-success">Close and Filter</a>
+                                <a class="button filter-modal-close is-c2">Close and Filter</a>
                             </div>
                         </div>
                         <div class="level-right">
                             <div class="level-item">
-                                <a class="button filter-modal-reset is-danger">Close and Reset Filters</a>
+                                <a class="button filter-modal-reset is-c3">Close and Reset Filters</a>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
             </div>
 
             <div class="box modal-loading is-hidden">
-                <a class="button is-loading is-large is-fullwidth is-primary">Filtering...</a>
+                <a class="button is-loading is-large is-fullwidth is-c0">Filtering...</a>
             </div>
         </div>
         <button class="modal-close filter-modal-close is-large" aria-label="close"></button>
@@ -116,7 +116,7 @@
         <div id="cards" class="tile is-ancestor is-vertical">
             <div class="tile is-parent">
                 {% for row in location_array|sort(attribute='score', reverse=True) %}
-                    <div class="tile is-child notification is-{{ loop.cycle('link', 'success', 'primary', 'warning', 'danger', 'dark') }} has-text-centered">
+                    <div class="tile is-child notification has-text-centered">
                         <div class="title" data-value="{{ row.name }}" data-category="{{ categories[0]['id'] }}">
                             {{ row.name }}
                         </div>
@@ -173,7 +173,7 @@
 {% endblock %}
 
 {% block navbar_end_add %}
-    <a class="button is-link" id="filter-btn">
+    <a class="button is-c2" id="filter-btn">
         <span>
             Filter
         </span>
@@ -181,7 +181,7 @@
             <i class="fas fa-filter"></i>
         </span>
     </a>
-    <a class="button is-danger" id="table-cards-btn">
+    <a class="button is-c2" id="table-cards-btn">
         <span class="icon">
             <i class="far fa-list-alt"></i>
         </span>

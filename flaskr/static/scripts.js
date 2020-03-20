@@ -188,7 +188,8 @@ function show(element) {
 
 function updateColours() {
     const cards = document.getElementById('cards').firstElementChild;
-    const colours = ['is-link', 'is-success', 'is-primary', 'is-warning', 'is-danger', 'is-dark'];
+    const colours = ['is-card0', 'is-card1'];
+    // const colours = ['is-c2', 'is-c3'];
     let colour = 0;
     for (const card of cards.children) {
         if (isShown(card)) {
@@ -202,6 +203,7 @@ function updateColours() {
         }
     }
 }
+
 
 function showFilterModal() {
     document.getElementById('filter-modal').classList.add('is-active');
@@ -415,8 +417,8 @@ document.addEventListener("DOMContentLoaded", () => {
             let sort_btns = document.getElementsByClassName('sort_btn');
             for (const btn of sort_btns) {
                 btn.classList.remove('is-selected');
-                btn.classList.remove('is-primary');
-                btn.classList.remove('is-danger');
+                btn.classList.remove('is-c2');
+                btn.classList.remove('is-c3');
 
                 btn.children[0].children[0].classList.remove('fa-chevron-up');
                 btn.children[0].children[0].classList.remove('fa-chevron-down');
@@ -425,10 +427,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             target.children[0].children[0].classList.remove('fa-chevron-right');
             if (last_sort_dir === 'asc') {
-                target.classList.add('is-primary');
+                target.classList.add('is-c2');
                 target.children[0].children[0].classList.add('fa-chevron-down');
             } else {
-                target.classList.add('is-danger');
+                target.classList.add('is-c3');
                 target.children[0].children[0].classList.add('fa-chevron-up');
             }
             target.classList.add('is-selected');
@@ -454,12 +456,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Card / Table switcher button
     document.getElementById('table-cards-btn').addEventListener('click', (e) => {
-        let target = getTarget(e, '', 'SPAN', 'I');
+        let target = getTarget(e, '', 'SPAN', 'I')
+
+        let filter_btn = document.getElementById('filter-btn');
 
         let grandchild = target.children[0].children[0];
 
-        let first_colour = 'is-danger';
-        let second_colour = 'is-link';
+        let first_colour = 'is-c2';
+        let second_colour = 'is-c3';
         let first_fa = 'fa-list-alt';
         let first_fa_short = 'far';
         let second_fa = 'fa-th';
@@ -469,6 +473,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (target.classList.contains(first_colour)) {
                 target.classList.remove(first_colour);
                 target.classList.add(second_colour);
+
+                filter_btn.classList.remove(first_colour);
+                filter_btn.classList.add(second_colour);
 
                 grandchild.classList.remove(first_fa);
                 grandchild.classList.remove(first_fa_short);
@@ -481,6 +488,9 @@ document.addEventListener("DOMContentLoaded", () => {
             else {
                 target.classList.remove(second_colour);
                 target.classList.add(first_colour);
+
+                filter_btn.classList.remove(second_colour);
+                filter_btn.classList.add(first_colour);
 
                 grandchild.classList.remove(second_fa);
                 grandchild.classList.remove(second_fa_short);

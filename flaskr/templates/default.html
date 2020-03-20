@@ -18,7 +18,7 @@
 </head>
 <body>
 {#    <section class="hero is-primary">#}
-  <nav class="navbar is-fixed-top is-primary" aria-label="main navigation">
+  <nav class="navbar is-fixed-top is-c0" aria-label="main navigation">
     {% block nav %}
         <div class="navbar-brand">
             <a class="navbar-item" href="/">
@@ -47,10 +47,10 @@
 
                         {% block navbar_end_add %}{% endblock %}
 
-                        <a class="button is-light">
+                        <a class="button is-c2">
                             <strong>Sign up</strong>
                         </a>
-                        <a class="button is-dark">
+                        <a class="button is-c3">
                             <strong>Log in</strong>
                         </a>
                     </div>
@@ -70,7 +70,7 @@
     {% endblock %}
   </nav>
 {#    </section>#}
-    <section class="section hero is-info">
+    <section class="section hero is-c1">
       {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>
       {% endfor %}
