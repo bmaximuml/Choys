@@ -21,6 +21,159 @@ $beige-lighter: #EFF0EB;
 // $widescreen-enabled: false;
 // $fullhd-enabled: false;
 
+$c00: #160f29;
+$c01: #246a73;
+$c02: #368f8b;
+$c03: #f3dfc1;
+$c04: #ddbea8;
+
+$c10: #35524a;
+$c11: #627c85;
+$c12: #779cab;
+$c13: #a2e8dd;
+$c14: #32de8a;
+
+$c20: #7a5c58;
+$c21: #8d80ad;
+$c22: #99b2dd;
+$c23: #9dfff9;
+$c24: #64f58d;
+
+$c30: #011627;
+$c31: #2ec4b6;
+$c32: #ff3366;
+$c33: #f6f7f8;
+$c34: #ff3366;
+
+$c40: #e01da2;
+$c41: #2ec4b6;
+$c42: #31219e;
+$c43: #71ed94;
+$c44: #ff3f9f;
+
+$c50: #1a535c;
+$c51: #4ecdc4;
+$c52: #f7fff7;
+$c53: #ff6b6b;
+$c54: #ffe66d;
+
+$c60: #05668d;
+$c61: #427aa1;
+$c62: #ebf2fa;
+$c63: #679436;
+$c64: #a5be00;
+
+$c70: #011627;
+$c71: #f71735;
+$c72: #41ead4;
+$c73: #fbfffc;
+$c74: #ff9f1c;
+
+$c80: #247ba0;
+$c81: #70c1b3;
+$c82: #b2dbbf;
+$c83: #f3ffbc;
+$c84: #ff1654;
+
+$c90: #ef476f;
+$c91: #ffd166;
+$c92: #06d6a0;
+$c93: #118ab2;
+$c94: #073b4c;
+
+$c101: #22747f;
+$c102: #01b26b;
+$c103: #f71735;
+$c104: #efefef;
+$c105: #84dcc6;
+$c107: #820263;
+$c108: #86e7b8;
+$c110: #1b998b;
+
+$c100: #031d33;
+$c109: #153151;
+$c106: #2a2d34;
+$c111: #2d3047;
+$c129: #312d3d;
+$c130: #2b2d3d;
+
+$c131: #dadada;
+$c132: #dedede;
+$c133: #efefef;
+$c134: #ffffff;
+
+$c113: #009ddc;
+$c114: #087e8b;
+$c115: #00d0d3;
+$c116: #00b4c0;
+$c117: #00a1ce;
+
+$c128: #0086d9;
+$twitter: #38a1f3;
+$facebook: #3b5998;
+
+$c118: #01ba6a;
+$c119: #01e443;
+$c120: #00FF00;
+$c121: #00ad39;
+$c122: #00cc44;
+$c123: #23d160; // Bulma green
+$c124: #1ecc49;
+$c125: #09c435;
+$c126: #08b832;
+$c127: #00d520;
+
+
+$cs0: $c128; // Primary 1 (active)
+$cs1: $c130; // Primary 2 (passive, background)
+$cs4: $c134; // Neutral 1 (passive, background)
+$cs2: $c103; // Highlight 1 (active)
+$cs3: $c127; // Highlight 2 (active)
+
+$cs5: $cs1; // Toggle P1 (passive)
+$cs6: $cs0; // Toggle P2 (passive)
+
+//$primary: #44af69;
+//$info: #fcab10;
+//$link: #d91e36;
+//$warning: #93bedf;
+//$danger: #9a348e;
+//$success: #5efc8d;
+
+$card0: $cs5;
+$card1: $cs6;
+
+$light: $cs4;
+$white: $cs4;
+$dark: $cs1;
+$border: $cs4;
+
+$custom-colors: (
+  "card0": ($card0),
+  "card1": ($card1),
+
+  "c0": ($cs0), // primary
+  "c1": ($cs1), // info
+  "c2": ($cs2), // extra0
+  "c3": ($cs3), // extra1
+  "c4": ($cs4), // extra2
+);
+
+
+// red: f71735
+// blue:
+
+// 0:n
+// 1:n
+// 2:n
+// 3:y
+// 4:n
+// 5:maybe. stronger red, no yellow
+// 6:no highlight colour
+// 7:maybe
+// 8:yellow weird, others have potential
+// 9:
+
 // Update some of Bulma's component variables
 // $body-background-color: $beige-lighter;
 // $control-border-width: 2px;
