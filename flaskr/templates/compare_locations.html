@@ -88,7 +88,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for row in location_array|sort(attribute='score', reverse=True) %}
+            {% for row in location_array|sort(attribute=sort, reverse=sort_desc) %}
                 {% if row.total_properties > 0 %}
                     <tr>
                         {% set row_data = [
@@ -115,7 +115,7 @@
     <div id='compare_cards' class="box is-vertical">
         <div id="cards" class="tile is-ancestor is-vertical">
             <div class="tile is-parent">
-                {% for row in location_array|sort(attribute='score', reverse=True) %}
+                {% for row in location_array|sort(attribute=sort, reverse=sort_desc) %}
                     <div class="tile is-child notification is-{{ loop.cycle('link', 'success', 'primary', 'warning', 'danger', 'dark') }} has-text-centered">
                         <div class="title" data-value="{{ row.name }}" data-category="{{ categories[0]['id'] }}">
                             {{ row.name }}
