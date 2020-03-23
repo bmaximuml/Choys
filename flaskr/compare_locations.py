@@ -51,8 +51,8 @@ def index():
                 # If location is removed, don't check remaining categories
                 break
 
-    sort = request.args.get('sort', default='name')
-    sort_desc = request.args.get('dir', default='asc') == 'desc'
+    sort = request.args.get('sort', default='score')
+    sort_desc = request.args.get('dir', default='desc') == 'desc'
 
     logger.info(f'Total Locations: {len(all_locations)}')
     return render_template(

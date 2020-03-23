@@ -24,7 +24,7 @@
                         <div class="select">
                             <select name="sort">
                                 {% for category in categories %}
-                                    {% if (request.args.get('sort') == category['id']) or request.args.get('sort') is not defined and loop.first %}
+                                    {% if (request.args.get('sort', default='score') == category['id']) %}
                                         <option value="{{ category['id'] }}" selected>{{ category['title'] }}</option>
                                     {% else %}
                                         <option value="{{ category['id'] }}">{{ category['title'] }}</option>
@@ -34,8 +34,8 @@
                         </div>
                         <div class="select">
                             <select name="dir">
-                                <option value="asc" {{ 'selected' if request.args.get('dir', default='asc') == 'asc' }}>Ascending</option>
-                                <option value="desc" {{ 'selected' if request.args.get('dir', default='asc') == 'desc' }}>Descending</option>
+                                <option value="asc" {{ 'selected' if request.args.get('dir', default='desc') == 'asc' }}>Ascending</option>
+                                <option value="desc" {{ 'selected' if request.args.get('dir', default='desc') == 'desc' }}>Descending</option>
                             </select>
                         </div>
                     </div>
