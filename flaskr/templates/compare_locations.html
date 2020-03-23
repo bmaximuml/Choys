@@ -50,16 +50,16 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" name="{{ slider['id'] }}" value="{{ max }}">
+                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" name="{{ slider['id'] }}" value="{{ request.args.get(slider['id'], default=max) }}">
                                 </td>
                                 <td>
-                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" name="{{ slider['id'] }}_value" value="{{ max }}">
+                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" name="{{ slider['id'] }}_value" value="{{ request.args.get(slider['id'], default=max) }}">
                                 </td>
                                 <td>
                                     <div class="select">
                                         <select class="slider-switch" name="{{ slider['id'] }}_switch">
-                                            <option value="or-more">or more</option>
-                                            <option value="or-less" selected>or less</option>
+                                            <option value="or-more" {{ 'selected' if request.args.get(slider['id'] + '_switch', default='or-less') == 'or-more' }}>or more</option>
+                                            <option value="or-less" {{ 'selected' if request.args.get(slider['id'] + '_switch', default='or-less') == 'or-less' }}>or less</option>
                                         </select>
                                     </div>
                                 </td>
