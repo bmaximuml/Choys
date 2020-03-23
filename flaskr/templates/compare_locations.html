@@ -28,14 +28,14 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" data-category="{{ slider['id'] }}" value="{{ max }}">
+                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" name="{{ slider['id'] }}" value="{{ max }}">
                                 </td>
                                 <td>
-                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" id="{{ slider['id'] }}_value" value="{{ max }}">
+                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" name="{{ slider['id'] }}_value" value="{{ max }}">
                                 </td>
                                 <td>
                                     <div class="select">
-                                        <select class="slider-switch">
+                                        <select class="slider-switch" name="{{ slider['id'] }}_switch">
                                             <option value="or-more">or more</option>
                                             <option value="or-less" selected>or less</option>
                                         </select>
