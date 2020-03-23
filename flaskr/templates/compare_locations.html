@@ -36,13 +36,6 @@
                             <select name="dir">
                                 <option value="asc" {{ 'selected' if request.args.get('dir', default='asc') == 'asc' }}>Ascending</option>
                                 <option value="desc" {{ 'selected' if request.args.get('dir', default='asc') == 'desc' }}>Descending</option>
-                                {% if request.args.get('dir', default='asc') == 'desc' %}
-                                    <option value="asc">Ascending</option>
-                                    <option value="desc" selected>Descending</option>
-                                {% else %}
-                                    <option value="asc" selected>Ascending</option>
-                                    <option value="desc">Descending</option>
-                                {% endif %}
                             </select>
                         </div>
                     </div>
