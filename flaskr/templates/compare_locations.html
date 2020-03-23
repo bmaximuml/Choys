@@ -65,18 +65,6 @@
         </div>
         <button class="modal-close filter-modal-close is-large" aria-label="close"></button>
     </div>
-    <div id='sorters' class="field is-grouped">
-        {% for sorter in categories %}
-            <button id='{{ sorter['id']|e }}' class='sort_btn button {{ sorter['extra_classes'] }}' data-sort={{ loop.index0 }}>
-                <span class="icon">
-                    <i class="fas fa-chevron-right"></i>
-                </span>
-                <span>
-                    {{ sorter['title'] }}
-                </span>
-            </button>
-        {% endfor %}
-    </div>
     <table id='compare_table' class="box table">
         <thead>
             <tr>
