@@ -16,7 +16,36 @@
         <div class="modal-background filter-modal-close"></div>
         <div class="modal-content">
             <div class="box modal-sliders">
-                <form>
+                <form action="/" method="get">
+                    <div class="notification modal-sort container">
+                        <span>
+                            Sort By:
+                        </span>
+                        <div class="select">
+                            <select name="sort">
+                                {% for category in categories %}
+                                    {% if (request.args.get('sort') == category['id']) or request.args.get('sort') is not defined and loop.first %}
+                                        <option value="{{ category['id'] }}" selected>{{ category['title'] }}</option>
+                                    {% else %}
+                                        <option value="{{ category['id'] }}">{{ category['title'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select">
+                            <select name="dir">
+                                <option value="asc" {{ 'selected' if request.args.get('dir', default='asc') == 'asc' }}>Ascending</option>
+                                <option value="desc" {{ 'selected' if request.args.get('dir', default='asc') == 'desc' }}>Descending</option>
+                                {% if request.args.get('dir', default='asc') == 'desc' %}
+                                    <option value="asc">Ascending</option>
+                                    <option value="desc" selected>Descending</option>
+                                {% else %}
+                                    <option value="asc" selected>Ascending</option>
+                                    <option value="desc">Descending</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
                     <table class="table">
                         {% for slider in categories[1:] %}
                             {% set min = location_array|sort(attribute=slider['id'], reverse=False)|first()|attr(slider['id'])|round(0, 'floor') %}
