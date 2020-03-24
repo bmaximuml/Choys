@@ -317,28 +317,6 @@ function addEventListenerSliderOutputs(outputs) {
     outputs.forEach(output => addEventListenerSliderOutput(output));
 }
 
-// Add an event listener on click of the given element to filter the cards
-function addEventFilter(element) {
-    element.addEventListener('mousedown', () => startFiltering());
-    element.addEventListener('mouseup', () => filterCards());
-    element.addEventListener('mouseup', () => filterTable());
-}
-
-// Add an event listener on click of descendents of the given class to filter the cards
-function addEventsFilter(className) {
-    Array.from(document.getElementsByClassName(className)).forEach(item => addEventFilter(item));
-}
-
-// Add an event listener on click of the given element to reset the filters
-function addEventReset(element) {
-    element.addEventListener('click', () => resetFilters());
-}
-
-// Add an event listener on click of descendents of the given class to reset the filters
-function addEventsReset(className) {
-    Array.from(document.getElementsByClassName(className)).forEach(item => addEventReset(item));
-}
-
 // Returns value of a particular category for a given element
 // Will perform a recursive DFS of element's children until a value is found
 // If multiple children exist, will return the value for the first one found
@@ -354,53 +332,6 @@ function getCategoryValueForElement(element, category) {
         });
     }
     return result;
-}
-
-function startFiltering() {
-    showFilterModal();
-    hideFilterModalSliders();
-    showFilterModalLoading();
-}
-
-function filter(data, element_type) {
-    const all_sliders = getAllSliders();
-    const all_switches = getAllSwitches();
-
-    data.forEach(element => {
-        all_sliders.forEach((slider, i) => {
-            if (element.nodeName === element_type) {
-                const element_value = getCategoryValueForElement(element, slider.dataset.category);
-                if ((all_switches[i].value === 'or-more' && element_value < slider.value)
-                        || (all_switches[i].value === 'or-less' && element_value > slider.value))
-                    hide(element);
-                else
-                    show(element);
-            }
-        });
-    });
-
-    updateColours();
-    hideFilterModal();
-}
-
-function filterCards() {
-    filter(getAllCards(), 'DIV');
-}
-
-function filterTable() {
-    filter(getAllRows(), 'TR');
-}
-
-function resetFilters() {
-    getAllSliders().forEach(slider => setElementMaxValue(slider));
-    getAllSliderOutputs().forEach(output => setElementMaxValue(output));
-    getAllSwitches().forEach(switch_i => switch_i.value = 'or-less');
-
-    getAllCards().forEach(card => show(card));
-    getAllRows().forEach(row => show(row));
-
-    updateColours();
-    hideFilterModal();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -501,12 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sliders = document.querySelectorAll('input[type="range"].slider');
     const outputs = document.querySelectorAll('input[type="number"].slider-output');
 
-    addEventsFilter('filter-modal-close');
-    addEventsFilter('modal-loading');
-    addEventsReset('filter-modal-reset');
     addEventListenerSliders(sliders);
     addEventListenerSliderOutputs(outputs);
     updateAllModalSliderOutputs();
-    filterCards();
-    filterTable();
 });
