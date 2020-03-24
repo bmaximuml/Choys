@@ -381,6 +381,12 @@ document.addEventListener("DOMContentLoaded", () => {
         showFilterModal();
     });
 
+    document.getElementById('filter-modal-reset').addEventListener('click', element => {
+        const baseUrl = window.location.href.split("?")[0];
+        window.history.pushState('name', '', baseUrl);
+        window.location.reload();
+    });
+
     const sliders = document.querySelectorAll('input[type="range"].slider');
     const outputs = document.querySelectorAll('input[type="number"].slider-output');
 
