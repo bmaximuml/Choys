@@ -335,54 +335,6 @@ function getCategoryValueForElement(element, category) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById('sorters').addEventListener('mousedown', (e) => {
-        let target = getTarget(e, 'DIV', 'SPAN', 'I');
-
-        if (target.classList.contains('sort_btn')) {
-            mouse_down_sort_by = parseInt(target.getAttribute('data-sort'));
-            last_sort_dir = (last_sort_by === mouse_down_sort_by && last_sort_dir === 'asc' ? 'desc' : 'asc');
-            last_sort_by = mouse_down_sort_by;
-
-            let sort_btns = document.getElementsByClassName('sort_btn');
-            for (const btn of sort_btns) {
-                btn.classList.remove('is-selected');
-                btn.classList.remove('is-primary');
-                btn.classList.remove('is-danger');
-
-                btn.children[0].children[0].classList.remove('fa-chevron-up');
-                btn.children[0].children[0].classList.remove('fa-chevron-down');
-                btn.children[0].children[0].classList.remove('fa-chevron-right');
-                btn.children[0].children[0].classList.add('fa-chevron-right');
-            }
-            target.children[0].children[0].classList.remove('fa-chevron-right');
-            if (last_sort_dir === 'asc') {
-                target.classList.add('is-primary');
-                target.children[0].children[0].classList.add('fa-chevron-down');
-            } else {
-                target.classList.add('is-danger');
-                target.children[0].children[0].classList.add('fa-chevron-up');
-            }
-            target.classList.add('is-selected');
-            target.classList.add('is-loading');
-        }
-    }, false);
-
-    document.getElementById('sorters').addEventListener('mouseup', () => {
-        let table = document.getElementById("compare_table");
-        let rows = table.rows;
-        heapSortGeneric(mouse_down_sort_by, table, rows, {header_row: table.rows[0]});
-
-        let cards_div = document.getElementById('cards').firstElementChild;
-        heapSortGeneric(mouse_down_sort_by, cards_div, cards_div.children, {});
-
-        updateColours();
-
-        let sorters = document.getElementsByClassName("sort_btn");
-        for (const sorter of sorters) {
-            sorter.classList.remove('is-loading');
-        }
-    }, false);
-
     // Card / Table switcher button
     document.getElementById('table-cards-btn').addEventListener('click', (e) => {
         let target = getTarget(e, '', 'SPAN', 'I');
