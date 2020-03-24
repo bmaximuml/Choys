@@ -11,14 +11,16 @@ bp = Blueprint('compare_locations', __name__)
 @bp.route('/')
 def index():
     categories = [
-        'name',
-        'total_properties',
-        'average_rent',
-        'rent_under_250',
-        'rent_250_to_500',
-        'distance_to_london',
-        'duration_to_london',
-        'score'
+        {'id': 'name', 'title': 'Location', 'extra_classes': ''},
+        {'id': 'total_properties', 'title': 'Number of Properties', 'extra_classes': ''},
+        {'id': 'average_rent', 'title': 'Average Rent (£ / pcm)', 'extra_classes': ''},
+        {'id': 'rent_under_250', 'title': 'Number of properties under £250 pcm',
+         'extra_classes': ''},
+        {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm',
+         'extra_classes': ''},
+        {'id': 'distance_to_london', 'title': 'Distance to London', 'extra_classes': ''},
+        {'id': 'duration_to_london', 'title': 'Duration to London', 'extra_classes': ''},
+        {'id': 'score', 'title': 'Score', 'extra_classes': 'is-selected is-primary'}
     ]
 
     logger = logging.getLogger()
@@ -27,18 +29,18 @@ def index():
 
     for location in all_locations:
         for category in categories:
-            if request.args.get(category) is None:
+            if request.args.get(category['id']) is None:
                 # No value set for category, skip to next category
                 continue
 
-            category_switch = request.args.get(f'{category}_switch', default='or-less')
+            category_switch = request.args.get(f"{category['id']}_switch", default='or-less')
 
             try:
-                location_category = float(location[category])
-                request_category = float(request.args.get(category))
+                location_category = float(location[category['id']])
+                request_category = float(request.args.get(category['id']))
             except ValueError:
-                location_category = str(location[category])
-                request_category = str(request.args.get(category))
+                location_category = str(location[category['id']])
+                request_category = str(request.args.get(category['id']))
 
             if ((
                     category_switch == 'or-more' and
@@ -60,5 +62,6 @@ def index():
         location_array=all_locations,
         year=datetime.now().year,
         sort=sort,
-        sort_desc=sort_desc
+        sort_desc=sort_desc,
+        categories=categories
     )
