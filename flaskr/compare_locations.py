@@ -11,16 +11,14 @@ bp = Blueprint('compare_locations', __name__)
 @bp.route('/')
 def index():
     categories = [
-        {'id': 'name', 'title': 'Location', 'extra_classes': ''},
-        {'id': 'total_properties', 'title': 'Number of Properties', 'extra_classes': ''},
-        {'id': 'average_rent', 'title': 'Average Rent (£ / pcm)', 'extra_classes': ''},
-        {'id': 'rent_under_250', 'title': 'Number of properties under £250 pcm',
-         'extra_classes': ''},
-        {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm',
-         'extra_classes': ''},
-        {'id': 'distance_to_london', 'title': 'Distance to London', 'extra_classes': ''},
-        {'id': 'duration_to_london', 'title': 'Duration to London', 'extra_classes': ''},
-        {'id': 'score', 'title': 'Score', 'extra_classes': 'is-selected is-primary'}
+        {'id': 'name', 'title': 'Location'},
+        {'id': 'total_properties', 'title': 'Number of Properties'},
+        {'id': 'average_rent', 'title': 'Average Rent (£ / pcm)'},
+        {'id': 'rent_under_250', 'title': 'Number of properties under £250 pcm'},
+        {'id': 'rent_250_to_500', 'title': 'Number of properties between £250 and £500 pcm'},
+        {'id': 'distance_to_london', 'title': 'Distance to London'},
+        {'id': 'duration_to_london', 'title': 'Duration to London'},
+        {'id': 'score', 'title': 'Score'}
     ]
 
     logger = logging.getLogger()
