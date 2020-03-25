@@ -30,26 +30,24 @@
                         </div>
                     </div>
                     <table class="table">
-                        {% for slider in categories[1:] %}
-                            {% set min = location_array|sort(attribute=slider['id'], reverse=False)|first()|attr(slider['id'])|round(0, 'floor') %}
-                            {% set max = location_array|sort(attribute=slider['id'], reverse=True)|first()|attr(slider['id'])|round(0, 'ceil') %}
+                        {% for category in categories[1:] %}
                             <tr>
                                 <td>
-                                    <label for="{{ slider['id'] }}_range">
-                                        {{ slider['title'] }}
+                                    <label for="{{ category['id'] }}_range">
+                                        {{ category['title'] }}
                                     </label>
                                 </td>
                                 <td>
-                                    <input class="slider has-output" type="range" min="{{ min }}" max="{{ max }}" id="{{ slider['id'] }}_range" name="{{ slider['id'] }}" value="{{ request.args.get(slider['id'], default=max) }}">
+                                    <input class="slider has-output" type="range" min="{{ category['min'] }}" max="{{ category['max'] }}" id="{{ category['id'] }}_range" name="{{ category['id'] }}" value="{{ request.args.get(category['id'], default=category['max']) }}">
                                 </td>
                                 <td>
-                                    <input class='slider-output' type="number" min="{{ min }}" max="{{ max }}" data-for="{{ slider['id'] }}_range" name="{{ slider['id'] }}_value" value="{{ request.args.get(slider['id'], default=max) }}">
+                                    <input class='slider-output' type="number" min="{{ category['min'] }}" max="{{ category['max'] }}" data-for="{{ category['id'] }}_range" value="{{ request.args.get(category['id'], default=category['max']) }}">
                                 </td>
                                 <td>
                                     <div class="select">
-                                        <select class="slider-switch" name="{{ slider['id'] }}_switch">
-                                            <option value="or-more" {{ 'selected' if request.args.get(slider['id'] + '_switch', default='or-less') == 'or-more' }}>or more</option>
-                                            <option value="or-less" {{ 'selected' if request.args.get(slider['id'] + '_switch', default='or-less') == 'or-less' }}>or less</option>
+                                        <select class="slider-switch" name="{{ category['id'] }}_switch">
+                                            <option value="or-more" {{ 'selected' if request.args.get(category['id'] + '_switch', default='or-less') == 'or-more' }}>or more</option>
+                                            <option value="or-less" {{ 'selected' if request.args.get(category['id'] + '_switch', default='or-less') == 'or-less' }}>or less</option>
                                         </select>
                                     </div>
                                 </td>

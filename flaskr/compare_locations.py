@@ -2,6 +2,7 @@ import logging
 
 from datetime import datetime
 from flask import Blueprint, render_template, request
+from math import ceil, floor
 
 from . import get_location_data
 
@@ -25,7 +26,15 @@ def index():
 
     all_locations = get_location_data()
 
-    for location in all_locations:
+    sort = request.args.get('sort', default='score')
+    sort_desc = request.args.get('dir', default='desc') == 'desc'
+
+    for category in categories[1:]:
+        category['max'] = ceil(max([location[category['id']] for location in all_locations]))
+        category['min'] = floor(min([location[category['id']] for location in all_locations]))
+
+    filtered_locations = []
+    for i, location in enumerate(all_locations):
         for category in categories:
             if request.args.get(category['id']) is None:
                 # No value set for category, skip to next category
@@ -47,12 +56,12 @@ def index():
                     category_switch == 'or-less' and
                     location_category > request_category
             )):
-                all_locations.remove(location)
+                filtered_locations.append(location)
                 # If location is removed, don't check remaining categories
                 break
 
-    sort = request.args.get('sort', default='score')
-    sort_desc = request.args.get('dir', default='desc') == 'desc'
+    for location in filtered_locations:
+        all_locations.remove(location)
 
     logger.info(f'Total Locations: {len(all_locations)}')
     return render_template(
