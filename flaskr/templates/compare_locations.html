@@ -86,7 +86,8 @@
             </tr>
         </thead>
         <tbody>
-            {% for row in location_array|sort(attribute=sort, reverse=sort_desc) %}
+{#            {% for row in location_array|sort(attribute=sort, reverse=sort_desc) %}#}
+            {% for row in location_array %}
                 {% if row.total_properties > 0 %}
                     <tr>
                         {% set row_data = [

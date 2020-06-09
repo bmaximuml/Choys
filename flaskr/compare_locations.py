@@ -4,13 +4,14 @@ from datetime import datetime
 from flask import Blueprint, render_template, request
 from math import ceil, floor
 
-from . import get_location_data
+from . import get_location_data, get_location_data_alchemy
 
 bp = Blueprint('compare_locations', __name__)
 
 
 @bp.route('/')
 def index():
+    a = datetime.now()
     categories = [
         {'id': 'name', 'title': 'Location'},
         {'id': 'total_properties', 'title': 'Number of Properties'},
@@ -24,14 +25,26 @@ def index():
 
     logger = logging.getLogger()
 
-    all_locations = get_location_data()
+    b = datetime.now()
+
+    all_locations = get_location_data_alchemy()
+
+    c = datetime.now()
+
+    number_of_cards = 20
+    page = int(request.args.get('page', default=1))
 
     sort = request.args.get('sort', default='score')
     sort_desc = request.args.get('dir', default='desc') == 'desc'
 
+    d = datetime.now()
+
     for category in categories[1:]:
-        category['max'] = ceil(max([location[category['id']] for location in all_locations]))
-        category['min'] = floor(min([location[category['id']] for location in all_locations]))
+        loc_iter = [location._asdict()[category['id']] for location in all_locations]
+        category['max'] = ceil(max(loc_iter))
+        category['min'] = floor(min(loc_iter))
+
+    e = datetime.now()
 
     filtered_locations = []
     for i, location in enumerate(all_locations):
@@ -60,13 +73,34 @@ def index():
                 # If location is removed, don't check remaining categories
                 break
 
+    f = datetime.now()
+
     for location in filtered_locations:
         all_locations.remove(location)
 
+    g = datetime.now()
+
+    sorted_locations = sorted(all_locations, key=lambda k: k._asdict()[sort], reverse=sort_desc)
+
+    h = datetime.now()
+
+    start = int((page - 1) * number_of_cards)
+    end = start + 20
     logger.info(f'Total Locations: {len(all_locations)}')
+
+    g = datetime.now()
+
+    print('b: ' + str(b - a))
+    print('c: ' + str(c - b))
+    print('d: ' + str(d - c))
+    print('e: ' + str(e - d))
+    print('f: ' + str(f - e))
+    print('g: ' + str(g - f))
+
+
     return render_template(
         'compare_locations.html',
-        location_array=all_locations,
+        location_array=sorted_locations[start:end],
         year=datetime.now().year,
         sort=sort,
         sort_desc=sort_desc,
